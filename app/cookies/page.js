@@ -147,7 +147,7 @@ export default function CookiesPage() {
           <h2 style={{ fontSize: "16px", fontWeight: 700, color: "var(--fg)", marginBottom: "8px" }}>Contact us</h2>
           <p style={{ fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
             Questions about cookies or your data? Email us at{" "}
-            <a href="mailto:privacy@swaptest.co.uk" style={{ color: "#1D9E75", textDecoration: "none" }}>privacy@swaptest.co.uk</a>.
+            <a href="mailto:hello@swaptest.co.uk" style={{ color: "#1D9E75", textDecoration: "none" }}>hello@swaptest.co.uk</a>.
           </p>
         </div>
       </main>

@@ -47,17 +47,17 @@ export default function PrivacyPage() {
           <h3 style={h3Style}>Information you provide</h3>
           <p style={pStyle}>When you register for an account, we collect:</p>
           <ul style={{ paddingLeft: "20px", marginBottom: "16px" }}>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Full name</strong>:to identify you to your swap partner</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Email address</strong>:to send you notifications about matches and for account access</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Phone number</strong>:shared only with your confirmed swap partner for coordination</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Password</strong>:encrypted and stored securely (see Security section below)</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Full name</strong>: to identify you to your swap partner</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Email address</strong>: to send you notifications about matches and for account access</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Phone number</strong>: shared only with your confirmed swap partner for coordination</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Password</strong>: encrypted and stored securely (see Security section below)</li>
           </ul>
 
           <p style={pStyle}>When you create a listing, we collect:</p>
           <ul style={{ paddingLeft: "20px", marginBottom: "16px" }}>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Test centre name</strong>:used for matching</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Current test date and time</strong>:used for matching</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Preferred date range</strong>:used for matching</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Test centre name</strong>: used for matching</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Current test date and time</strong>: used for matching</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Preferred date range</strong>: used for matching</li>
           </ul>
 
           <h3 style={h3Style}>Information collected automatically</h3>
@@ -127,7 +127,7 @@ export default function PrivacyPage() {
             Your account data is kept for as long as you have an active account. Your listing data is kept for as long as the listing is active or has been part of a completed swap.
           </p>
           <p style={pStyle}>
-            If you wish to delete your account and all associated data, please contact us at privacy@swaptest.co.uk and we will process your request within 30 days.
+            If you wish to delete your account and all associated data, please contact us at hello@swaptest.co.uk and we will process your request within 30 days.
           </p>
         </div>
 
@@ -135,24 +135,24 @@ export default function PrivacyPage() {
           <h2 style={h2Style}>Your rights</h2>
           <p style={pStyle}>Under UK data protection law (UK GDPR), you have the right to:</p>
           <ul style={{ paddingLeft: "20px", marginBottom: "16px" }}>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Access</strong>:request a copy of the personal data we hold about you</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Rectification</strong>:ask us to correct inaccurate data</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Erasure</strong>:ask us to delete your data</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Restriction</strong>:ask us to limit how we use your data</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Portability</strong>:request your data in a portable format</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Objection</strong>:object to our processing of your data</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Access</strong>: request a copy of the personal data we hold about you</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Rectification</strong>: ask us to correct inaccurate data</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Erasure</strong>: ask us to delete your data</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Restriction</strong>: ask us to limit how we use your data</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Portability</strong>: request your data in a portable format</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Objection</strong>: object to our processing of your data</li>
           </ul>
-          <p style={pStyle}>To exercise any of these rights, contact us at privacy@swaptest.co.uk.</p>
+          <p style={pStyle}>To exercise any of these rights, contact us at hello@swaptest.co.uk.</p>
         </div>
 
         <div style={sectionStyle}>
           <h2 style={h2Style}>Third-party services</h2>
           <p style={pStyle}>We use the following third-party services to operate SwapTest:</p>
           <ul style={{ paddingLeft: "20px", marginBottom: "16px" }}>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Resend</strong>:for sending email notifications (processes your email address)</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Neon</strong>:for database hosting (stores your account and listing data)</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Vercel</strong>:for website hosting (processes your requests)</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Upstash</strong>:for rate limiting (processes your IP address temporarily)</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Resend</strong>: for sending email notifications (processes your email address)</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Neon</strong>: for database hosting (stores your account and listing data)</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Vercel</strong>: for website hosting (processes your requests)</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Upstash</strong>: for rate limiting (processes your IP address temporarily)</li>
           </ul>
           <p style={pStyle}>Each of these services has their own privacy policy and processes data in accordance with GDPR requirements.</p>
         </div>
@@ -180,7 +180,7 @@ export default function PrivacyPage() {
           <h2 style={{ fontSize: "16px", fontWeight: 700, color: "var(--fg)", marginBottom: "8px" }}>Contact us</h2>
           <p style={{ fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
             If you have any questions about this privacy policy or how we handle your data, please email us at{" "}
-            <a href="mailto:privacy@swaptest.co.uk" style={{ color: "#1D9E75", textDecoration: "none" }}>privacy@swaptest.co.uk</a>.
+            <a href="mailto:hello@swaptest.co.uk" style={{ color: "#1D9E75", textDecoration: "none" }}>hello@swaptest.co.uk</a>.
           </p>
         </div>
       </main>

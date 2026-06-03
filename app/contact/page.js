@@ -60,7 +60,7 @@ export default function ContactPage() {
           <h2 style={h2Style}>Privacy and data requests</h2>
           <p style={pStyle}>
             For anything about your personal data, including access, correction, or deletion under UK GDPR,
-            email <a href="mailto:privacy@swaptest.co.uk" style={linkStyle}>privacy@swaptest.co.uk</a>. You can
+            email <a href="mailto:hello@swaptest.co.uk" style={linkStyle}>hello@swaptest.co.uk</a>. You can
             read how we handle your data in our{" "}
             <Link href="/privacy" style={linkStyle}>Privacy Policy</Link> and{" "}
             <Link href="/cookies" style={linkStyle}>Cookie Policy</Link>.

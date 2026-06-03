@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ThemeToggle from "@/components/theme-toggle";
+import ContactForm from "@/components/contact-form";
 
 export const metadata = {
   title: "Contact Us | SwapTest",
@@ -37,16 +38,21 @@ export default function ContactPage() {
           We reply to most emails within two working days.
         </p>
 
-        {/* Primary contact card */}
+        {/* Contact form */}
+        <div style={{ marginBottom: "32px" }}>
+          <ContactForm />
+        </div>
+
+        {/* Email contact card */}
         <div style={{ padding: "24px", borderRadius: "12px", background: "var(--bg-raised)", border: "1px solid var(--border)", marginBottom: "32px" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--muted-2)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "8px" }}>
-            General enquiries
+            Prefer email?
           </div>
           <a href="mailto:hello@swaptest.co.uk" style={{ fontSize: "20px", fontWeight: 700, color: "#1D9E75", textDecoration: "none" }}>
             hello@swaptest.co.uk
           </a>
           <p style={{ fontSize: "13px", color: "var(--muted)", lineHeight: 1.6, margin: "10px 0 0" }}>
-            For help with a swap, your listing, matches, or anything else about using SwapTest.
+            You can also email us directly for help with a swap, your listing, matches, or anything else about using SwapTest.
           </p>
         </div>
 

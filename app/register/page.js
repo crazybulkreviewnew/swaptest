@@ -89,7 +89,7 @@ function RegisterForm() {
         {/* Back button */}
         {step === 2 && (
           <button onClick={function() { setStep(1); setErrors([]); }}
-            style={{ background: "none", border: "none", color: "#73726c", cursor: "pointer", fontSize: "14px", padding: 0, marginBottom: "24px" }}>
+            style={{ background: "none", border: "none", color: "#73726c", cursor: "pointer", fontSize: "14px", padding: 0, marginBottom: "24px", minHeight: "44px", touchAction: "manipulation" }}>
             ← Back to account details
           </button>
         )}
@@ -132,31 +132,35 @@ function RegisterForm() {
         {step === 1 && (
           <div style={{ display: "flex", flexDirection: "column", gap: "18px" }} onKeyDown={handleKeyDown}>
             <div>
-              <label style={labelStyle}>Full name</label>
-              <input value={name} onChange={function(e) { setName(e.target.value); clearErrors(); }}
+              <label htmlFor="reg-name" style={labelStyle}>Full name</label>
+              <input id="reg-name" name="name" autoComplete="name"
+                value={name} onChange={function(e) { setName(e.target.value); clearErrors(); }}
                 placeholder="What should we call you?" style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Email address</label>
-              <input value={email} onChange={function(e) { setEmail(e.target.value); clearErrors(); }}
-                type="email" placeholder="you@example.com" style={inputStyle} />
+              <label htmlFor="reg-email" style={labelStyle}>Email address</label>
+              <input id="reg-email" name="email" type="email" autoComplete="email" inputMode="email" spellCheck={false}
+                value={email} onChange={function(e) { setEmail(e.target.value); clearErrors(); }}
+                placeholder="you@example.com" style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Phone number <span style={hintStyle}>UK mobile</span></label>
-              <input value={phone} onChange={function(e) { setPhone(e.target.value); clearErrors(); }}
-                type="tel" placeholder="07xxx xxxxxx" style={inputStyle} />
+              <label htmlFor="reg-phone" style={labelStyle}>Phone number <span style={hintStyle}>UK mobile</span></label>
+              <input id="reg-phone" name="tel" type="tel" autoComplete="tel" inputMode="tel"
+                value={phone} onChange={function(e) { setPhone(e.target.value); clearErrors(); }}
+                placeholder="07xxx xxxxxx" style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Password <span style={hintStyle}>at least 8 characters</span></label>
-              <input value={password} onChange={function(e) { setPassword(e.target.value); clearErrors(); }}
-                type="password" placeholder="Create a secure password" style={inputStyle} />
+              <label htmlFor="reg-password" style={labelStyle}>Password <span style={hintStyle}>at least 8 characters</span></label>
+              <input id="reg-password" name="new-password" type="password" autoComplete="new-password"
+                value={password} onChange={function(e) { setPassword(e.target.value); clearErrors(); }}
+                placeholder="Create a secure password" style={inputStyle} />
             </div>
 
             <button onClick={handleRegister} disabled={loading} style={{
               width: "100%", padding: "16px", borderRadius: "10px", border: "none",
               background: "linear-gradient(135deg, #1D9E75, #15805e)", color: "#fff",
               fontSize: "16px", fontWeight: 700, cursor: "pointer", marginTop: "8px",
-              opacity: loading ? 0.6 : 1,
+              opacity: loading ? 0.6 : 1, touchAction: "manipulation",
               boxShadow: "0 4px 16px rgba(29,158,117,0.25)",
             }}>
               {loading ? "Creating account..." : "Continue to test details"}
@@ -260,7 +264,7 @@ function RegisterForm() {
               width: "100%", padding: "16px", borderRadius: "10px", border: "none",
               background: "linear-gradient(135deg, #1D9E75, #15805e)", color: "#fff",
               fontSize: "16px", fontWeight: 700, cursor: "pointer", marginTop: "4px",
-              opacity: loading ? 0.6 : 1,
+              opacity: loading ? 0.6 : 1, touchAction: "manipulation",
               boxShadow: "0 4px 16px rgba(29,158,117,0.25)",
             }}>
               {loading ? "Searching..." : (isEarlier ? "Find matches" : "List my test")}

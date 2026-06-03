@@ -21,7 +21,7 @@ export default function TermsPage() {
           <Link href="/" style={{ fontSize: "18px", fontWeight: 700, color: "#e8e6dc", textDecoration: "none" }}>
             Swap<span style={{ color: "#1D9E75" }}>Test</span>
           </Link>
-          <Link href="/" style={{ fontSize: "13px", color: "#73726c", textDecoration: "none" }}>← Back to home</Link>
+          <Link href="/" style={{ fontSize: "13px", color: "#73726c", textDecoration: "none", display: "inline-flex", alignItems: "center", minHeight: "44px", touchAction: "manipulation" }}>← Back to home</Link>
         </div>
       </nav>
 

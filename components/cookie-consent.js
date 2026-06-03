@@ -78,13 +78,13 @@ export default function CookieConsent() {
           <div className="flex gap-3 mt-4 lg:mt-0 flex-shrink-0">
             <button
               onClick={() => record("essential")}
-              className="px-5 py-2.5 rounded-lg text-[13px] font-semibold text-[#e8e6dc] bg-[#1a1a18] border border-[#333] hover:border-[#555] transition-colors cursor-pointer"
+              className="px-5 py-2.5 rounded-lg text-[13px] font-semibold text-[#e8e6dc] bg-[#1a1a18] border border-[#333] hover:border-[#555] transition-colors cursor-pointer [touch-action:manipulation]"
             >
               Essential only
             </button>
             <button
               onClick={() => record("all")}
-              className="px-5 py-2.5 rounded-lg text-[13px] font-bold text-white border-0 cursor-pointer transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              className="px-5 py-2.5 rounded-lg text-[13px] font-bold text-white border-0 cursor-pointer transition-transform hover:scale-[1.02] active:scale-[0.98] [touch-action:manipulation]"
               style={{
                 background: "linear-gradient(135deg, #1D9E75 0%, #15805e 100%)",
                 boxShadow: "0 4px 16px rgba(29,158,117,0.3)",

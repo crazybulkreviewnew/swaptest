@@ -42,11 +42,13 @@ function LoginForm() {
         <div className="flex flex-col gap-4" onKeyDown={handleKeyDown}>
           <Field label="Email" required>
             <input value={email} onChange={(e) => { setEmail(e.target.value); setErrors([]); }}
-              type="email" placeholder="alex@example.com" />
+              type="email" name="email" autoComplete="email" inputMode="email" spellCheck={false}
+              placeholder="alex@example.com" />
           </Field>
           <Field label="Password" required>
             <input value={password} onChange={(e) => { setPassword(e.target.value); setErrors([]); }}
-              type="password" placeholder="••••••••" />
+              type="password" name="password" autoComplete="current-password"
+              placeholder="••••••••" />
           </Field>
           <div className="text-right">
             <Link href="/reset-password" className="text-xs text-[#1D9E75] hover:underline">Forgot your password?</Link>

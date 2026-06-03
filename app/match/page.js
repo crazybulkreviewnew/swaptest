@@ -71,7 +71,7 @@ function MatchDetail() {
     return (<div className="min-h-screen"><Navbar /><div className="max-w-lg mx-auto px-5 py-20 text-center text-[#73726c]">No match ID provided. <Link href="/dashboard" className="text-[#1D9E75] hover:underline">Go to dashboard</Link></div></div>);
   }
   if (loading) {
-    return (<div className="min-h-screen"><Navbar user={user} onLogout={function() { router.push("/"); }} /><div className="flex items-center justify-center py-20"><div className="w-6 h-6 border-2 border-[#1D9E75]/30 border-t-[#1D9E75] rounded-full animate-spin" /></div></div>);
+    return (<div className="min-h-screen"><Navbar user={user} onLogout={function() { router.push("/"); }} /><div className="flex items-center justify-center py-20"><div role="status" aria-label="Loading match" className="w-6 h-6 border-2 border-[#1D9E75]/30 border-t-[#1D9E75] rounded-full animate-spin" /></div></div>);
   }
   if (!match) {
     return (<div className="min-h-screen"><Navbar user={user} onLogout={function() { router.push("/"); }} /><div className="max-w-lg mx-auto px-5 py-20 text-center"><ErrorBox errors={errors.length ? errors : ["Match not found"]} /><Link href="/dashboard" className="text-sm text-[#1D9E75] hover:underline">Back to dashboard</Link></div></div>);
@@ -94,7 +94,7 @@ function MatchDetail() {
     if (s === "COMPLETED") {
       return (<>
         <div className="text-center mb-6">
-          <div className="w-16 h-16 rounded-full bg-[#085041] flex items-center justify-center mx-auto mb-4"><span className="text-3xl text-[#5DCAA5]">✓</span></div>
+          <div className="w-16 h-16 rounded-full bg-[#085041] flex items-center justify-center mx-auto mb-4"><span aria-hidden="true" className="text-3xl text-[#5DCAA5]">✓</span></div>
           <h2 className="text-2xl font-bold text-[#e8e6dc] mb-2">Swap confirmed!</h2>
           <p className="text-sm text-[#9c9a92]">Both parties agreed. Here are your swap partner's details.</p>
         </div>
@@ -158,7 +158,7 @@ function MatchDetail() {
 
     if (s === "EXPIRED_TIMER1" || s === "EXPIRED_TIMER2") {
       return (<div className="text-center">
-        <div className="w-16 h-16 rounded-full bg-red-950/60 flex items-center justify-center mx-auto mb-4"><span className="text-3xl text-red-400">✕</span></div>
+        <div className="w-16 h-16 rounded-full bg-red-950/60 flex items-center justify-center mx-auto mb-4"><span aria-hidden="true" className="text-3xl text-red-400">✕</span></div>
         <h2 className="text-xl font-semibold text-[#e8e6dc] mb-2">Match expired</h2>
         <p className="text-sm text-[#9c9a92] max-w-sm mx-auto leading-relaxed">The other person didn't respond within 30 minutes. Both listings are back in the pool.</p>
       </div>);
@@ -197,5 +197,5 @@ function MatchDetail() {
 }
 
 export default function MatchPage() {
-  return (<Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-6 h-6 border-2 border-[#1D9E75]/30 border-t-[#1D9E75] rounded-full animate-spin" /></div>}><MatchDetail /></Suspense>);
+  return (<Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div role="status" aria-label="Loading" className="w-6 h-6 border-2 border-[#1D9E75]/30 border-t-[#1D9E75] rounded-full animate-spin" /></div>}><MatchDetail /></Suspense>);
 }

@@ -345,7 +345,7 @@ export default function HomePage() {
               },
               {
                 q: "How many times can you swap a driving test?",
-                a: "There is no SwapTest limit on how many times you can look for a swap. You can list, match and swap as often as you need until you find a date that works. DVSA has its own rules on rescheduling a practical driving test, so always check the current guidance on GOV.UK before arranging another swap.",
+                a: "DVSA lets you change or swap your practical driving test date up to two times. After that, you would normally need to book a new test. SwapTest helps you find a match within those limits, so make sure you are happy with a date before you swap. Always check the latest rules on GOV.UK.",
               },
               {
                 q: "Can I swap to a different test centre?",

@@ -26,8 +26,8 @@ export default function Navbar({ user, onLogout }) {
           >
             Swap<span className="text-[#1D9E75]">Test</span>
           </Link>
-          <span className="hidden lg:block text-[13px] text-[var(--faint)] border-l border-[var(--border)] pl-3">
-            Free UK test date swapping
+          <span className="hidden lg:block text-[13px] font-medium text-[var(--muted)] border-l border-[var(--border)] pl-3">
+            Swap driving test dates
           </span>
         </div>
 

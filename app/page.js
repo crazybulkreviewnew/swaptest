@@ -436,6 +436,9 @@ export default function HomePage() {
             <Link href="/cookies" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[var(--muted-2)] no-underline hover:text-[var(--muted)] transition-colors">
               Cookies &amp; Data
             </Link>
+            <Link href="/contact" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[var(--muted-2)] no-underline hover:text-[var(--muted)] transition-colors">
+              Contact
+            </Link>
             <Link href="/login" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[var(--muted-2)] no-underline hover:text-[var(--muted)] transition-colors">
               Log in
             </Link>

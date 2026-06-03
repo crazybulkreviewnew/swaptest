@@ -26,7 +26,7 @@ export default function TermsPage() {
       </nav>
 
       <main style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 20px 80px" }}>
-        <h1 style={{ fontSize: "clamp(28px, 5vw, 36px)", fontWeight: 800, color: "#f0eee4", marginBottom: "8px", letterSpacing: "-1px" }}>
+        <h1 style={{ fontSize: "clamp(28px, 5vw, 36px)", fontWeight: 700, color: "#f0eee4", marginBottom: "8px", letterSpacing: "-0.4px" }}>
           Terms &amp; Conditions
         </h1>
         <p style={{ fontSize: "14px", color: "#73726c", marginBottom: "40px" }}>Last updated: June 2026</p>

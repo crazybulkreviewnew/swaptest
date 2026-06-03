@@ -107,7 +107,7 @@ function RegisterForm() {
             {isEarlier ? "Looking for an earlier date" : "Looking for a later date"}
           </div>
 
-          <h1 style={{ fontSize: "28px", fontWeight: 800, color: "#f0eee4", margin: "0 0 8px", letterSpacing: "-0.5px" }}>
+          <h1 style={{ fontSize: "28px", fontWeight: 700, color: "#f0eee4", margin: "0 0 8px", letterSpacing: "-0.2px" }}>
             {step === 1 ? "Create your account" : "Tell us about your test"}
           </h1>
           <p style={{ fontSize: "15px", color: "#8a8880", margin: 0, lineHeight: 1.5 }}>

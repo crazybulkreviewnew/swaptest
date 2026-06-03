@@ -38,7 +38,7 @@ export default function HomePage() {
                 Currently FREE for everyone
               </div>
 
-              <h1 className="text-[clamp(36px,5vw,60px)] font-extrabold leading-[1.1] text-[#f0eee4] tracking-tight mb-5">
+              <h1 className="text-[clamp(36px,5vw,60px)] font-bold leading-[1.08] text-[#f0eee4] tracking-[-0.015em] mb-5">
                 Swap your UK driving test date{" "}
                 <span className="text-[#1D9E75]">with someone</span>
               </h1>
@@ -140,7 +140,7 @@ export default function HomePage() {
       {/* ── How It Works ── */}
       <section className="px-5 py-16 lg:py-24">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[#f0eee4] text-center mb-3 tracking-tight">
+          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[#f0eee4] text-center mb-3 tracking-[-0.01em]">
             How does it work?
           </h2>
           <p className="text-center text-[#73726c] text-[15px] mb-12 max-w-[480px] mx-auto">
@@ -187,7 +187,7 @@ export default function HomePage() {
       {/* ── Why SwapTest ── */}
       <section className="px-5 py-16 lg:py-24 bg-[#161614] border-t border-b border-[#1e1e1c]">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[#f0eee4] text-center mb-3 tracking-tight">
+          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[#f0eee4] text-center mb-3 tracking-[-0.01em]">
             Why people use SwapTest
           </h2>
           <p className="text-center text-[#73726c] text-[15px] mb-12 max-w-[480px] mx-auto">
@@ -243,7 +243,7 @@ export default function HomePage() {
       {/* ── FAQ ── */}
       <section className="px-5 py-16 lg:py-24">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[#f0eee4] text-center mb-12 tracking-tight">
+          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[#f0eee4] text-center mb-12 tracking-[-0.01em]">
             Frequently asked questions
           </h2>
 
@@ -292,7 +292,7 @@ export default function HomePage() {
         className="px-5 py-20 text-center"
         style={{ background: "linear-gradient(180deg, #111110 0%, #0d1a15 100%)" }}
       >
-        <h2 className="text-[clamp(24px,4vw,42px)] font-extrabold text-[#f0eee4] mb-4 tracking-tight">
+        <h2 className="text-[clamp(24px,4vw,42px)] font-bold text-[#f0eee4] mb-4 tracking-[-0.015em]">
           Ready to swap your test date?
         </h2>
         <p className="text-[#73726c] text-[16px] mb-8 max-w-[440px] mx-auto">

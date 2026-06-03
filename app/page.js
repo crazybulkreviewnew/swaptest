@@ -76,7 +76,7 @@ export default function HomePage() {
                 ].map((stat) => (
                   <div key={stat.label}>
                     <div className="tabular text-2xl font-extrabold text-[var(--fg-strong)]">{stat.value}</div>
-                    <div className="text-xs text-[var(--muted-2)] mt-0.5">{stat.label}</div>
+                    <div className="text-[14px] font-medium text-[var(--muted)] mt-1">{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -140,7 +140,7 @@ export default function HomePage() {
                   29 min 04 sec remaining
                 </p>
               </div>
-              <p className="text-center text-[12px] text-[var(--faint)] mt-4">
+              <p className="text-center text-[13px] font-medium text-[var(--muted)] mt-4">
                 Illustrative example, not a live match.
               </p>
             </div>

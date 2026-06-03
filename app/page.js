@@ -240,6 +240,88 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── SEO content ── */}
+      <section className="px-5 py-16 lg:py-24">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-[clamp(24px,4vw,32px)] font-bold text-[var(--fg-strong)] mb-6 tracking-tight">
+            Swap your driving test date the easy way
+          </h2>
+          <div className="space-y-5 text-[15px] leading-relaxed text-[var(--muted)]">
+            <p>
+              SwapTest is a free service built to help UK learner drivers swap a driving test for a date that
+              actually works for them. If you have passed your theory test and booked a practical, you may have
+              been handed a slot months away. Cancelling and rebooking through DVSA often only offers the same far
+              off dates. SwapTest gives you another option: swap a driving test date with someone who wants your
+              slot and is already holding a date you would prefer. Thousands of learners every month look for a way
+              to swap a driving test sooner, and SwapTest brings them together in one place.
+            </p>
+
+            <h3 className="text-[18px] font-bold text-[var(--fg)] pt-2">
+              How to swap a driving test date with someone
+            </h3>
+            <p>
+              The idea is simple. You tell us your current DVSA test centre, your booked date, and the range of
+              dates you are looking for. Our matching system then searches your test centre and three nearby
+              centres for another candidate who wants to move to your date while offering one that suits you. When
+              a fair match is found, both people agree, swap contact details, and contact DVSA to arrange the
+              change. There is no need to cancel your test first, and no need to refresh the booking site for hours
+              hoping for a cancellation.
+            </p>
+
+            <h3 className="text-[18px] font-bold text-[var(--fg)] pt-2">
+              Why people use SwapTest to swap a driving test
+            </h3>
+            <p>
+              Waiting lists for a practical driving test in the UK can stretch for months, and a long wait often
+              means lost confidence, extra lessons, and missed opportunities such as a new job or a university
+              place. Being able to swap a driving test date with someone lets you bring your test forward without
+              paying for cancellation checker apps. It also helps the other learner, who may genuinely want a later
+              date, so every swap is designed to be fair to both sides. There is no cost to try, and you stay in
+              full control of which match you accept.
+            </p>
+
+            <h3 className="text-[18px] font-bold text-[var(--fg)] pt-2">
+              DVSA swap driving test with someone, made fair
+            </h3>
+            <p>
+              SwapTest is independent and is not affiliated with DVSA or GOV.UK, but it is built around the way
+              DVSA actually works. DVSA lets you move your test to your own centre or a nearby one, so our
+              algorithm only proposes a swap when both candidates can realistically take each other's slot. That
+              means when you use SwapTest to do a DVSA swap of a driving test with someone, every match you see is
+              one that can genuinely go ahead.
+            </p>
+
+            <h3 className="text-[18px] font-bold text-[var(--fg)] pt-2">
+              Swap driving test UK coverage
+            </h3>
+            <p>
+              SwapTest covers more than 320 DVSA test centres across England, Scotland and Wales, so wherever you
+              are booked there is a strong chance of finding a match close by. Whether you need an earlier date
+              because you feel ready now, or a later date because you want more practice, you can list either way
+              and let SwapTest find the right person to swap with. The more learners who list their dates, the
+              faster you can swap a driving test date that suits you.
+            </p>
+
+            <h3 className="text-[18px] font-bold text-[var(--fg)] pt-2">
+              Safe, free and simple
+            </h3>
+            <p>
+              Your contact details stay private until both people agree to swap, and your password is encrypted, so
+              your data is protected at every step. There are no platform fees and no hidden charges to swap a
+              driving test date with SwapTest. You can list, edit or delete your test at any time from your
+              dashboard, and you are notified by email the moment someone wants your date.
+            </p>
+
+            <p>
+              If you have been searching for how to swap a driving test date with someone, SwapTest is the quickest
+              place to start. List your test in around 30 seconds, let the system find your match, agree the swap,
+              and contact DVSA to lock it in. It really is that simple to swap a driving test date in the UK and
+              take control of when you sit your practical test.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ── */}
       <section className="px-5 py-16 lg:py-24">
         <div className="max-w-5xl mx-auto">
@@ -250,16 +332,28 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16">
             {[
               {
-                q: "How does swapping a driving test date work?",
-                a: "When you book a practical driving test with DVSA, you get a specific date and test centre. If that date doesn't suit you, you can normally only change it to whatever's available, often months away. SwapTest connects you with another candidate who has a date you want, and who wants your date. You then contact DVSA to arrange swapping your dates with each other.",
+                q: "How to swap driving test date with someone?",
+                a: "To swap a driving test date with someone, list your current DVSA test date and the dates you would prefer on SwapTest. We match you with another learner who wants your date and is holding a date that suits you. Once you both agree, you exchange contact details and contact DVSA to arrange the swap. It is the simplest way to swap a driving test date with someone at the same or a nearby test centre.",
               },
               {
-                q: "Is SwapTest really free?",
-                a: "Yes, completely free. No platform fees, no subscription, no hidden charges. We may introduce a small optional fee in the future, but the core matching service will remain free.",
+                q: "How do you swap a driving test date?",
+                a: "You swap a driving test date in four steps. First, add your test centre, current date and preferred dates. Second, SwapTest searches your centre and three nearby centres for a matching candidate. Third, both people agree to the swap. Fourth, you contact DVSA to arrange swapping your dates. You do not need to cancel your test first.",
+              },
+              {
+                q: "Can you swap driving test dates with someone?",
+                a: "Yes. You can swap driving test dates with someone who wants your slot and holds a date that suits you. Both candidates must agree, and you then contact DVSA to arrange the change. SwapTest makes it easy to find that person, so you can swap a driving test in the UK without waiting months for a new date.",
+              },
+              {
+                q: "How many times can you swap a driving test?",
+                a: "There is no SwapTest limit on how many times you can look for a swap. You can list, match and swap as often as you need until you find a date that works. DVSA has its own rules on rescheduling a practical driving test, so always check the current guidance on GOV.UK before arranging another swap.",
               },
               {
                 q: "Can I swap to a different test centre?",
                 a: "Yes. DVSA allows you to move your test to one of 3 nearby centres. SwapTest automatically checks all nearby centres when finding matches. Both people must be able to move to each other's centre for a swap to be valid.",
+              },
+              {
+                q: "Is SwapTest really free?",
+                a: "Yes, completely free. No platform fees, no subscription, no hidden charges. We may introduce a small optional fee in the future, but the core matching service will remain free.",
               },
               {
                 q: "Is my personal information safe?",
@@ -272,10 +366,6 @@ export default function HomePage() {
               {
                 q: "Can I cancel or edit my listing?",
                 a: "Yes. You can edit or delete your listing at any time from your dashboard, as long as it doesn't have an active match pending.",
-              },
-              {
-                q: "How do I actually complete the swap on DVSA?",
-                a: "After both parties agree, you'll receive each other's contact details by email. You do not need to cancel your test. Simply contact DVSA to arrange the swap of your dates. We recommend you both get in touch with DVSA so the change can be completed smoothly.",
               },
             ].map((faq, i) => (
               <div key={i} className="py-6 border-b border-[var(--border-faint)]">

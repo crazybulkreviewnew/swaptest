@@ -45,7 +45,7 @@ export default function HomePage() {
 
               <p className="text-[clamp(16px,2vw,19px)] text-[var(--muted)] leading-relaxed mb-8 max-w-[520px] mx-auto lg:mx-0">
                 Waiting months for your test? Find someone who wants to push theirs back and swap dates.
-                Same centre or nearby — both sides win.
+                Same centre or nearby, and both sides win.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
@@ -110,7 +110,7 @@ export default function HomePage() {
                       </span>
                     </div>
                     <div className="tabular text-[22px] font-bold text-[var(--fg-strong)]">14 Aug 2025</div>
-                    <div className="text-[12px] text-[var(--muted-2)] mt-1">Wants: 15 Jul – 1 Aug</div>
+                    <div className="text-[12px] text-[var(--muted-2)] mt-1">Wants: 15 Jul to 1 Aug</div>
                   </div>
 
                   <div className="text-[12px] text-center text-[var(--muted-2)]">↕ your listing</div>
@@ -251,7 +251,7 @@ export default function HomePage() {
             {[
               {
                 q: "How does swapping a driving test date work?",
-                a: "When you book a practical driving test with DVSA, you get a specific date and test centre. If that date doesn't suit you, you can normally only change it to whatever's available — often months away. SwapTest connects you with another candidate who has a date you want, and who wants your date. You both cancel and rebook each other's slots on the DVSA website.",
+                a: "When you book a practical driving test with DVSA, you get a specific date and test centre. If that date doesn't suit you, you can normally only change it to whatever's available, often months away. SwapTest connects you with another candidate who has a date you want, and who wants your date. You then contact DVSA to arrange swapping your dates with each other.",
               },
               {
                 q: "Is SwapTest really free?",
@@ -275,7 +275,7 @@ export default function HomePage() {
               },
               {
                 q: "How do I actually complete the swap on DVSA?",
-                a: "After both parties agree, you'll receive each other's contact details by email. You do not need to cancel your test — simply contact DVSA to arrange the swap of your dates. We recommend you both get in touch with DVSA so the change can be completed smoothly.",
+                a: "After both parties agree, you'll receive each other's contact details by email. You do not need to cancel your test. Simply contact DVSA to arrange the swap of your dates. We recommend you both get in touch with DVSA so the change can be completed smoothly.",
               },
             ].map((faq, i) => (
               <div key={i} className="py-6 border-b border-[var(--border-faint)]">
@@ -306,7 +306,7 @@ export default function HomePage() {
             boxShadow: "0 4px 24px rgba(29,158,117,0.35)",
           }}
         >
-          Get started — it’s free
+          Get started, it’s free
         </Link>
 
         {user && (

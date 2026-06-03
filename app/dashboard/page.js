@@ -100,7 +100,7 @@ export default function DashboardPage() {
         setMatchResults(data.matches);
         setMatchListing(data.listing);
       } else {
-        setSuccess("Listing created. No matches found yet — check back later or click Refresh.");
+        setSuccess("Listing created. No matches found yet. Check back later or click Refresh.");
       }
       setShowForm(false);
       setCentre(""); setCurrentDate(""); setCurrentTime(""); setPrefFrom(""); setPrefTo("");
@@ -366,7 +366,7 @@ export default function DashboardPage() {
                           <div className="text-sm text-[var(--muted-2)]">Current: {formatDate(listing.currentDate)} at {listing.currentTime}</div>
                           <div className="text-xs text-[var(--faint)] mt-1">
                             Preferred: {formatDate(listing.preferredDateFrom)}
-                            {listing.preferredDateTo ? " – " + formatDate(listing.preferredDateTo) : ""}
+                            {listing.preferredDateTo ? " to " + formatDate(listing.preferredDateTo) : ""}
                           </div>
                         </div>
                         {canEditDelete && (

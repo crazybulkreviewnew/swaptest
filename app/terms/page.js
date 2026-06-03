@@ -2,7 +2,7 @@ import Link from "next/link";
 import ThemeToggle from "@/components/theme-toggle";
 
 export const metadata = {
-  title: "Terms & Conditions — SwapTest",
+  title: "Terms & Conditions | SwapTest",
   description: "The terms and conditions governing your use of the SwapTest driving test date swapping service.",
   alternates: { canonical: "https://www.swaptest.co.uk/terms" },
 };
@@ -89,10 +89,10 @@ export default function TermsPage() {
           <h2 style={h2Style}>6. How swaps work</h2>
           <p style={pStyle}>
             SwapTest identifies potential matches based on test centre and date preferences. When both parties
-            agree to a match, we share each party's contact details so you can coordinate. The actual swap —
-            cancelling your existing test and rebooking the other person's slot — must be completed by you
-            directly on the GOV.UK website. <strong style={strong}>We cannot guarantee that a slot will still be
-            available at the moment you attempt to rebook it.</strong>
+            agree to a match, we share each party's contact details so you can coordinate. Arranging the actual
+            swap by contacting DVSA is your responsibility and must be completed by you.
+            <strong style={strong}> We cannot guarantee that DVSA will be able to complete the swap once you
+            request it.</strong>
           </p>
         </div>
 

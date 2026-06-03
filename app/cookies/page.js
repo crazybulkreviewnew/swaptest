@@ -2,8 +2,8 @@ import Link from "next/link";
 import ThemeToggle from "@/components/theme-toggle";
 
 export const metadata = {
-  title: "Cookie Policy & Data Usage — SwapTest",
-  description: "How SwapTest uses cookies and processes your data. We use only essential cookies — no advertising or tracking.",
+  title: "Cookie Policy & Data Usage | SwapTest",
+  description: "How SwapTest uses cookies and processes your data. We use only essential cookies, with no advertising or tracking.",
   alternates: { canonical: "https://www.swaptest.co.uk/cookies" },
 };
 
@@ -41,7 +41,7 @@ export default function CookiesPage() {
         <div style={sectionStyle}>
           <h2 style={h2Style}>The short version</h2>
           <p style={pStyle}>
-            SwapTest uses <strong style={strong}>only essential cookies</strong> — the small files needed to keep you
+            SwapTest uses <strong style={strong}>only essential cookies</strong>, the small files needed to keep you
             signed in and to keep the site secure. We do <strong style={strong}>not</strong> use advertising cookies,
             tracking pixels, third-party analytics, or any technology that profiles you or follows you around
             the web.
@@ -52,7 +52,7 @@ export default function CookiesPage() {
           <h2 style={h2Style}>What is a cookie?</h2>
           <p style={pStyle}>
             A cookie is a small text file that a website stores on your device. Cookies let a site remember
-            things between page loads — for example, that you are logged in. Under UK law (the Privacy and
+            things between page loads, for example, that you are logged in. Under UK law (the Privacy and
             Electronic Communications Regulations, "PECR", and the UK GDPR), cookies that are strictly necessary
             to provide a service you have requested do not require consent, while non-essential cookies do.
           </p>
@@ -110,14 +110,14 @@ export default function CookiesPage() {
             In summary:
           </p>
           <ul style={{ paddingLeft: "20px", marginBottom: "16px" }}>
-            <li style={liStyle}><strong style={strong}>Account data</strong> (name, email, phone, encrypted password) — to create your account and notify you of matches</li>
-            <li style={liStyle}><strong style={strong}>Listing data</strong> (test centre, date, preferences) — to find swap matches for you</li>
-            <li style={liStyle}><strong style={strong}>IP address</strong> — held briefly for rate limiting to prevent abuse</li>
+            <li style={liStyle}><strong style={strong}>Account data</strong> (name, email, phone, encrypted password): to create your account and notify you of matches</li>
+            <li style={liStyle}><strong style={strong}>Listing data</strong> (test centre, date, preferences): to find swap matches for you</li>
+            <li style={liStyle}><strong style={strong}>IP address</strong>: held briefly for rate limiting to prevent abuse</li>
           </ul>
           <p style={pStyle}>
             Your contact details are only shared with another user after you both agree to swap. We never sell
-            your data. The full detail — including the third-party processors we rely on (Resend, Neon, Vercel,
-            Upstash) and your rights under UK GDPR — is set out in our{" "}
+            your data. The full detail, including the third-party processors we rely on (Resend, Neon, Vercel,
+            Upstash) and your rights under UK GDPR, is set out in our{" "}
             <Link href="/privacy" style={{ color: "#1D9E75", textDecoration: "none" }}>Privacy Policy</Link>.
           </p>
         </div>

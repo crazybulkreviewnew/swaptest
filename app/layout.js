@@ -3,12 +3,12 @@ import NativeProvider from "@/components/native-provider";
 import CookieConsent from "@/components/cookie-consent";
 
 export const metadata = {
-  title: "SwapTest — Swap Your UK Driving Test Date | Free Matching Service",
+  title: "SwapTest: Swap Your UK Driving Test Date | Free Matching Service",
   description: "Can't wait for your driving test? Swap your UK DVSA test date with someone who wants yours. Match with candidates at the same or nearby test centres. Completely free.",
   keywords: "driving test swap, UK driving test, DVSA test date, swap test date, earlier driving test, change driving test date, driving test cancellation, test centre swap",
   authors: [{ name: "SwapTest" }],
   openGraph: {
-    title: "SwapTest — Swap Your UK Driving Test Date",
+    title: "SwapTest: Swap Your UK Driving Test Date",
     description: "Match with someone who wants your test date and swap. Same centre or nearby. Free service.",
     url: "https://www.swaptest.co.uk",
     siteName: "SwapTest",
@@ -17,7 +17,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SwapTest — Swap Your UK Driving Test Date",
+    title: "SwapTest: Swap Your UK Driving Test Date",
     description: "Match with someone who wants your test date and swap. Free service.",
   },
   robots: {
@@ -68,7 +68,7 @@ const jsonLd = {
           name: "How does swapping a driving test date work?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "When you book a practical driving test with DVSA, you get a specific date and test centre. If that date doesn't suit you, you can normally only change it to whatever's available — often months away. SwapTest connects you with another candidate who has a date you want, and who wants your date. You both cancel and rebook each other's slots on the DVSA website.",
+            text: "When you book a practical driving test with DVSA, you get a specific date and test centre. If that date doesn't suit you, you can normally only change it to whatever's available, often months away. SwapTest connects you with another candidate who has a date you want, and who wants your date. You then contact DVSA to arrange swapping your dates with each other.",
           },
         },
         {
@@ -116,7 +116,7 @@ const jsonLd = {
           name: "How do I actually complete the swap on DVSA?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "After both parties agree, you'll receive each other's contact details by email. You do not need to cancel your test — simply contact DVSA to arrange the swap of your dates. We recommend you both get in touch with DVSA so the change can be completed smoothly.",
+            text: "After both parties agree, you'll receive each other's contact details by email. You do not need to cancel your test. Simply contact DVSA to arrange the swap of your dates. We recommend you both get in touch with DVSA so the change can be completed smoothly.",
           },
         },
       ],

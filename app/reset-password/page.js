@@ -129,7 +129,7 @@ function ResetPasswordForm() {
         )}
 
         {step === "request" && !success && (
-          <p className="text-center text-xs text-[#53524e] mt-4">
+          <p className="text-center text-xs text-[var(--faint)] mt-4">
             Remember your password?{" "}
             <Link href="/login" className="text-[#1D9E75] hover:underline">Log in</Link>
           </p>
@@ -141,7 +141,7 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-[#73726c]">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-[var(--muted-2)]">Loading...</div>}>
       <ResetPasswordForm />
     </Suspense>
   );

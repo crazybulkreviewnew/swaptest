@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ThemeToggle from "@/components/theme-toggle";
 
 export const metadata = {
   title: "Cookie Policy & Data Usage — SwapTest",
@@ -8,31 +9,34 @@ export const metadata = {
 
 export default function CookiesPage() {
   const sectionStyle = { marginBottom: "40px" };
-  const h2Style = { fontSize: "20px", fontWeight: 700, color: "#e8e6dc", marginBottom: "16px", letterSpacing: "-0.3px" };
-  const pStyle = { fontSize: "14px", color: "#9c9a92", lineHeight: 1.75, marginBottom: "12px" };
-  const liStyle = { fontSize: "14px", color: "#9c9a92", lineHeight: 1.75, marginBottom: "6px", paddingLeft: "8px" };
-  const strong = { color: "#c8c6bc" };
+  const h2Style = { fontSize: "20px", fontWeight: 700, color: "var(--fg)", marginBottom: "16px", letterSpacing: "-0.3px" };
+  const pStyle = { fontSize: "14px", color: "var(--muted)", lineHeight: 1.75, marginBottom: "12px" };
+  const liStyle = { fontSize: "14px", color: "var(--muted)", lineHeight: 1.75, marginBottom: "6px", paddingLeft: "8px" };
+  const strong = { color: "var(--fg-2)" };
 
-  const cellHead = { textAlign: "left", padding: "12px 14px", fontSize: "12px", fontWeight: 700, color: "#c8c6bc", borderBottom: "1px solid #2a2a27", textTransform: "uppercase", letterSpacing: "0.5px" };
-  const cell = { padding: "12px 14px", fontSize: "13px", color: "#9c9a92", borderBottom: "1px solid #1e1e1c", lineHeight: 1.6, verticalAlign: "top" };
+  const cellHead = { textAlign: "left", padding: "12px 14px", fontSize: "12px", fontWeight: 700, color: "var(--fg-2)", borderBottom: "1px solid var(--border)", textTransform: "uppercase", letterSpacing: "0.5px" };
+  const cell = { padding: "12px 14px", fontSize: "13px", color: "var(--muted)", borderBottom: "1px solid var(--border-faint)", lineHeight: 1.6, verticalAlign: "top" };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#111110" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
       {/* Nav */}
-      <nav style={{ borderBottom: "1px solid #1e1e1c", padding: "16px 20px" }}>
+      <nav style={{ borderBottom: "1px solid var(--border-faint)", padding: "16px 20px" }}>
         <div style={{ maxWidth: "680px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Link href="/" style={{ fontSize: "18px", fontWeight: 700, color: "#e8e6dc", textDecoration: "none" }}>
+          <Link href="/" style={{ fontSize: "18px", fontWeight: 700, color: "var(--fg)", textDecoration: "none" }}>
             Swap<span style={{ color: "#1D9E75" }}>Test</span>
           </Link>
-          <Link href="/" style={{ fontSize: "13px", color: "#73726c", textDecoration: "none", display: "inline-flex", alignItems: "center", minHeight: "44px", touchAction: "manipulation" }}>← Back to home</Link>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <ThemeToggle />
+            <Link href="/" style={{ fontSize: "13px", color: "var(--muted-2)", textDecoration: "none", display: "inline-flex", alignItems: "center", minHeight: "44px", touchAction: "manipulation" }}>← Back to home</Link>
+          </div>
         </div>
       </nav>
 
       <main style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 20px 80px" }}>
-        <h1 style={{ fontSize: "clamp(28px, 5vw, 36px)", fontWeight: 800, color: "#f0eee4", marginBottom: "8px", letterSpacing: "-1px" }}>
+        <h1 style={{ fontSize: "clamp(28px, 5vw, 36px)", fontWeight: 800, color: "var(--fg-strong)", marginBottom: "8px", letterSpacing: "-1px" }}>
           Cookie Policy &amp; Data Usage
         </h1>
-        <p style={{ fontSize: "14px", color: "#73726c", marginBottom: "40px" }}>Last updated: June 2026</p>
+        <p style={{ fontSize: "14px", color: "var(--muted-2)", marginBottom: "40px" }}>Last updated: June 2026</p>
 
         <div style={sectionStyle}>
           <h2 style={h2Style}>The short version</h2>
@@ -56,10 +60,10 @@ export default function CookiesPage() {
 
         <div style={sectionStyle}>
           <h2 style={h2Style}>Cookies we use</h2>
-          <div style={{ overflowX: "auto", borderRadius: "12px", border: "1px solid #2a2a27", marginBottom: "16px" }}>
+          <div style={{ overflowX: "auto", borderRadius: "12px", border: "1px solid var(--border)", marginBottom: "16px" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "480px" }}>
               <thead>
-                <tr style={{ background: "#161614" }}>
+                <tr style={{ background: "var(--bg-raised)" }}>
                   <th style={cellHead}>Cookie</th>
                   <th style={cellHead}>Purpose</th>
                   <th style={cellHead}>Type</th>
@@ -139,9 +143,9 @@ export default function CookiesPage() {
           </p>
         </div>
 
-        <div style={{ marginTop: "48px", padding: "24px", borderRadius: "12px", background: "#161614", border: "1px solid #222" }}>
-          <h2 style={{ fontSize: "16px", fontWeight: 700, color: "#e8e6dc", marginBottom: "8px" }}>Contact us</h2>
-          <p style={{ fontSize: "14px", color: "#9c9a92", lineHeight: 1.6, margin: 0 }}>
+        <div style={{ marginTop: "48px", padding: "24px", borderRadius: "12px", background: "var(--bg-raised)", border: "1px solid var(--border)" }}>
+          <h2 style={{ fontSize: "16px", fontWeight: 700, color: "var(--fg)", marginBottom: "8px" }}>Contact us</h2>
+          <p style={{ fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
             Questions about cookies or your data? Email us at{" "}
             <a href="mailto:privacy@swaptest.co.uk" style={{ color: "#1D9E75", textDecoration: "none" }}>privacy@swaptest.co.uk</a>.
           </p>

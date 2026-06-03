@@ -202,13 +202,13 @@ export default function DashboardPage() {
       <div className="max-w-2xl mx-auto px-5 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-[#e8e6dc]">Dashboard</h1>
-            <p className="text-sm text-[#73726c]">Manage your listings and matches</p>
+            <h1 className="text-2xl font-bold text-[var(--fg)]">Dashboard</h1>
+            <p className="text-sm text-[var(--muted-2)]">Manage your listings and matches</p>
           </div>
           {!showForm && matchResults.length === 0 && (
             <div className="flex gap-2">
               <button onClick={handleRefresh} disabled={refreshing}
-                className="px-4 py-2 rounded-lg border border-[#2a2a27] bg-transparent text-[#9c9a92] hover:border-[#444] hover:text-[#ccc] text-sm transition disabled:opacity-50">
+                className="px-4 py-2 rounded-lg border border-[var(--border)] bg-transparent text-[var(--muted)] hover:border-[var(--border-strong)] hover:text-[var(--fg-2)] text-sm transition disabled:opacity-50">
                 {refreshing ? "Checking..." : "Refresh matches"}
               </button>
               <SecondaryButton onClick={function() { setShowForm(true); }}>+ New listing</SecondaryButton>
@@ -222,10 +222,10 @@ export default function DashboardPage() {
         {/* Match Results */}
         {matchResults.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-lg font-semibold text-[#e8e6dc] mb-1">
+            <h2 className="text-lg font-semibold text-[var(--fg)] mb-1">
               {matchResults.length} match{matchResults.length !== 1 ? "es" : ""} found
             </h2>
-            <p className="text-sm text-[#73726c] mb-4">
+            <p className="text-sm text-[var(--muted-2)] mb-4">
               {"Matches found at " + (matchListing ? matchListing.centre : "") + " and nearby centres. Select one to start the swap."}
             </p>
             <div className="flex flex-col gap-3">
@@ -234,11 +234,11 @@ export default function DashboardPage() {
                   <Card key={listing.id}>
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-[15px] font-semibold text-[#e8e6dc]">
+                        <div className="text-[15px] font-semibold text-[var(--fg)]">
                           {formatDate(listing.currentDate)} at {listing.currentTime}
                         </div>
-                        <div className="text-sm text-[#73726c] mt-0.5">Their centre: {listing.centre}</div>
-                        <div className="text-xs text-[#53524e] mt-0.5">Your centre: {matchListing ? matchListing.centre : ""}</div>
+                        <div className="text-sm text-[var(--muted-2)] mt-0.5">Their centre: {listing.centre}</div>
+                        <div className="text-xs text-[var(--faint)] mt-0.5">Your centre: {matchListing ? matchListing.centre : ""}</div>
                       </div>
                       <button onClick={function() { handleSelectMatch(listing.id); }} disabled={selectingId === listing.id}
                         className="px-4 py-2 rounded-lg bg-[#1D9E75] hover:bg-[#1ab87f] text-white text-sm font-semibold transition disabled:opacity-50">
@@ -250,7 +250,7 @@ export default function DashboardPage() {
               })}
             </div>
             <button onClick={function() { setMatchResults([]); setMatchListing(null); }}
-              className="text-sm text-[#73726c] hover:text-[#aaa] mt-3 transition">Dismiss results</button>
+              className="text-sm text-[var(--muted-2)] hover:text-[var(--fg-2)] mt-3 transition">Dismiss results</button>
           </div>
         )}
 
@@ -258,14 +258,14 @@ export default function DashboardPage() {
         {showForm && (
           <Card className="mb-8">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-semibold text-[#e8e6dc]">New listing</h2>
-              <button onClick={function() { setShowForm(false); }} className="text-sm text-[#73726c] hover:text-[#aaa]">Cancel</button>
+              <h2 className="text-lg font-semibold text-[var(--fg)]">New listing</h2>
+              <button onClick={function() { setShowForm(false); }} className="text-sm text-[var(--muted-2)] hover:text-[var(--fg-2)]">Cancel</button>
             </div>
             <div className="flex gap-2 mb-5">
               {["EARLIER", "LATER"].map(function(t) {
                 return (
                   <button key={t} onClick={function() { setFormType(t); }}
-                    className={"px-4 py-2 rounded-lg text-sm font-medium transition " + (formType === t ? "bg-[#085041] text-[#5DCAA5] border border-[#0F6E56]" : "bg-[#262622] text-[#73726c] border border-[#2a2a27] hover:border-[#444]")}>
+                    className={"px-4 py-2 rounded-lg text-sm font-medium transition " + (formType === t ? "bg-[#085041] text-[var(--brand-text)] border border-[#0F6E56]" : "bg-[var(--chip)] text-[var(--muted-2)] border border-[var(--border)] hover:border-[var(--border-strong)]")}>
                     {t === "EARLIER" ? "Want earlier" : "Want later"}
                   </button>
                 );
@@ -273,7 +273,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex flex-col gap-4">
               <div>
-                <label className="block text-xs text-[#9c9a92] mb-1">Test centre <span className="text-red-500">*</span></label>
+                <label className="block text-xs text-[var(--muted)] mb-1">Test centre <span className="text-red-500">*</span></label>
                 <select value={centre} onChange={function(e) { setCentre(e.target.value); }}>
                   <option value="">Select a centre...</option>
                   {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
@@ -281,20 +281,20 @@ export default function DashboardPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-[#9c9a92] mb-1">Current test date <span className="text-red-500">*</span></label>
+                  <label className="block text-xs text-[var(--muted)] mb-1">Current test date <span className="text-red-500">*</span></label>
                   <input type="date" value={currentDate} min={tomorrowStr} onChange={function(e) { setCurrentDate(e.target.value); }} />
                 </div>
                 <div>
-                  <label className="block text-xs text-[#9c9a92] mb-1">Time <span className="text-red-500">*</span></label>
+                  <label className="block text-xs text-[var(--muted)] mb-1">Time <span className="text-red-500">*</span></label>
                   <input type="time" value={currentTime} min="07:00" max="17:00" onChange={function(e) { setCurrentTime(e.target.value); }} />
                 </div>
               </div>
               <div>
-                <label className="block text-xs text-[#9c9a92] mb-1">{isEarlier ? "Earliest date you'd accept" : "Earliest date you'd prefer"} <span className="text-red-500">*</span></label>
+                <label className="block text-xs text-[var(--muted)] mb-1">{isEarlier ? "Earliest date you'd accept" : "Earliest date you'd prefer"} <span className="text-red-500">*</span></label>
                 <input type="date" value={prefFrom} min={isEarlier ? tomorrowStr : (currentDate || tomorrowStr)} max={isEarlier ? (currentDate || undefined) : undefined} onChange={function(e) { setPrefFrom(e.target.value); }} />
               </div>
               <div>
-                <label className="block text-xs text-[#9c9a92] mb-1">{isEarlier ? "Latest date you'd accept" : "Latest date you'd prefer"} <span className="text-[#53524e] italic">(optional)</span></label>
+                <label className="block text-xs text-[var(--muted)] mb-1">{isEarlier ? "Latest date you'd accept" : "Latest date you'd prefer"} <span className="text-[var(--faint)] italic">(optional)</span></label>
                 <input type="date" value={prefTo} min={prefFrom || tomorrowStr} max={isEarlier ? (currentDate || undefined) : undefined} onChange={function(e) { setPrefTo(e.target.value); }} />
               </div>
               <PrimaryButton onClick={handleCreateListing} loading={formLoading}>{isEarlier ? "Find matches" : "List my test"}</PrimaryButton>
@@ -304,7 +304,7 @@ export default function DashboardPage() {
 
         {/* Listings */}
         <div>
-          <h2 className="text-lg font-semibold text-[#e8e6dc] mb-4">Your listings</h2>
+          <h2 className="text-lg font-semibold text-[var(--fg)] mb-4">Your listings</h2>
           {listings.length === 0 && !showForm && (
             <EmptyState title="No listings yet" description="Create a listing to start finding swap matches."
               action={<SecondaryButton onClick={function() { setShowForm(true); }}>+ Create listing</SecondaryButton>} />
@@ -321,32 +321,32 @@ export default function DashboardPage() {
                   {isEditing ? (
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-[15px] font-semibold text-[#e8e6dc]">Edit listing</h3>
-                        <button onClick={function() { setEditingId(null); setErrors([]); }} className="text-sm text-[#73726c] hover:text-[#aaa]">Cancel</button>
+                        <h3 className="text-[15px] font-semibold text-[var(--fg)]">Edit listing</h3>
+                        <button onClick={function() { setEditingId(null); setErrors([]); }} className="text-sm text-[var(--muted-2)] hover:text-[var(--fg-2)]">Cancel</button>
                       </div>
                       <div className="flex flex-col gap-3">
                         <div>
-                          <label className="block text-xs text-[#9c9a92] mb-1">Test centre</label>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Test centre</label>
                           <select value={editForm.centre} onChange={function(e) { setEditForm(Object.assign({}, editForm, { centre: e.target.value })); }}>
                             {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
                           </select>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-xs text-[#9c9a92] mb-1">Test date</label>
+                            <label className="block text-xs text-[var(--muted)] mb-1">Test date</label>
                             <input type="date" value={editForm.currentDate} min={tomorrowStr} onChange={function(e) { setEditForm(Object.assign({}, editForm, { currentDate: e.target.value })); }} />
                           </div>
                           <div>
-                            <label className="block text-xs text-[#9c9a92] mb-1">Time</label>
+                            <label className="block text-xs text-[var(--muted)] mb-1">Time</label>
                             <input type="time" value={editForm.currentTime} min="07:00" max="17:00" onChange={function(e) { setEditForm(Object.assign({}, editForm, { currentTime: e.target.value })); }} />
                           </div>
                         </div>
                         <div>
-                          <label className="block text-xs text-[#9c9a92] mb-1">Preferred from</label>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Preferred from</label>
                           <input type="date" value={editForm.preferredDateFrom} min={tomorrowStr} onChange={function(e) { setEditForm(Object.assign({}, editForm, { preferredDateFrom: e.target.value })); }} />
                         </div>
                         <div>
-                          <label className="block text-xs text-[#9c9a92] mb-1">Preferred to <span className="text-[#53524e] italic">(optional)</span></label>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Preferred to <span className="text-[var(--faint)] italic">(optional)</span></label>
                           <input type="date" value={editForm.preferredDateTo} min={editForm.preferredDateFrom || tomorrowStr} onChange={function(e) { setEditForm(Object.assign({}, editForm, { preferredDateTo: e.target.value })); }} />
                         </div>
                         <PrimaryButton onClick={handleEdit} loading={editLoading}>Save changes</PrimaryButton>
@@ -362,9 +362,9 @@ export default function DashboardPage() {
                             </Badge>
                             {statusBadge(listing)}
                           </div>
-                          <div className="text-[15px] font-semibold text-[#e8e6dc] mt-2">{listing.centre}</div>
-                          <div className="text-sm text-[#73726c]">Current: {formatDate(listing.currentDate)} at {listing.currentTime}</div>
-                          <div className="text-xs text-[#53524e] mt-1">
+                          <div className="text-[15px] font-semibold text-[var(--fg)] mt-2">{listing.centre}</div>
+                          <div className="text-sm text-[var(--muted-2)]">Current: {formatDate(listing.currentDate)} at {listing.currentTime}</div>
+                          <div className="text-xs text-[var(--faint)] mt-1">
                             Preferred: {formatDate(listing.preferredDateFrom)}
                             {listing.preferredDateTo ? " – " + formatDate(listing.preferredDateTo) : ""}
                           </div>
@@ -372,27 +372,27 @@ export default function DashboardPage() {
                         {canEditDelete && (
                           <div className="flex gap-2">
                             <button onClick={function() { startEditing(listing); }}
-                              className="text-xs text-[#9c9a92] hover:text-[#e8e6dc] transition px-2 py-1 rounded border border-[#2a2a27] hover:border-[#444]">Edit</button>
+                              className="text-xs text-[var(--muted)] hover:text-[var(--fg)] transition px-2 py-1 rounded border border-[var(--border)] hover:border-[var(--border-strong)]">Edit</button>
                             <button onClick={function() { setDeleteConfirmId(listing.id); }}
-                              className="text-xs text-[#9c9a92] hover:text-[#E24B4A] transition px-2 py-1 rounded border border-[#2a2a27] hover:border-[#E24B4A]">Delete</button>
+                              className="text-xs text-[var(--muted)] hover:text-[#E24B4A] transition px-2 py-1 rounded border border-[var(--border)] hover:border-[#E24B4A]">Delete</button>
                           </div>
                         )}
                       </div>
 
                       {isDeleting && (
-                        <div className="border-t border-[#2a2a27] pt-3 mt-3">
-                          <p className="text-sm text-[#9c9a92] mb-3">Are you sure you want to delete this listing?</p>
+                        <div className="border-t border-[var(--border)] pt-3 mt-3">
+                          <p className="text-sm text-[var(--muted)] mb-3">Are you sure you want to delete this listing?</p>
                           <div className="flex gap-2">
                             <button onClick={function() { handleDelete(listing.id); }}
                               className="text-sm px-4 py-2 rounded-lg bg-[#E24B4A] text-white font-medium hover:bg-[#c93c3c] transition">Yes, delete</button>
                             <button onClick={function() { setDeleteConfirmId(null); }}
-                              className="text-sm px-4 py-2 rounded-lg border border-[#2a2a27] text-[#9c9a92] hover:border-[#444] transition">Cancel</button>
+                              className="text-sm px-4 py-2 rounded-lg border border-[var(--border)] text-[var(--muted)] hover:border-[var(--border-strong)] transition">Cancel</button>
                           </div>
                         </div>
                       )}
 
                       {activeMatch && !isDeleting && (
-                        <div className="border-t border-[#2a2a27] pt-3 mt-3">
+                        <div className="border-t border-[var(--border)] pt-3 mt-3">
                           <div className="flex items-center justify-between">
                             <div>
                               <Badge variant={matchStatusLabel(activeMatch).variant}>

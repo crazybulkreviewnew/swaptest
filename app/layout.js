@@ -134,8 +134,17 @@ export default function RootLayout({ children }) {
         />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="theme-color" content="#111110" />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111110" />
         <link rel="canonical" href="https://www.swaptest.co.uk" />
+        {/* No-flash theme init: applies stored choice, else OS preference, before paint.
+            Default for a brand-new visitor with no signal is light (no .dark class). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var c=localStorage.getItem('swaptest-theme');var d=c?c==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();",
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

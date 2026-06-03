@@ -68,7 +68,7 @@ function MatchDetail() {
   };
 
   if (!matchId) {
-    return (<div className="min-h-screen"><Navbar /><div className="max-w-lg mx-auto px-5 py-20 text-center text-[#73726c]">No match ID provided. <Link href="/dashboard" className="text-[#1D9E75] hover:underline">Go to dashboard</Link></div></div>);
+    return (<div className="min-h-screen"><Navbar /><div className="max-w-lg mx-auto px-5 py-20 text-center text-[var(--muted-2)]">No match ID provided. <Link href="/dashboard" className="text-[#1D9E75] hover:underline">Go to dashboard</Link></div></div>);
   }
   if (loading) {
     return (<div className="min-h-screen"><Navbar user={user} onLogout={function() { router.push("/"); }} /><div className="flex items-center justify-center py-20"><div role="status" aria-label="Loading match" className="w-6 h-6 border-2 border-[#1D9E75]/30 border-t-[#1D9E75] rounded-full animate-spin" /></div></div>);
@@ -94,24 +94,24 @@ function MatchDetail() {
     if (s === "COMPLETED") {
       return (<>
         <div className="text-center mb-6">
-          <div className="w-16 h-16 rounded-full bg-[#085041] flex items-center justify-center mx-auto mb-4"><span aria-hidden="true" className="text-3xl text-[#5DCAA5]">✓</span></div>
-          <h2 className="text-2xl font-bold text-[#e8e6dc] mb-2">Swap confirmed!</h2>
-          <p className="text-sm text-[#9c9a92]">Both parties agreed. Here are your swap partner's details.</p>
+          <div className="w-16 h-16 rounded-full bg-[#085041] flex items-center justify-center mx-auto mb-4"><span aria-hidden="true" className="text-3xl text-[var(--brand-text)]">✓</span></div>
+          <h2 className="text-2xl font-bold text-[var(--fg)] mb-2">Swap confirmed!</h2>
+          <p className="text-sm text-[var(--muted)]">Both parties agreed. Here are your swap partner's details.</p>
         </div>
         <Card highlight>
-          <div className="text-[11px] uppercase tracking-wider text-[#73726c] mb-3">Your swap partner</div>
-          <div className="text-lg font-semibold text-[#e8e6dc] mb-3">{otherUser.name}</div>
+          <div className="text-[11px] uppercase tracking-wider text-[var(--muted-2)] mb-3">Your swap partner</div>
+          <div className="text-lg font-semibold text-[var(--fg)] mb-3">{otherUser.name}</div>
           <div className="space-y-2">
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Email</span><span className="text-[#85B7EB]">{otherUser.email}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Phone</span><span className="text-[#e8e6dc]">{otherUser.phone}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Their slot</span><span className="text-[#5DCAA5]">{formatDate(otherListing.currentDate)} at {otherListing.currentTime}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Their centre</span><span className="text-[#e8e6dc]">{otherListing.centre}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Your centre</span><span className="text-[#e8e6dc]">{myListing.centre}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Email</span><span className="text-[#85B7EB]">{otherUser.email}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Phone</span><span className="text-[var(--fg)]">{otherUser.phone}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Their slot</span><span className="text-[var(--brand-text)]">{formatDate(otherListing.currentDate)} at {otherListing.currentTime}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Their centre</span><span className="text-[var(--fg)]">{otherListing.centre}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Your centre</span><span className="text-[var(--fg)]">{myListing.centre}</span></div>
           </div>
         </Card>
         <Card className="mt-4">
-          <div className="text-sm text-[#9c9a92] leading-relaxed">
-            <strong className="text-[#e8e6dc]">Next steps:</strong> Contact each other and agree on a time to both cancel and rebook on the DVSA website. We recommend doing it simultaneously so both slots are freed at the same moment.
+          <div className="text-sm text-[var(--muted)] leading-relaxed">
+            <strong className="text-[var(--fg)]">Next steps:</strong> Contact each other and agree on a time to both cancel and rebook on the DVSA website. We recommend doing it simultaneously so both slots are freed at the same moment.
           </div>
         </Card>
       </>);
@@ -120,16 +120,16 @@ function MatchDetail() {
     // Initiator waiting for responder
     if (isInitiator && (s === "PENDING_LATER_PAY" || s === "PENDING_EARLIER_PAY")) {
       return (<>
-        <h2 className="text-xl font-semibold text-[#e8e6dc] mb-2">We've notified the other person</h2>
-        <p className="text-sm text-[#9c9a92] mb-2">An email has been sent to your swap partner. They have 30 minutes to agree.</p>
+        <h2 className="text-xl font-semibold text-[var(--fg)] mb-2">We've notified the other person</h2>
+        <p className="text-sm text-[var(--muted)] mb-2">An email has been sent to your swap partner. They have 30 minutes to agree.</p>
         {deadlineIsReal && <Countdown deadline={activeDeadline} onExpired={loadMatch} />}
         <Card className="mt-5">
-          <div className="text-sm text-[#73726c] mb-2">Swap details</div>
+          <div className="text-sm text-[var(--muted-2)] mb-2">Swap details</div>
           <div className="space-y-1.5">
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Their slot (you'd get)</span><span className="text-[#5DCAA5]">{formatDate(otherListing.currentDate)} at {otherListing.currentTime}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Your current slot</span><span className="text-[#e8e6dc]">{formatDate(myListing.currentDate)} at {myListing.currentTime}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Your centre</span><span className="text-[#e8e6dc]">{myListing.centre}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Their centre</span><span className="text-[#e8e6dc]">{otherListing.centre}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Their slot (you'd get)</span><span className="text-[var(--brand-text)]">{formatDate(otherListing.currentDate)} at {otherListing.currentTime}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Your current slot</span><span className="text-[var(--fg)]">{formatDate(myListing.currentDate)} at {myListing.currentTime}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Your centre</span><span className="text-[var(--fg)]">{myListing.centre}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Their centre</span><span className="text-[var(--fg)]">{otherListing.centre}</span></div>
           </div>
         </Card>
       </>);
@@ -138,15 +138,15 @@ function MatchDetail() {
     // Responder needs to agree
     if (!isInitiator && (s === "PENDING_LATER_PAY" || s === "PENDING_EARLIER_PAY")) {
       return (<>
-        <h2 className="text-xl font-semibold text-[#e8e6dc] mb-2">Someone wants to swap with you!</h2>
-        <p className="text-sm text-[#9c9a92] mb-2">A candidate wants to swap test dates with you. Review the details and agree if you're happy.</p>
+        <h2 className="text-xl font-semibold text-[var(--fg)] mb-2">Someone wants to swap with you!</h2>
+        <p className="text-sm text-[var(--muted)] mb-2">A candidate wants to swap test dates with you. Review the details and agree if you're happy.</p>
         {deadlineIsReal && <Countdown deadline={activeDeadline} onExpired={loadMatch} />}
         <Card className="mt-5 mb-4">
           <div className="space-y-1.5">
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Your current slot</span><span className="text-[#e8e6dc]">{formatDate(myListing.currentDate)} at {myListing.currentTime}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">You'd get their slot</span><span className="text-[#5DCAA5]">{formatDate(otherListing.currentDate)} at {otherListing.currentTime}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Your centre</span><span className="text-[#e8e6dc]">{myListing.centre}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-[#73726c]">Their centre</span><span className="text-[#e8e6dc]">{otherListing.centre}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Your current slot</span><span className="text-[var(--fg)]">{formatDate(myListing.currentDate)} at {myListing.currentTime}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">You'd get their slot</span><span className="text-[var(--brand-text)]">{formatDate(otherListing.currentDate)} at {otherListing.currentTime}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Your centre</span><span className="text-[var(--fg)]">{myListing.centre}</span></div>
+            <div className="flex justify-between text-sm"><span className="text-[var(--muted-2)]">Their centre</span><span className="text-[var(--fg)]">{otherListing.centre}</span></div>
           </div>
         </Card>
         <div className="flex gap-3">
@@ -159,26 +159,26 @@ function MatchDetail() {
     if (s === "EXPIRED_TIMER1" || s === "EXPIRED_TIMER2") {
       return (<div className="text-center">
         <div className="w-16 h-16 rounded-full bg-red-950/60 flex items-center justify-center mx-auto mb-4"><span aria-hidden="true" className="text-3xl text-red-400">✕</span></div>
-        <h2 className="text-xl font-semibold text-[#e8e6dc] mb-2">Match expired</h2>
-        <p className="text-sm text-[#9c9a92] max-w-sm mx-auto leading-relaxed">The other person didn't respond within 30 minutes. Both listings are back in the pool.</p>
+        <h2 className="text-xl font-semibold text-[var(--fg)] mb-2">Match expired</h2>
+        <p className="text-sm text-[var(--muted)] max-w-sm mx-auto leading-relaxed">The other person didn't respond within 30 minutes. Both listings are back in the pool.</p>
       </div>);
     }
 
     if (s === "DECLINED") {
       return (<div className="text-center">
-        <h2 className="text-xl font-semibold text-[#e8e6dc] mb-2">Match declined</h2>
-        <p className="text-sm text-[#9c9a92]">This match was declined. Your listing is back in the pool.</p>
+        <h2 className="text-xl font-semibold text-[var(--fg)] mb-2">Match declined</h2>
+        <p className="text-sm text-[var(--muted)]">This match was declined. Your listing is back in the pool.</p>
       </div>);
     }
 
-    return <p className="text-[#73726c]">Status: {s}</p>;
+    return <p className="text-[var(--muted-2)]">Status: {s}</p>;
   };
 
   return (
     <div className="min-h-screen">
       <Navbar user={user} onLogout={function() { router.push("/"); }} />
       <div className="max-w-lg mx-auto px-5 py-8">
-        <Link href="/dashboard" className="text-sm text-[#73726c] hover:text-[#aaa] transition mb-5 block">← Dashboard</Link>
+        <Link href="/dashboard" className="text-sm text-[var(--muted-2)] hover:text-[var(--fg-2)] transition mb-5 block">← Dashboard</Link>
         <div className="flex items-center gap-2 mb-5">
           <Badge variant={role === "earlier" ? "earlier" : "later"}>{role === "earlier" ? "You want earlier" : "You want later"}</Badge>
           <Badge variant={isInitiator ? "info" : "default"}>{isInitiator ? "You initiated" : "You were selected"}</Badge>
@@ -189,7 +189,7 @@ function MatchDetail() {
         <ErrorBox errors={errors} />
         {renderStatus()}
         <div className="mt-6 text-center">
-          <Link href="/dashboard" className="text-sm text-[#73726c] hover:text-[#aaa] transition">Back to dashboard</Link>
+          <Link href="/dashboard" className="text-sm text-[var(--muted-2)] hover:text-[var(--fg-2)] transition">Back to dashboard</Link>
         </div>
       </div>
     </div>

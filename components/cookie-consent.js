@@ -51,17 +51,17 @@ export default function CookieConsent() {
       className="fixed inset-x-0 bottom-0 z-[100] px-4 pb-4 pointer-events-none"
     >
       <div
-        className="pointer-events-auto mx-auto max-w-3xl rounded-2xl border border-[#2a2a27] p-5 sm:p-6 shadow-2xl"
-        style={{ background: "#161614", boxShadow: "0 12px 40px rgba(0,0,0,0.5)" }}
+        className="pointer-events-auto mx-auto max-w-3xl rounded-2xl border border-[var(--border)] p-5 sm:p-6 shadow-2xl"
+        style={{ background: "var(--bg-raised)", boxShadow: "0 12px 40px rgba(0,0,0,0.5)" }}
       >
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-6">
           <div className="flex-1">
-            <h2 className="text-[15px] font-bold text-[#f0eee4] mb-1.5">
+            <h2 className="text-[15px] font-bold text-[var(--fg-strong)] mb-1.5">
               We value your privacy
             </h2>
-            <p className="text-[13px] text-[#9c9a92] leading-relaxed m-0">
+            <p className="text-[13px] text-[var(--muted)] leading-relaxed m-0">
               SwapTest uses only{" "}
-              <strong className="text-[#c8c6bc]">essential cookies</strong> to keep you
+              <strong className="text-[var(--fg-2)]">essential cookies</strong> to keep you
               signed in and to keep the site secure. We do not use advertising or
               tracking cookies. Read our{" "}
               <Link href="/cookies" className="text-[#1D9E75] no-underline hover:underline">
@@ -78,7 +78,7 @@ export default function CookieConsent() {
           <div className="flex gap-3 mt-4 lg:mt-0 flex-shrink-0">
             <button
               onClick={() => record("essential")}
-              className="px-5 py-2.5 rounded-lg text-[13px] font-semibold text-[#e8e6dc] bg-[#1a1a18] border border-[#333] hover:border-[#555] transition-colors cursor-pointer [touch-action:manipulation]"
+              className="px-5 py-2.5 rounded-lg text-[13px] font-semibold text-[var(--fg)] bg-[var(--card)] border border-[var(--border-strong)] hover:border-[var(--border-strong)] transition-colors cursor-pointer [touch-action:manipulation]"
             >
               Essential only
             </button>

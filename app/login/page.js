@@ -56,7 +56,7 @@ function LoginForm() {
           <PrimaryButton onClick={handleLogin} loading={loading}>
             Log in
           </PrimaryButton>
-          <p className="text-center text-xs text-[#53524e] mt-2">
+          <p className="text-center text-xs text-[var(--faint)] mt-2">
             Don't have an account?{" "}
             <Link href="/register" className="text-[#1D9E75] hover:underline">Sign up</Link>
           </p>
@@ -68,7 +68,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-[#73726c]">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-[var(--muted-2)]">Loading...</div>}>
       <LoginForm />
     </Suspense>
   );

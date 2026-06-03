@@ -14,7 +14,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#111110]">
+    <div className="min-h-screen bg-[var(--bg)]">
       <Navbar user={user} onLogout={() => setUser(null)} />
 
       {/* ── Hero ── */}
@@ -32,18 +32,18 @@ export default function HomePage() {
             {/* Text content */}
             <div className="flex-1 text-center lg:text-left">
               <div
-                className="inline-block px-4 py-1.5 rounded-full text-[13px] font-semibold text-[#5DCAA5] mb-6 tracking-wide"
+                className="inline-block px-4 py-1.5 rounded-full text-[13px] font-semibold text-[var(--brand-text)] mb-6 tracking-wide"
                 style={{ background: "rgba(29,158,117,0.12)", border: "1px solid rgba(29,158,117,0.25)" }}
               >
                 Currently FREE for everyone
               </div>
 
-              <h1 className="text-[clamp(36px,5vw,60px)] font-extrabold leading-[1.1] text-[#f0eee4] tracking-tight mb-5">
+              <h1 className="text-[clamp(36px,5vw,60px)] font-extrabold leading-[1.1] text-[var(--fg-strong)] tracking-tight mb-5">
                 Swap your UK driving test date{" "}
                 <span className="text-[#1D9E75]">with someone</span>
               </h1>
 
-              <p className="text-[clamp(16px,2vw,19px)] text-[#9c9a92] leading-relaxed mb-8 max-w-[520px] mx-auto lg:mx-0">
+              <p className="text-[clamp(16px,2vw,19px)] text-[var(--muted)] leading-relaxed mb-8 max-w-[520px] mx-auto lg:mx-0">
                 Waiting months for your test? Find someone who wants to push theirs back and swap dates.
                 Same centre or nearby — both sides win.
               </p>
@@ -61,7 +61,7 @@ export default function HomePage() {
                 </Link>
                 <Link
                   href="/register?type=later"
-                  className="px-8 py-4 rounded-xl text-base font-bold text-[#e8e6dc] no-underline text-center bg-[#1a1a18] border border-[#333] transition-colors hover:border-[#555] [touch-action:manipulation]"
+                  className="px-8 py-4 rounded-xl text-base font-bold text-[var(--fg)] no-underline text-center bg-[var(--card)] border border-[var(--border-strong)] transition-colors hover:border-[var(--border-strong)] [touch-action:manipulation]"
                 >
                   I want a later date
                 </Link>
@@ -75,8 +75,8 @@ export default function HomePage() {
                   { value: "30s", label: "to list your test" },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <div className="tabular text-2xl font-extrabold text-[#f0eee4]">{stat.value}</div>
-                    <div className="text-xs text-[#73726c] mt-0.5">{stat.label}</div>
+                    <div className="tabular text-2xl font-extrabold text-[var(--fg-strong)]">{stat.value}</div>
+                    <div className="text-xs text-[var(--muted-2)] mt-0.5">{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -86,13 +86,13 @@ export default function HomePage() {
                match, so it's hidden from assistive tech and removed from tab order. */}
             <div className="hidden lg:block flex-shrink-0 w-[360px]" aria-hidden="true">
               <div
-                className="rounded-2xl p-6 border border-[#2a2a27] select-none"
+                className="rounded-2xl p-6 border border-[var(--border)] select-none"
                 style={{
-                  background: "#161614",
+                  background: "var(--bg-raised)",
                   boxShadow: "0 1px 2px rgba(0,0,0,0.4), 0 16px 40px rgba(0,0,0,0.45)",
                 }}
               >
-                <div className="text-[11px] font-semibold text-[#73726c] uppercase tracking-widest mb-4">
+                <div className="text-[11px] font-semibold text-[var(--muted-2)] uppercase tracking-widest mb-4">
                   Match found
                 </div>
                 <div className="space-y-3 mb-5">
@@ -101,24 +101,24 @@ export default function HomePage() {
                     style={{ border: "1px solid rgba(29,158,117,0.3)", background: "rgba(29,158,117,0.05)" }}
                   >
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-[13px] font-semibold text-[#5DCAA5]">Birmingham (Kingstanding)</span>
+                      <span className="text-[13px] font-semibold text-[var(--brand-text)]">Birmingham (Kingstanding)</span>
                       <span
                         className="text-[11px] px-2 py-0.5 rounded-full"
-                        style={{ background: "rgba(29,158,117,0.15)", color: "#5DCAA5" }}
+                        style={{ background: "rgba(29,158,117,0.15)", color: "var(--brand-text)" }}
                       >
                         Match
                       </span>
                     </div>
-                    <div className="tabular text-[22px] font-bold text-[#f0eee4]">14 Aug 2025</div>
-                    <div className="text-[12px] text-[#73726c] mt-1">Wants: 15 Jul – 1 Aug</div>
+                    <div className="tabular text-[22px] font-bold text-[var(--fg-strong)]">14 Aug 2025</div>
+                    <div className="text-[12px] text-[var(--muted-2)] mt-1">Wants: 15 Jul – 1 Aug</div>
                   </div>
 
-                  <div className="text-[12px] text-center text-[#73726c]">↕ your listing</div>
+                  <div className="text-[12px] text-center text-[var(--muted-2)]">↕ your listing</div>
 
-                  <div className="rounded-xl p-4 border border-[#2a2a27] bg-[#111110]">
-                    <div className="text-[13px] font-semibold text-[#e8e6dc] mb-1">Birmingham (Shirley)</div>
-                    <div className="tabular text-[22px] font-bold text-[#f0eee4]">22 Jul 2025</div>
-                    <div className="text-[12px] text-[#73726c] mt-1">You want: any earlier</div>
+                  <div className="rounded-xl p-4 border border-[var(--border)] bg-[var(--bg)]">
+                    <div className="text-[13px] font-semibold text-[var(--fg)] mb-1">Birmingham (Shirley)</div>
+                    <div className="tabular text-[22px] font-bold text-[var(--fg-strong)]">22 Jul 2025</div>
+                    <div className="text-[12px] text-[var(--muted-2)] mt-1">You want: any earlier</div>
                   </div>
                 </div>
 
@@ -128,7 +128,7 @@ export default function HomePage() {
                 >
                   Agree to swap →
                 </div>
-                <p className="tabular text-[11px] text-[#53524e] text-center mt-3 mb-0">
+                <p className="tabular text-[11px] text-[var(--faint)] text-center mt-3 mb-0">
                   29 min 04 sec remaining
                 </p>
               </div>
@@ -140,10 +140,10 @@ export default function HomePage() {
       {/* ── How It Works ── */}
       <section className="px-5 py-16 lg:py-24">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[#f0eee4] text-center mb-3 tracking-tight">
+          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[var(--fg-strong)] text-center mb-3 tracking-tight">
             How does it work?
           </h2>
-          <p className="text-center text-[#73726c] text-[15px] mb-12 max-w-[480px] mx-auto">
+          <p className="text-center text-[var(--muted-2)] text-[15px] mb-12 max-w-[480px] mx-auto">
             Three simple steps. No complicated forms. No waiting on hold with DVSA.
           </p>
 
@@ -170,14 +170,14 @@ export default function HomePage() {
             ].map((s) => (
               <div
                 key={s.num}
-                className="relative rounded-2xl p-8 border border-[#222] bg-[#161614] transition-colors hover:border-[#333]"
+                className="relative rounded-2xl p-8 border border-[var(--border)] bg-[var(--bg-raised)] transition-colors hover:border-[var(--border-strong)]"
               >
                 <div className="text-3xl mb-4" aria-hidden="true">{s.icon}</div>
                 <div className="tabular absolute top-7 right-6 text-5xl font-extrabold leading-none tracking-tighter text-[#1D9E75]/[0.08]" aria-hidden="true">
                   {s.num}
                 </div>
-                <h3 className="text-[17px] font-bold text-[#e8e6dc] mb-2">{s.title}</h3>
-                <p className="text-[14px] text-[#8a8880] leading-relaxed m-0">{s.desc}</p>
+                <h3 className="text-[17px] font-bold text-[var(--fg)] mb-2">{s.title}</h3>
+                <p className="text-[14px] text-[var(--muted)] leading-relaxed m-0">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -185,12 +185,12 @@ export default function HomePage() {
       </section>
 
       {/* ── Why SwapTest ── */}
-      <section className="px-5 py-16 lg:py-24 bg-[#161614] border-t border-b border-[#1e1e1c]">
+      <section className="px-5 py-16 lg:py-24 bg-[var(--bg-raised)] border-t border-b border-[var(--border-faint)]">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[#f0eee4] text-center mb-3 tracking-tight">
+          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[var(--fg-strong)] text-center mb-3 tracking-tight">
             Why people use SwapTest
           </h2>
-          <p className="text-center text-[#73726c] text-[15px] mb-12 max-w-[480px] mx-auto">
+          <p className="text-center text-[var(--muted-2)] text-[15px] mb-12 max-w-[480px] mx-auto">
             Built for UK learner drivers, by people who have been there.
           </p>
 
@@ -224,16 +224,16 @@ export default function HomePage() {
               {
                 title: "Email notifications",
                 desc: "Get notified instantly when someone wants your date. No need to keep checking the site.",
-                color: "#5DCAA5",
+                color: "var(--brand-text)",
               },
             ].map((item) => (
               <div
                 key={item.title}
-                className="p-6 rounded-xl bg-[#111110] border border-[#222] hover:border-[#333] transition-colors"
+                className="p-6 rounded-xl bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--border-strong)] transition-colors"
               >
                 <div className="w-2 h-2 rounded-full mb-4" style={{ background: item.color }} aria-hidden="true" />
-                <h3 className="text-[15px] font-bold text-[#e8e6dc] mb-2">{item.title}</h3>
-                <p className="text-[13px] text-[#73726c] leading-relaxed m-0">{item.desc}</p>
+                <h3 className="text-[15px] font-bold text-[var(--fg)] mb-2">{item.title}</h3>
+                <p className="text-[13px] text-[var(--muted-2)] leading-relaxed m-0">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -243,7 +243,7 @@ export default function HomePage() {
       {/* ── FAQ ── */}
       <section className="px-5 py-16 lg:py-24">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[#f0eee4] text-center mb-12 tracking-tight">
+          <h2 className="text-[clamp(24px,4vw,36px)] font-bold text-[var(--fg-strong)] text-center mb-12 tracking-tight">
             Frequently asked questions
           </h2>
 
@@ -278,9 +278,9 @@ export default function HomePage() {
                 a: "After both parties agree, you'll receive each other's contact details by email. Coordinate a time, then both go to GOV.UK, cancel your current test, and immediately rebook at the other person's centre and date. We recommend doing it simultaneously.",
               },
             ].map((faq, i) => (
-              <div key={i} className="py-6 border-b border-[#1e1e1c]">
-                <h3 className="text-[16px] font-bold text-[#e8e6dc] mb-2.5 leading-snug">{faq.q}</h3>
-                <p className="text-[14px] text-[#8a8880] leading-relaxed m-0">{faq.a}</p>
+              <div key={i} className="py-6 border-b border-[var(--border-faint)]">
+                <h3 className="text-[16px] font-bold text-[var(--fg)] mb-2.5 leading-snug">{faq.q}</h3>
+                <p className="text-[14px] text-[var(--muted)] leading-relaxed m-0">{faq.a}</p>
               </div>
             ))}
           </div>
@@ -290,12 +290,12 @@ export default function HomePage() {
       {/* ── CTA ── */}
       <section
         className="px-5 py-20 text-center"
-        style={{ background: "linear-gradient(180deg, #111110 0%, #0d1a15 100%)" }}
+        style={{ background: "linear-gradient(180deg, var(--bg) 0%, var(--cta-end) 100%)" }}
       >
-        <h2 className="text-[clamp(24px,4vw,42px)] font-extrabold text-[#f0eee4] mb-4 tracking-tight">
+        <h2 className="text-[clamp(24px,4vw,42px)] font-extrabold text-[var(--fg-strong)] mb-4 tracking-tight">
           Ready to swap your test date?
         </h2>
-        <p className="text-[#73726c] text-[16px] mb-8 max-w-[440px] mx-auto">
+        <p className="text-[var(--muted-2)] text-[16px] mb-8 max-w-[440px] mx-auto">
           It takes 30 seconds to list your test. You could have a new date by the end of the day.
         </p>
         <Link
@@ -319,31 +319,31 @@ export default function HomePage() {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="px-5 py-10 border-t border-[#1e1e1c]">
+      <footer className="px-5 py-10 border-t border-[var(--border-faint)]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="text-[16px] font-bold text-[#e8e6dc]">
+          <span className="text-[16px] font-bold text-[var(--fg)]">
             Swap<span className="text-[#1D9E75]">Test</span>
           </span>
 
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            <Link href="/privacy" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
+            <Link href="/privacy" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[var(--muted-2)] no-underline hover:text-[var(--muted)] transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
+            <Link href="/terms" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[var(--muted-2)] no-underline hover:text-[var(--muted)] transition-colors">
               Terms &amp; Conditions
             </Link>
-            <Link href="/cookies" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
+            <Link href="/cookies" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[var(--muted-2)] no-underline hover:text-[var(--muted)] transition-colors">
               Cookies &amp; Data
             </Link>
-            <Link href="/login" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
+            <Link href="/login" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[var(--muted-2)] no-underline hover:text-[var(--muted)] transition-colors">
               Log in
             </Link>
-            <Link href="/register" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
+            <Link href="/register" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[var(--muted-2)] no-underline hover:text-[var(--muted)] transition-colors">
               Sign up
             </Link>
           </div>
 
-          <p className="text-[12px] text-[#53524e] m-0">
+          <p className="text-[12px] text-[var(--faint)] m-0">
             © 2026 SwapTest. Not affiliated with DVSA or GOV.UK.
           </p>
         </div>

@@ -2,11 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Theme tokens — LIGHT is the default (:root); .dark overrides.
+   Brand greens and accent colours stay constant across themes;
+   only the neutral ramp (bg / surface / border / text) flips.
+   ============================================================ */
 :root {
+  color-scheme: light;
+
   --brand: #1D9E75;
-  --surface: #111110;
-  --card: #1a1a18;
-  --border: #2a2a27;
+  --brand-text: #15805e;        /* brand used as text/icon on a light bg */
+
+  --bg: #ffffff;                /* page background */
+  --bg-raised: #f7f6f3;         /* alternating section background */
+  --card: #ffffff;              /* cards / inputs */
+  --border: #e6e3db;
+  --border-faint: #efede8;      /* subtle dividers */
+  --border-strong: #d6d3ca;     /* hover borders */
+  --chip: #eeece6;              /* neutral pill background */
+
+  --fg-strong: #1b1a16;         /* headings */
+  --fg: #33322d;                /* body text */
+  --fg-2: #4c4b43;              /* slightly dimmed text */
+  --muted: #5f5e56;             /* secondary text */
+  --muted-2: #76756d;           /* tertiary text */
+  --faint: #9b998f;             /* faintest text */
+
+  --nav-bg: rgba(255, 255, 255, 0.8);
+  --cta-end: #edf5f1;           /* CTA gradient end tint */
 
   /* Plus Jakarta Sans (loaded via <link> in layout.js) */
   --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -18,15 +41,34 @@
   --safe-right: env(safe-area-inset-right, 0px);
 }
 
-/* Tell the UA this is a dark theme (Vercel guideline) so form controls,
-   scrollbars and the like render their dark variants. */
-html {
+html.dark {
   color-scheme: dark;
+
+  --brand: #1D9E75;
+  --brand-text: #5DCAA5;
+
+  --bg: #111110;
+  --bg-raised: #161614;
+  --card: #1a1a18;
+  --border: #2a2a27;
+  --border-faint: #1e1e1c;
+  --border-strong: #3a3a36;
+  --chip: #262622;
+
+  --fg-strong: #f0eee4;
+  --fg: #e8e6dc;
+  --fg-2: #c8c6bc;
+  --muted: #9c9a92;
+  --muted-2: #73726c;
+  --faint: #53524e;
+
+  --nav-bg: rgba(17, 17, 16, 0.8);
+  --cta-end: #0d1a15;
 }
 
 body {
-  background: var(--surface);
-  color: #e8e6dc;
+  background: var(--bg);
+  color: var(--fg);
   font-family: var(--font-sans);
 
   /* Extend background behind the notch / home indicator */
@@ -47,6 +89,9 @@ body {
 
   /* Smooth scrolling for anchor links */
   scroll-behavior: smooth;
+
+  /* Theme transition */
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Re-enable text selection on desktop — users expect to copy content */
@@ -68,7 +113,7 @@ input, select, textarea {
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 10px 14px;
-  color: #e8e6dc;
+  color: var(--fg);
   /* 16px prevents iOS Safari from auto-zooming on focus */
   font-size: 16px;
   outline: none;
@@ -81,8 +126,8 @@ input:focus, select:focus, textarea:focus {
   border-color: var(--brand);
 }
 
-/* Remove date input default icon styling for consistency */
-input[type="date"]::-webkit-calendar-picker-indicator {
+/* Invert the date picker glyph only in dark mode */
+html.dark input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(0.7);
 }
 

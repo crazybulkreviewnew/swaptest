@@ -24,6 +24,7 @@ model User {
   email        String   @unique
   phone        String
   password     String   // bcrypt hash
+  tokenVersion Int      @default(0) // bumped on password reset to invalidate all existing JWTs
   pushToken    String?  // APNs device token for push notifications
   pushPlatform String?  // "ios" or "android"
   createdAt    DateTime @default(now())

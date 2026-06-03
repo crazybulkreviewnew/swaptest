@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verifyPassword, createToken } from "@/lib/auth";
-import { getAuthLimiter, checkRateLimit } from "@/lib/ratelimit";
+import { getAuthLimiter, checkRateLimit, getClientIp } from "@/lib/ratelimit";
 import { headers } from "next/headers";
 
 export async function POST(request) {
   var headersList = await headers();
-  var ip = headersList.get("x-forwarded-for") || "unknown";
+  var ip = getClientIp(headersList);
   var rateLimitError = await checkRateLimit(getAuthLimiter, ip);
   if (rateLimitError) return rateLimitError;
 
@@ -26,7 +26,7 @@ export async function POST(request) {
     return NextResponse.json({ errors: ["Invalid email or password"] }, { status: 401 });
   }
 
-  var token = await createToken(user.id);
+  var token = await createToken(user.id, user.tokenVersion);
   var response = NextResponse.json({ user: { id: user.id, name: user.name, email: user.email } });
   response.cookies.set("swaptest_token", token, {
     httpOnly: true, secure: process.env.NODE_ENV === "production",

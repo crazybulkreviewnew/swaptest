@@ -22,11 +22,13 @@ import { NextResponse } from "next/server";
 import { expireStaleMatches } from "@/lib/matching";
 
 export async function GET(request) {
-  // Verify the request is from Vercel Cron or has the correct secret
+  // Verify the request is from Vercel Cron or has the correct secret.
+  // Fail CLOSED: if CRON_SECRET is not configured, reject everything rather
+  // than leaving this endpoint (which triggers refunds + state changes) public.
   const authHeader = request.headers.get("authorization");
   const cronSecret = process.env.CRON_SECRET;
 
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
   }
 

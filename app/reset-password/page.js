@@ -95,7 +95,8 @@ function ResetPasswordForm() {
           <div className="flex flex-col gap-4" onKeyDown={handleKeyDown}>
             <Field label="Email address" required>
               <input value={email} onChange={function(e) { setEmail(e.target.value); setErrors([]); }}
-                type="email" placeholder="your@email.com" />
+                type="email" name="email" autoComplete="email" inputMode="email" spellCheck={false}
+                placeholder="your@email.com" />
             </Field>
             <PrimaryButton onClick={handleForgotPassword} loading={loading}>
               Send reset link
@@ -107,11 +108,11 @@ function ResetPasswordForm() {
           <div className="flex flex-col gap-4" onKeyDown={handleKeyDown}>
             <Field label="New password" required hint="min 8 characters">
               <input value={password} onChange={function(e) { setPassword(e.target.value); setErrors([]); }}
-                type="password" placeholder="••••••••" />
+                type="password" name="new-password" autoComplete="new-password" placeholder="••••••••" />
             </Field>
             <Field label="Confirm new password" required>
               <input value={confirmPassword} onChange={function(e) { setConfirmPassword(e.target.value); setErrors([]); }}
-                type="password" placeholder="••••••••" />
+                type="password" name="confirm-password" autoComplete="new-password" placeholder="••••••••" />
             </Field>
             <PrimaryButton onClick={handleResetPassword} loading={loading}>
               Reset password

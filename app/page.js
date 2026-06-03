@@ -86,7 +86,7 @@ export default function HomePage() {
                match, so it's hidden from assistive tech and removed from tab order. */}
             <div className="hidden lg:block flex-shrink-0 w-[360px]" aria-hidden="true">
               <div
-                className="rounded-2xl p-6 border border-[var(--border)] select-none"
+                className="rounded-2xl p-6 border border-[var(--border-strong)] select-none"
                 style={{
                   background: "var(--bg-raised)",
                   boxShadow: "0 1px 2px rgba(0,0,0,0.4), 0 16px 40px rgba(0,0,0,0.45)",

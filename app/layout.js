@@ -116,7 +116,7 @@ const jsonLd = {
           name: "How do I actually complete the swap on DVSA?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "After both parties agree, you'll receive each other's contact details by email. Coordinate a time, then both go to GOV.UK, cancel your current test, and immediately rebook at the other person's centre and date. We recommend doing it simultaneously.",
+            text: "After both parties agree, you'll receive each other's contact details by email. You do not need to cancel your test — simply contact DVSA to arrange the swap of your dates. We recommend you both get in touch with DVSA so the change can be completed smoothly.",
           },
         },
       ],

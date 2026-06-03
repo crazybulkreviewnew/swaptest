@@ -29,15 +29,26 @@ body {
   /* Prevent rubber-band overscroll on iOS */
   overscroll-behavior: none;
 
-  /* Disable text selection on long-press (feels more native) */
+  /* Disable text selection on mobile for a native app-like feel */
   -webkit-user-select: none;
-  user-select: none;
+  user-select: text;
 
   /* Prevent iOS auto-zoom on input focus */
   -webkit-text-size-adjust: 100%;
+
+  /* Smooth scrolling for anchor links */
+  scroll-behavior: smooth;
 }
 
-/* Re-enable text selection inside form fields */
+/* Re-enable text selection on desktop — users expect to copy content */
+@media (pointer: fine) {
+  body {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+/* Always allow selection in form fields */
 input, textarea, select, [contenteditable] {
   -webkit-user-select: text;
   user-select: text;

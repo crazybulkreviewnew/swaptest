@@ -86,14 +86,22 @@ export default function HomePage() {
                match, so it's hidden from assistive tech and removed from tab order. */}
             <div className="hidden lg:block flex-shrink-0 w-[360px]" aria-hidden="true">
               <div
-                className="rounded-2xl p-6 border border-[var(--border-strong)] select-none"
+                className="rounded-2xl p-6 border-2 border-dashed border-[var(--border-strong)] select-none"
                 style={{
                   background: "var(--bg-raised)",
                   boxShadow: "0 1px 2px rgba(0,0,0,0.4), 0 16px 40px rgba(0,0,0,0.45)",
                 }}
               >
-                <div className="text-[11px] font-semibold text-[var(--muted-2)] uppercase tracking-widest mb-4">
-                  Match found
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[11px] font-semibold text-[var(--muted-2)] uppercase tracking-widest">
+                    Match found
+                  </span>
+                  <span
+                    className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full border border-[var(--border-strong)] text-[var(--muted)]"
+                    style={{ background: "var(--chip)" }}
+                  >
+                    Example
+                  </span>
                 </div>
                 <div className="space-y-3 mb-5">
                   <div
@@ -132,6 +140,9 @@ export default function HomePage() {
                   29 min 04 sec remaining
                 </p>
               </div>
+              <p className="text-center text-[12px] text-[var(--faint)] mt-4">
+                Illustrative example, not a live match.
+              </p>
             </div>
           </div>
         </div>

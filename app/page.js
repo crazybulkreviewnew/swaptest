@@ -19,8 +19,9 @@ export default function HomePage() {
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden px-5 pt-20 pb-16 lg:pt-28 lg:pb-24">
-        {/* Background glow */}
+        {/* Background glow (decorative) */}
         <div
+          aria-hidden="true"
           className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full"
           style={{ background: "radial-gradient(ellipse, rgba(29,158,117,0.12) 0%, transparent 70%)" }}
         />
@@ -50,7 +51,7 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
                 <Link
                   href="/register?type=earlier"
-                  className="px-8 py-4 rounded-xl text-base font-bold text-white no-underline text-center transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                  className="px-8 py-4 rounded-xl text-base font-bold text-white no-underline text-center transition-transform hover:scale-[1.02] active:scale-[0.98] [touch-action:manipulation]"
                   style={{
                     background: "linear-gradient(135deg, #1D9E75 0%, #15805e 100%)",
                     boxShadow: "0 4px 20px rgba(29,158,117,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
@@ -60,7 +61,7 @@ export default function HomePage() {
                 </Link>
                 <Link
                   href="/register?type=later"
-                  className="px-8 py-4 rounded-xl text-base font-bold text-[#e8e6dc] no-underline text-center bg-[#1a1a18] border border-[#333] transition-colors hover:border-[#555]"
+                  className="px-8 py-4 rounded-xl text-base font-bold text-[#e8e6dc] no-underline text-center bg-[#1a1a18] border border-[#333] transition-colors hover:border-[#555] [touch-action:manipulation]"
                 >
                   I want a later date
                 </Link>
@@ -74,18 +75,22 @@ export default function HomePage() {
                   { value: "30s", label: "to list your test" },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <div className="text-2xl font-extrabold text-[#f0eee4]">{stat.value}</div>
+                    <div className="tabular text-2xl font-extrabold text-[#f0eee4]">{stat.value}</div>
                     <div className="text-xs text-[#73726c] mt-0.5">{stat.label}</div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Mock UI card — desktop only */}
-            <div className="hidden lg:block flex-shrink-0 w-[360px]">
+            {/* Mock UI card — desktop only. Purely decorative illustration of a
+               match, so it's hidden from assistive tech and removed from tab order. */}
+            <div className="hidden lg:block flex-shrink-0 w-[360px]" aria-hidden="true">
               <div
-                className="rounded-2xl p-6 border border-[#2a2a27]"
-                style={{ background: "#161614" }}
+                className="rounded-2xl p-6 border border-[#2a2a27] select-none"
+                style={{
+                  background: "#161614",
+                  boxShadow: "0 1px 2px rgba(0,0,0,0.4), 0 16px 40px rgba(0,0,0,0.45)",
+                }}
               >
                 <div className="text-[11px] font-semibold text-[#73726c] uppercase tracking-widest mb-4">
                   Match found
@@ -104,7 +109,7 @@ export default function HomePage() {
                         Match
                       </span>
                     </div>
-                    <div className="text-[22px] font-bold text-[#f0eee4]">14 Aug 2025</div>
+                    <div className="tabular text-[22px] font-bold text-[#f0eee4]">14 Aug 2025</div>
                     <div className="text-[12px] text-[#73726c] mt-1">Wants: 15 Jul – 1 Aug</div>
                   </div>
 
@@ -112,18 +117,18 @@ export default function HomePage() {
 
                   <div className="rounded-xl p-4 border border-[#2a2a27] bg-[#111110]">
                     <div className="text-[13px] font-semibold text-[#e8e6dc] mb-1">Birmingham (Shirley)</div>
-                    <div className="text-[22px] font-bold text-[#f0eee4]">22 Jul 2025</div>
+                    <div className="tabular text-[22px] font-bold text-[#f0eee4]">22 Jul 2025</div>
                     <div className="text-[12px] text-[#73726c] mt-1">You want: any earlier</div>
                   </div>
                 </div>
 
-                <button
-                  className="w-full py-3 rounded-xl text-sm font-bold text-white border-0 cursor-pointer"
+                <div
+                  className="w-full py-3 rounded-xl text-sm font-bold text-white text-center"
                   style={{ background: "linear-gradient(135deg, #1D9E75 0%, #15805e 100%)" }}
                 >
                   Agree to swap →
-                </button>
-                <p className="text-[11px] text-[#53524e] text-center mt-3 mb-0">
+                </div>
+                <p className="tabular text-[11px] text-[#53524e] text-center mt-3 mb-0">
                   29 min 04 sec remaining
                 </p>
               </div>
@@ -167,8 +172,8 @@ export default function HomePage() {
                 key={s.num}
                 className="relative rounded-2xl p-8 border border-[#222] bg-[#161614] transition-colors hover:border-[#333]"
               >
-                <div className="text-3xl mb-4">{s.icon}</div>
-                <div className="absolute top-7 right-6 text-5xl font-extrabold leading-none tracking-tighter text-[#1D9E75]/[0.08]">
+                <div className="text-3xl mb-4" aria-hidden="true">{s.icon}</div>
+                <div className="tabular absolute top-7 right-6 text-5xl font-extrabold leading-none tracking-tighter text-[#1D9E75]/[0.08]" aria-hidden="true">
                   {s.num}
                 </div>
                 <h3 className="text-[17px] font-bold text-[#e8e6dc] mb-2">{s.title}</h3>
@@ -226,7 +231,7 @@ export default function HomePage() {
                 key={item.title}
                 className="p-6 rounded-xl bg-[#111110] border border-[#222] hover:border-[#333] transition-colors"
               >
-                <div className="w-2 h-2 rounded-full mb-4" style={{ background: item.color }} />
+                <div className="w-2 h-2 rounded-full mb-4" style={{ background: item.color }} aria-hidden="true" />
                 <h3 className="text-[15px] font-bold text-[#e8e6dc] mb-2">{item.title}</h3>
                 <p className="text-[13px] text-[#73726c] leading-relaxed m-0">{item.desc}</p>
               </div>
@@ -295,13 +300,13 @@ export default function HomePage() {
         </p>
         <Link
           href="/register"
-          className="inline-block px-10 py-4 rounded-xl text-[17px] font-bold text-white no-underline transition-transform hover:scale-[1.02] active:scale-[0.98]"
+          className="inline-block px-10 py-4 rounded-xl text-[17px] font-bold text-white no-underline transition-transform hover:scale-[1.02] active:scale-[0.98] [touch-action:manipulation]"
           style={{
             background: "linear-gradient(135deg, #1D9E75 0%, #15805e 100%)",
             boxShadow: "0 4px 24px rgba(29,158,117,0.35)",
           }}
         >
-          Get started — it&apos;s free
+          Get started — it’s free
         </Link>
 
         {user && (
@@ -321,19 +326,19 @@ export default function HomePage() {
           </span>
 
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            <Link href="/privacy" className="text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
+            <Link href="/privacy" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
+            <Link href="/terms" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
               Terms &amp; Conditions
             </Link>
-            <Link href="/cookies" className="text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
+            <Link href="/cookies" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
               Cookies &amp; Data
             </Link>
-            <Link href="/login" className="text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
+            <Link href="/login" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
               Log in
             </Link>
-            <Link href="/register" className="text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
+            <Link href="/register" className="inline-flex items-center min-h-[24px] py-1 text-[13px] text-[#73726c] no-underline hover:text-[#9c9a92] transition-colors">
               Sign up
             </Link>
           </div>

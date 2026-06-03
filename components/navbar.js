@@ -36,7 +36,7 @@ export default function Navbar({ user, onLogout }) {
               <span className="text-sm text-[#73726c] hidden sm:block">{user.name}</span>
               <button
                 onClick={handleLogout}
-                className="text-sm text-[#73726c] hover:text-[#e8e6dc] transition"
+                className="inline-flex items-center min-h-[44px] text-sm text-[#73726c] hover:text-[#e8e6dc] transition [touch-action:manipulation]"
               >
                 Log out
               </button>
@@ -45,13 +45,13 @@ export default function Navbar({ user, onLogout }) {
             <>
               <Link
                 href="/login"
-                className="text-sm text-[#73726c] hover:text-[#e8e6dc] transition no-underline"
+                className="inline-flex items-center min-h-[44px] text-sm text-[#73726c] hover:text-[#e8e6dc] transition no-underline [touch-action:manipulation]"
               >
                 Log in
               </Link>
               <Link
                 href="/register"
-                className="text-sm px-5 py-2 rounded-lg bg-[#1D9E75] text-white font-semibold hover:bg-[#1ab87f] transition no-underline"
+                className="inline-flex items-center min-h-[44px] text-sm px-5 py-2 rounded-lg bg-[#1D9E75] text-white font-semibold hover:bg-[#1ab87f] transition no-underline [touch-action:manipulation]"
               >
                 Sign up free
               </Link>

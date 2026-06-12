@@ -96,11 +96,21 @@ export default function CookiesPage() {
         <div style={sectionStyle}>
           <h2 style={h2Style}>What we do NOT use</h2>
           <ul style={{ paddingLeft: "20px", marginBottom: "16px" }}>
-            <li style={liStyle}>No Google Analytics or other third-party analytics</li>
+            <li style={liStyle}>No Google Analytics, advertising analytics, or any analytics that uses cookies</li>
             <li style={liStyle}>No advertising or retargeting cookies</li>
             <li style={liStyle}>No social media tracking pixels</li>
             <li style={liStyle}>No cross-site or behavioural profiling</li>
           </ul>
+        </div>
+
+        <div style={sectionStyle}>
+          <h2 style={h2Style}>Analytics</h2>
+          <p style={pStyle}>
+            We use Cloudflare Web Analytics to understand how many people visit SwapTest and which websites refer
+            them to us. It is <strong style={strong}>cookieless</strong>: it sets no cookies, uses no local storage,
+            does not fingerprint your device, and does not track you across other websites. Because it collects no
+            information that identifies you, it does not require cookie consent under UK PECR.
+          </p>
         </div>
 
         <div style={sectionStyle}>
@@ -117,7 +127,7 @@ export default function CookiesPage() {
           <p style={pStyle}>
             Your contact details are only shared with another user after you both agree to swap. We never sell
             your data. The full detail, including the third-party processors we rely on (Resend, Neon, Vercel,
-            Upstash) and your rights under UK GDPR, is set out in our{" "}
+            Upstash, and Cloudflare) and your rights under UK GDPR, is set out in our{" "}
             <Link href="/privacy" style={{ color: "#1D9E75", textDecoration: "none" }}>Privacy Policy</Link>.
           </p>
         </div>

@@ -63,7 +63,12 @@ export default function PrivacyPage() {
           <h3 style={h3Style}>Information collected automatically</h3>
           <p style={pStyle}>
             We collect your IP address for rate limiting purposes (to prevent abuse of the platform).
-            We do not use tracking cookies, analytics services, or any third-party advertising trackers.
+          </p>
+          <p style={pStyle}>
+            We use Cloudflare Web Analytics to count visits and see which websites refer traffic to us.
+            It is privacy-friendly and cookieless: it does not set cookies, does not track you across other
+            websites, and does not collect data that personally identifies you. We do not use tracking cookies
+            or any third-party advertising trackers.
           </p>
         </div>
 
@@ -153,6 +158,7 @@ export default function PrivacyPage() {
             <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Neon</strong>: for database hosting (stores your account and listing data)</li>
             <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Vercel</strong>: for website hosting (processes your requests)</li>
             <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Upstash</strong>: for rate limiting (processes your IP address temporarily)</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Cloudflare</strong>: for privacy-friendly, cookieless web analytics (counts visits and referrers; no cookies and no data that identifies you)</li>
           </ul>
           <p style={pStyle}>Each of these services has their own privacy policy and processes data in accordance with GDPR requirements.</p>
         </div>

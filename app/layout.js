@@ -1,4 +1,5 @@
 import "./globals.css";
+import Script from "next/script";
 import NativeProvider from "@/components/native-provider";
 import CookieConsent from "@/components/cookie-consent";
 
@@ -182,6 +183,13 @@ export default function RootLayout({ children }) {
       <body>
         <NativeProvider>{children}</NativeProvider>
         <CookieConsent />
+        {/* Cloudflare Web Analytics — cookieless, privacy-friendly (visits + referrers) */}
+        <Script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "e45f3cb52b0644e8bd4295d41ccb7562"}'
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

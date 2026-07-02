@@ -56,13 +56,12 @@ export async function GET() {
     where: { userId: user.id },
     orderBy: { createdAt: "desc" },
     include: {
+      // No partner PII here — the dashboard only needs match status/deadline.
       matchesAsEarlier: {
         where: { status: { notIn: ["EXPIRED", "DECLINED", "CANCELLED"] } },
-        include: { laterUser: { select: { name: true } }, laterListing: true },
       },
       matchesAsLater: {
         where: { status: { notIn: ["EXPIRED", "DECLINED", "CANCELLED"] } },
-        include: { earlierUser: { select: { name: true } }, earlierListing: true },
       },
     },
   });

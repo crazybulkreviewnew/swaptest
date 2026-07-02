@@ -57,7 +57,7 @@ export default function PrivacyPage() {
           <ul style={{ paddingLeft: "20px", marginBottom: "16px" }}>
             <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Test centre name</strong>: used for matching</li>
             <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Current test date and time</strong>: used for matching</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Preferred date range</strong>: used for matching</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Whether you want an earlier or later date</strong>: used for matching</li>
           </ul>
 
           <h3 style={h3Style}>Information collected automatically</h3>

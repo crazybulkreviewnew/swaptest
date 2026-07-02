@@ -47,9 +47,9 @@ export async function GET(request, { params }) {
     laterUserId: match.laterUserId,
     role: role,
     isInitiator: isInitiator,
-    // Contact details only after the swap is COMPLETED.
-    earlierUser: match.status === "COMPLETED" ? match.earlierUser : { id: match.earlierUser.id, name: match.earlierUser.name },
-    laterUser: match.status === "COMPLETED" ? match.laterUser : { id: match.laterUser.id, name: match.laterUser.name },
+    // No personal details (name, email, phone) until the swap is COMPLETED.
+    earlierUser: match.status === "COMPLETED" ? match.earlierUser : { id: match.earlierUser.id },
+    laterUser: match.status === "COMPLETED" ? match.laterUser : { id: match.laterUser.id },
     earlierListing: match.earlierListing,
     laterListing: match.laterListing,
   };

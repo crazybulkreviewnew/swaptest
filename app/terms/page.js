@@ -47,7 +47,7 @@ export default function TermsPage() {
         <div style={sectionStyle}>
           <h2 style={h2Style}>2. What SwapTest is</h2>
           <p style={pStyle}>
-            SwapTest is a free matching platform that connects UK driving test candidates who wish to exchange
+            SwapTest is a matching platform that connects UK driving test candidates who wish to exchange
             their practical driving test dates. <strong style={strong}>We are a matching service only.</strong> We do not
             book, cancel, rebook, or modify any tests with the Driver and Vehicle Standards Agency (DVSA) on
             your behalf. All test bookings are managed solely by you through the official GOV.UK website.
@@ -80,7 +80,7 @@ export default function TermsPage() {
             <li style={liStyle}>Only list test dates that you genuinely hold with the DVSA</li>
             <li style={liStyle}>Keep your account password confidential and secure</li>
             <li style={liStyle}>Coordinate honestly and respectfully with your matched swap partner</li>
-            <li style={liStyle}>Carry out the actual cancellation and rebooking yourself on the GOV.UK website</li>
+            <li style={liStyle}>Arrange the actual swap with DVSA yourself once a match is confirmed</li>
             <li style={liStyle}>Not use the service for any unlawful, fraudulent, or commercial resale purpose</li>
           </ul>
         </div>
@@ -109,14 +109,35 @@ export default function TermsPage() {
         <div style={sectionStyle}>
           <h2 style={h2Style}>8. Fees</h2>
           <p style={pStyle}>
-            SwapTest is currently free to use. We reserve the right to introduce optional paid features in the
-            future, but we will never charge you without making the cost clear before you commit to it. Any DVSA
-            test or rebooking fees are separate and payable directly to the DVSA.
+            There is a one-time <strong style={strong}>£1 registration fee</strong> that you pay before you can list
+            a test. Viewing your matches is free. If you choose to go ahead with a swap, an
+            <strong style={strong}> £8 swap fee</strong> applies and is paid only by the person who wants an earlier
+            date; the person moving to a later date pays nothing. All fees are shown before you pay. Any DVSA test
+            fees are separate and payable directly to the DVSA.
+          </p>
+          <p style={pStyle}>
+            Fees are collected securely through our payment provider, Stripe. If a confirmed swap does not go ahead
+            because the match expires before it is completed, the £8 swap fee is refunded to the person who paid it.
+            The £1 registration fee is non-refundable once paid, as it grants access to list tests and view matches.
           </p>
         </div>
 
         <div style={sectionStyle}>
-          <h2 style={h2Style}>9. Acceptable use</h2>
+          <h2 style={h2Style}>9. Sharing contact details &amp; disclaimer</h2>
+          <p style={pStyle}>
+            Before your contact details are shared with a swap partner, both of you must expressly agree to share
+            your email address and phone number with each other. By agreeing, you accept that:
+          </p>
+          <ul style={{ paddingLeft: "20px", marginBottom: "16px" }}>
+            <li style={liStyle}>SwapTest only introduces you to the other person; we do not vet, verify, or supervise users.</li>
+            <li style={liStyle}>You are responsible for your own dealings with your swap partner and for any information you choose to share.</li>
+            <li style={liStyle}><strong style={strong}>SwapTest is not responsible or liable for the conduct of any user, or for any loss, harm, fraud, or wrongdoing arising from contact between you and a swap partner.</strong></li>
+            <li style={liStyle}>You should take the usual precautions you would when dealing with someone you have not met.</li>
+          </ul>
+        </div>
+
+        <div style={sectionStyle}>
+          <h2 style={h2Style}>10. Acceptable use</h2>
           <p style={pStyle}>You must not:</p>
           <ul style={{ paddingLeft: "20px", marginBottom: "16px" }}>
             <li style={liStyle}>Use automated scripts, bots, or scrapers against the service</li>
@@ -131,7 +152,7 @@ export default function TermsPage() {
         </div>
 
         <div style={sectionStyle}>
-          <h2 style={h2Style}>10. Limitation of liability</h2>
+          <h2 style={h2Style}>11. Limitation of liability</h2>
           <p style={pStyle}>
             SwapTest is provided "as is" and "as available". To the fullest extent permitted by law, we are not
             liable for any loss or damage arising from: a swap that does not complete, a test slot becoming
@@ -141,7 +162,7 @@ export default function TermsPage() {
         </div>
 
         <div style={sectionStyle}>
-          <h2 style={h2Style}>11. Your data</h2>
+          <h2 style={h2Style}>12. Your data</h2>
           <p style={pStyle}>
             Our handling of your personal data is described in our{" "}
             <Link href="/privacy" style={{ color: "#1D9E75", textDecoration: "none" }}>Privacy Policy</Link> and{" "}
@@ -151,7 +172,7 @@ export default function TermsPage() {
         </div>
 
         <div style={sectionStyle}>
-          <h2 style={h2Style}>12. Changes to these terms</h2>
+          <h2 style={h2Style}>13. Changes to these terms</h2>
           <p style={pStyle}>
             We may update these Terms from time to time. Changes will be posted on this page with a revised
             "Last updated" date. Continued use of SwapTest after changes are posted constitutes acceptance of
@@ -160,7 +181,7 @@ export default function TermsPage() {
         </div>
 
         <div style={sectionStyle}>
-          <h2 style={h2Style}>13. Governing law</h2>
+          <h2 style={h2Style}>14. Governing law</h2>
           <p style={pStyle}>
             These Terms are governed by the laws of England and Wales, and any disputes are subject to the
             exclusive jurisdiction of the courts of England and Wales.

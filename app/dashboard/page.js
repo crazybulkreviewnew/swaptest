@@ -8,7 +8,7 @@ import {
   ErrorBox, SuccessBanner, PrimaryButton, SecondaryButton, Badge, Card,
   EmptyState, StatCard, Countdown, PageShell, formatDate,
 } from "@/components/ui";
-import { getListings, createListing, selectMatch, deleteListing, editListing } from "@/lib/api-client";
+import { getListings, createListing, selectMatch, deleteListing, editListing, startRegistrationCheckout } from "@/lib/api-client";
 import { UK_CENTRES } from "@/lib/centres";
 
 export default function DashboardPage() {
@@ -25,8 +25,7 @@ export default function DashboardPage() {
   var [centre, setCentre] = useState("");
   var [currentDate, setCurrentDate] = useState("");
   var [currentTime, setCurrentTime] = useState("");
-  var [prefFrom, setPrefFrom] = useState("");
-  var [prefTo, setPrefTo] = useState("");
+  var [startingCheckout, setStartingCheckout] = useState(false);
 
   var [matchResults, setMatchResults] = useState([]);
   var [matchListing, setMatchListing] = useState(null);
@@ -94,7 +93,6 @@ export default function DashboardPage() {
     try {
       var data = await createListing({
         type: formType, centre: centre, currentDate: currentDate, currentTime: currentTime,
-        preferredDateFrom: prefFrom, preferredDateTo: prefTo || undefined,
       });
       if (data.matches && data.matches.length > 0) {
         setMatchResults(data.matches);
@@ -103,14 +101,84 @@ export default function DashboardPage() {
         setSuccess("Listing created. No matches found yet. Check back later or click Refresh.");
       }
       setShowForm(false);
-      setCentre(""); setCurrentDate(""); setCurrentTime(""); setPrefFrom(""); setPrefTo("");
+      setCentre(""); setCurrentDate(""); setCurrentTime("");
       await loadData();
     } catch (err) {
-      setErrors(err.errors || ["Failed to create listing"]);
+      if (err.status === 403) {
+        // Not yet registered — send to the £1 checkout.
+        handleStartRegistration();
+      } else {
+        setErrors(err.errors || ["Failed to create listing"]);
+      }
     } finally {
       setFormLoading(false);
     }
   };
+
+  // Registration gate: start the one-time £1 Stripe checkout.
+  var handleStartRegistration = async function() {
+    setStartingCheckout(true);
+    setErrors([]);
+    try {
+      var r = await startRegistrationCheckout();
+      if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
+      if (r && r.alreadyPaid) { await loadData(); setShowForm(true); }
+    } catch (err) {
+      setErrors(err.errors || ["Could not start checkout. Please try again."]);
+    } finally {
+      setStartingCheckout(false);
+    }
+  };
+
+  // "+ New listing" entry point — paid users see the form, unpaid go to checkout.
+  var startNewListing = function() {
+    if (user && !user.registrationPaidAt) { handleStartRegistration(); }
+    else { setShowForm(true); }
+  };
+
+  // After returning from the registration checkout, create the listing the user
+  // entered during sign-up (stashed in sessionStorage), once the webhook has
+  // marked them as paid.
+  var finalizePendingListing = useCallback(async function() {
+    var raw = sessionStorage.getItem("swaptest_pending_listing");
+    if (!raw) { await loadData(); return; }
+    var pending;
+    try { pending = JSON.parse(raw); } catch (e) { sessionStorage.removeItem("swaptest_pending_listing"); return; }
+    for (var i = 0; i < 12; i++) {
+      var me = await fetch("/api/auth/me").then(function(r) { return r.json(); }).catch(function() { return {}; });
+      if (me.user && me.user.registrationPaidAt) break;
+      await new Promise(function(res) { setTimeout(res, 2000); });
+    }
+    try {
+      var data = await createListing(pending);
+      sessionStorage.removeItem("swaptest_pending_listing");
+      if (data.matches && data.matches.length > 0) {
+        setMatchResults(data.matches);
+        setMatchListing(data.listing);
+      } else {
+        setSuccess("Registration complete and your test is now listed!");
+      }
+      await loadData();
+    } catch (err) {
+      sessionStorage.removeItem("swaptest_pending_listing");
+      setErrors(err.errors || ["We couldn't list your test automatically. Please create the listing from your dashboard."]);
+      await loadData();
+    }
+  }, [loadData]);
+
+  // Handle return from Stripe registration checkout.
+  useEffect(function() {
+    var sp = new URLSearchParams(window.location.search);
+    var status = sp.get("status");
+    if (status === "registered") {
+      setSuccess("Registration complete! Setting up your listing…");
+      window.history.replaceState({}, "", "/dashboard");
+      finalizePendingListing();
+    } else if (status === "registration_cancelled") {
+      setErrors(["Registration payment was cancelled. You can try again whenever you're ready."]);
+      window.history.replaceState({}, "", "/dashboard");
+    }
+  }, [finalizePendingListing]);
 
   var handleSelectMatch = async function(targetListingId) {
     if (!matchListing) return;
@@ -148,8 +216,6 @@ export default function DashboardPage() {
       type: listing.type, centre: listing.centre,
       currentDate: new Date(listing.currentDate).toISOString().split("T")[0],
       currentTime: listing.currentTime,
-      preferredDateFrom: new Date(listing.preferredDateFrom).toISOString().split("T")[0],
-      preferredDateTo: listing.preferredDateTo ? new Date(listing.preferredDateTo).toISOString().split("T")[0] : "",
     });
     setErrors([]);
   };
@@ -160,8 +226,7 @@ export default function DashboardPage() {
     try {
       await editListing(editingId, {
         type: editForm.type, centre: editForm.centre, currentDate: editForm.currentDate,
-        currentTime: editForm.currentTime, preferredDateFrom: editForm.preferredDateFrom,
-        preferredDateTo: editForm.preferredDateTo || undefined,
+        currentTime: editForm.currentTime,
       });
       setEditingId(null);
       setEditForm({});
@@ -211,10 +276,18 @@ export default function DashboardPage() {
                 className="px-4 py-2 rounded-lg border border-[var(--border)] bg-transparent text-[var(--muted)] hover:border-[var(--border-strong)] hover:text-[var(--fg-2)] text-sm transition disabled:opacity-50">
                 {refreshing ? "Checking..." : "Refresh matches"}
               </button>
-              <SecondaryButton onClick={function() { setShowForm(true); }}>+ New listing</SecondaryButton>
+              <SecondaryButton onClick={startNewListing}>
+                {startingCheckout ? "…" : (user && !user.registrationPaidAt ? "List a test — £1" : "+ New listing")}
+              </SecondaryButton>
             </div>
           )}
         </div>
+
+        {user && !user.registrationPaidAt && (
+          <div className="mb-5 p-3 rounded-lg border border-[var(--border)] bg-[var(--bg-raised)] text-sm text-[var(--muted)]">
+            A one-time £1 registration fee is required to list a test and start finding swaps.
+          </div>
+        )}
 
         <ErrorBox errors={errors} />
         {success && <SuccessBanner>{success}</SuccessBanner>}
@@ -289,15 +362,12 @@ export default function DashboardPage() {
                   <input type="time" value={currentTime} min="07:00" max="17:00" onChange={function(e) { setCurrentTime(e.target.value); }} />
                 </div>
               </div>
-              <div>
-                <label className="block text-xs text-[var(--muted)] mb-1">{isEarlier ? "Earliest date you'd accept" : "Earliest date you'd prefer"} <span className="text-red-500">*</span></label>
-                <input type="date" value={prefFrom} min={isEarlier ? tomorrowStr : (currentDate || tomorrowStr)} max={isEarlier ? (currentDate || undefined) : undefined} onChange={function(e) { setPrefFrom(e.target.value); }} />
-              </div>
-              <div>
-                <label className="block text-xs text-[var(--muted)] mb-1">{isEarlier ? "Latest date you'd accept" : "Latest date you'd prefer"} <span className="text-[var(--faint)] italic">(optional)</span></label>
-                <input type="date" value={prefTo} min={prefFrom || tomorrowStr} max={isEarlier ? (currentDate || undefined) : undefined} onChange={function(e) { setPrefTo(e.target.value); }} />
-              </div>
-              <PrimaryButton onClick={handleCreateListing} loading={formLoading}>{isEarlier ? "Find matches" : "List my test"}</PrimaryButton>
+              <p className="text-xs text-[var(--muted-2)] leading-relaxed">
+                {isEarlier
+                  ? "We'll match you with anyone at your centre (or a nearby one) who has an earlier slot and wants a later date."
+                  : "We'll match you with anyone at your centre (or a nearby one) who has a later slot and wants an earlier date."}
+              </p>
+              <PrimaryButton onClick={handleCreateListing} loading={formLoading}>List my test</PrimaryButton>
             </div>
           </Card>
         )}
@@ -306,8 +376,8 @@ export default function DashboardPage() {
         <div>
           <h2 className="text-lg font-semibold text-[var(--fg)] mb-4">Your listings</h2>
           {listings.length === 0 && !showForm && (
-            <EmptyState title="No listings yet" description="Create a listing to start finding swap matches."
-              action={<SecondaryButton onClick={function() { setShowForm(true); }}>+ Create listing</SecondaryButton>} />
+            <EmptyState title="No listings yet" description="List your test to start finding swap matches."
+              action={<SecondaryButton onClick={startNewListing}>{user && !user.registrationPaidAt ? "List a test — £1" : "+ Create listing"}</SecondaryButton>} />
           )}
           <div className="flex flex-col gap-3">
             {listings.map(function(listing) {
@@ -341,14 +411,6 @@ export default function DashboardPage() {
                             <input type="time" value={editForm.currentTime} min="07:00" max="17:00" onChange={function(e) { setEditForm(Object.assign({}, editForm, { currentTime: e.target.value })); }} />
                           </div>
                         </div>
-                        <div>
-                          <label className="block text-xs text-[var(--muted)] mb-1">Preferred from</label>
-                          <input type="date" value={editForm.preferredDateFrom} min={tomorrowStr} onChange={function(e) { setEditForm(Object.assign({}, editForm, { preferredDateFrom: e.target.value })); }} />
-                        </div>
-                        <div>
-                          <label className="block text-xs text-[var(--muted)] mb-1">Preferred to <span className="text-[var(--faint)] italic">(optional)</span></label>
-                          <input type="date" value={editForm.preferredDateTo} min={editForm.preferredDateFrom || tomorrowStr} onChange={function(e) { setEditForm(Object.assign({}, editForm, { preferredDateTo: e.target.value })); }} />
-                        </div>
                         <PrimaryButton onClick={handleEdit} loading={editLoading}>Save changes</PrimaryButton>
                       </div>
                     </div>
@@ -365,8 +427,7 @@ export default function DashboardPage() {
                           <div className="text-[15px] font-semibold text-[var(--fg)] mt-2">{listing.centre}</div>
                           <div className="text-sm text-[var(--muted-2)]">Current: {formatDate(listing.currentDate)} at {listing.currentTime}</div>
                           <div className="text-xs text-[var(--faint)] mt-1">
-                            Preferred: {formatDate(listing.preferredDateFrom)}
-                            {listing.preferredDateTo ? " to " + formatDate(listing.preferredDateTo) : ""}
+                            {listing.type === "EARLIER" ? "Looking for an earlier date" : "Looking for a later date"}
                           </div>
                         </div>
                         {canEditDelete && (
@@ -401,11 +462,8 @@ export default function DashboardPage() {
                             </div>
                             <Link href={"/match?id=" + activeMatch.id} className="text-sm text-[#1D9E75] hover:underline">View details</Link>
                           </div>
-                          {activeMatch.status === "PENDING_LATER_PAY" && activeMatch.laterPayDeadline && new Date(activeMatch.laterPayDeadline).getTime() > 10000 && (
-                            <Countdown deadline={activeMatch.laterPayDeadline} />
-                          )}
-                          {activeMatch.status === "PENDING_EARLIER_PAY" && activeMatch.earlierPayDeadline && new Date(activeMatch.earlierPayDeadline).getTime() > 10000 && (
-                            <Countdown deadline={activeMatch.earlierPayDeadline} />
+                          {activeMatch.status === "PENDING" && activeMatch.payDeadline && new Date(activeMatch.payDeadline).getTime() > 10000 && (
+                            <Countdown deadline={activeMatch.payDeadline} />
                           )}
                         </div>
                       )}

@@ -35,7 +35,7 @@ export default function HomePage() {
                 className="inline-block px-4 py-1.5 rounded-full text-[13px] font-semibold text-[var(--brand-text)] mb-6 tracking-wide"
                 style={{ background: "rgba(29,158,117,0.12)", border: "1px solid rgba(29,158,117,0.25)" }}
               >
-                Currently FREE for everyone
+                £1 to list · £8 only if you swap
               </div>
 
               <h1 className="text-[clamp(36px,5vw,60px)] font-extrabold leading-[1.1] text-[var(--fg-strong)] tracking-tight mb-5">
@@ -71,8 +71,8 @@ export default function HomePage() {
               <div className="mt-10 flex flex-wrap gap-8 justify-center lg:justify-start">
                 {[
                   { value: "320+", label: "test centres" },
-                  { value: "100%", label: "free forever" },
-                  { value: "30s", label: "to list your test" },
+                  { value: "£1", label: "to list your test" },
+                  { value: "£8", label: "only if you swap" },
                 ].map((stat) => (
                   <div key={stat.label}>
                     <div className="tabular text-2xl font-extrabold text-[var(--fg-strong)]">{stat.value}</div>
@@ -175,7 +175,7 @@ export default function HomePage() {
               {
                 num: "3",
                 title: "Agree and coordinate",
-                desc: "Both parties agree, get each other's details, and rebook on the DVSA website together.",
+                desc: "Both parties agree, get each other's details, and contact DVSA to arrange the swap together.",
                 icon: "🤝",
               },
             ].map((s) => (
@@ -208,8 +208,8 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                title: "Completely free",
-                desc: "No platform fees, no hidden charges. We believe everyone deserves a fair shot at their driving test.",
+                title: "Simple, low fees",
+                desc: "Just £1 to list your test, and £8 only if you go ahead with a swap. No subscriptions and no hidden charges.",
                 color: "#1D9E75",
               },
               {
@@ -259,7 +259,7 @@ export default function HomePage() {
           </h2>
           <div className="space-y-5 text-[15px] leading-relaxed text-[var(--muted)]">
             <p>
-              SwapTest is a free service built to help UK learner drivers swap a driving test for a date that
+              SwapTest is a low-cost service built to help UK learner drivers swap a driving test for a date that
               actually works for them. If you have passed your theory test and booked a practical, you may have
               been handed a slot months away. Cancelling and rebooking through DVSA often only offers the same far
               off dates. SwapTest gives you another option: swap a driving test date with someone who wants your
@@ -287,8 +287,8 @@ export default function HomePage() {
               means lost confidence, extra lessons, and missed opportunities such as a new job or a university
               place. Being able to swap a driving test date with someone lets you bring your test forward without
               paying for cancellation checker apps. It also helps the other learner, who may genuinely want a later
-              date, so every swap is designed to be fair to both sides. There is no cost to try, and you stay in
-              full control of which match you accept.
+              date, so every swap is designed to be fair to both sides. It costs just £1 to list your test, and you
+              stay in full control of which match you accept.
             </p>
 
             <h3 className="text-[18px] font-bold text-[var(--fg)] pt-2">
@@ -314,12 +314,12 @@ export default function HomePage() {
             </p>
 
             <h3 className="text-[18px] font-bold text-[var(--fg)] pt-2">
-              Safe, free and simple
+              Safe, simple and low-cost
             </h3>
             <p>
               Your contact details stay private until both people agree to swap, and your password is encrypted, so
-              your data is protected at every step. There are no platform fees and no hidden charges to swap a
-              driving test date with SwapTest. You can list, edit or delete your test at any time from your
+              your data is protected at every step. It costs £1 to list your test and £8 to confirm a swap, with no
+              subscriptions and no hidden charges. You can list, edit or delete your test at any time from your
               dashboard, and you are notified by email the moment someone wants your date.
             </p>
 
@@ -363,8 +363,8 @@ export default function HomePage() {
                 a: "Yes. DVSA allows you to move your test to one of 3 nearby centres. SwapTest automatically checks all nearby centres when finding matches. Both people must be able to move to each other's centre for a swap to be valid.",
               },
               {
-                q: "Is SwapTest really free?",
-                a: "Yes, completely free. No platform fees, no subscription, no hidden charges. We may introduce a small optional fee in the future, but the core matching service will remain free.",
+                q: "How much does SwapTest cost?",
+                a: "It costs £1 to register and list your test, and viewing your matches is free. If you decide to go ahead with a swap, only the person who wants an earlier date pays an £8 swap fee — the person moving to a later date pays nothing. There are no subscriptions and no hidden charges.",
               },
               {
                 q: "Is my personal information safe?",
@@ -407,7 +407,7 @@ export default function HomePage() {
             boxShadow: "0 4px 24px rgba(29,158,117,0.35)",
           }}
         >
-          Get started, it’s free
+          Get started
         </Link>
 
         {user && (

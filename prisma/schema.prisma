@@ -25,6 +25,7 @@ model User {
   phone        String
   password     String   // bcrypt hash
   tokenVersion Int      @default(0) // bumped on password reset to invalidate all existing JWTs
+  registrationPaidAt DateTime? // set once the one-time £1 registration fee is paid; gates listing creation
   pushToken    String?  // APNs device token for push notifications
   pushPlatform String?  // "ios" or "android"
   createdAt    DateTime @default(now())
@@ -60,8 +61,6 @@ model Listing {
   centre            String        // exact DVSA test centre name
   currentDate       DateTime      // user's existing test date
   currentTime       String        // e.g. "09:30"
-  preferredDateFrom DateTime      // earliest acceptable swap date
-  preferredDateTo   DateTime?     // latest acceptable swap date (optional)
   status            ListingStatus @default(AVAILABLE)
   lockedByMatchId   String?       // which match locked this listing
   createdAt         DateTime      @default(now())
@@ -79,13 +78,11 @@ model Listing {
 // ── Matches ───────────────────────────────────────────────
 
 enum MatchStatus {
-  PENDING_LATER_PAY    // waiting for "later" person to agree + pay
-  PENDING_EARLIER_PAY  // "later" paid, waiting for "earlier" person
-  COMPLETED            // both paid, contact details exchanged
-  EXPIRED_TIMER1       // "later" person didn't pay in time
-  EXPIRED_TIMER2       // "earlier" person didn't pay in time (refund "later")
-  DECLINED             // "later" person declined
-  CANCELLED            // admin or system cancelled
+  PENDING      // matched; awaiting both consents + the earlier-seeker's £8 payment
+  COMPLETED    // both consented and earlier paid — contact details exchanged
+  EXPIRED      // not completed before payDeadline
+  DECLINED     // a party declined
+  CANCELLED    // admin or system cancelled
 }
 
 model Match {
@@ -95,19 +92,20 @@ model Match {
   laterUserId       String
   earlierListingId  String
   laterListingId    String
-  initiatedByUserId String      // who clicked "Select" — drives messaging and payment order
+  initiatedByUserId String      // who clicked "Select"
 
-  status            MatchStatus @default(PENDING_LATER_PAY)
+  status            MatchStatus @default(PENDING)
 
-  // Payment tracking
-  laterPaid         Boolean     @default(false)
+  // Consent — both parties must accept the data-sharing disclaimer before contact exchange
+  earlierConsentAt  DateTime?
+  laterConsentAt    DateTime?
+
+  // Payment — only the earlier-date seeker pays the £8 swap fee
   earlierPaid       Boolean     @default(false)
-  laterPaymentId    String?     // Stripe PaymentIntent ID
   earlierPaymentId  String?     // Stripe PaymentIntent ID
 
-  // Timeout deadlines (absolute timestamps)
-  laterPayDeadline   DateTime   // when timer1 expires
-  earlierPayDeadline DateTime?  // set after laterPaid=true
+  // Single completion deadline (absolute timestamp)
+  payDeadline       DateTime?
 
   // Metadata
   createdAt         DateTime    @default(now())
@@ -122,8 +120,7 @@ model Match {
   payments          Payment[]
 
   @@index([status])
-  @@index([laterPayDeadline])
-  @@index([earlierPayDeadline])
+  @@index([payDeadline])
 }
 
 // ── Payments ──────────────────────────────────────────────
@@ -137,16 +134,17 @@ enum PaymentStatus {
 
 model Payment {
   id                String        @id @default(cuid())
-  matchId           String
+  purpose           String        @default("swap") // "swap" | "registration"
+  matchId           String?       // null for registration payments
   userId            String
-  amountPence       Int           // 300 = £3.00
+  amountPence       Int           // e.g. 100 = £1.00 registration, 800 = £8.00 swap
   stripeSessionId   String?       @unique // Stripe Checkout Session ID
   stripePaymentId   String?       // Stripe PaymentIntent ID
   status            PaymentStatus @default(PENDING)
   refundedAt        DateTime?
   createdAt         DateTime      @default(now())
 
-  match             Match         @relation(fields: [matchId], references: [id])
+  match             Match?        @relation(fields: [matchId], references: [id])
   user              User          @relation(fields: [userId], references: [id])
 
   @@index([stripeSessionId])

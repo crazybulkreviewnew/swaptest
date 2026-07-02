@@ -33,10 +33,13 @@ export async function GET(request, { params }) {
   var safeMatch = {
     id: match.id,
     status: match.status,
-    laterPaid: match.laterPaid,
     earlierPaid: match.earlierPaid,
-    laterPayDeadline: match.laterPayDeadline,
-    earlierPayDeadline: match.earlierPayDeadline,
+    earlierConsentAt: match.earlierConsentAt,
+    laterConsentAt: match.laterConsentAt,
+    // Whether the current viewer has already consented / paid, for the UI.
+    youConsented: role === "earlier" ? !!match.earlierConsentAt : !!match.laterConsentAt,
+    youPaid: role === "earlier" ? match.earlierPaid : true, // later never pays
+    payDeadline: match.payDeadline,
     createdAt: match.createdAt,
     completedAt: match.completedAt,
     initiatedByUserId: match.initiatedByUserId,
@@ -44,6 +47,7 @@ export async function GET(request, { params }) {
     laterUserId: match.laterUserId,
     role: role,
     isInitiator: isInitiator,
+    // Contact details only after the swap is COMPLETED.
     earlierUser: match.status === "COMPLETED" ? match.earlierUser : { id: match.earlierUser.id, name: match.earlierUser.name },
     laterUser: match.status === "COMPLETED" ? match.laterUser : { id: match.laterUser.id, name: match.laterUser.name },
     earlierListing: match.earlierListing,

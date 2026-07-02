@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import { ErrorBox } from "@/components/ui";
-import { register, createListing } from "@/lib/api-client";
+import { register, createListing, startRegistrationCheckout } from "@/lib/api-client";
 import { UK_CENTRES } from "@/lib/centres";
 
 function RegisterForm() {
@@ -27,8 +27,6 @@ function RegisterForm() {
   var [centre, setCentre] = useState("");
   var [currentDate, setCurrentDate] = useState("");
   var [currentTime, setCurrentTime] = useState("");
-  var [prefFrom, setPrefFrom] = useState("");
-  var [prefTo, setPrefTo] = useState("");
 
   var clearErrors = function() { if (errors.length > 0) setErrors([]); };
 
@@ -51,16 +49,25 @@ function RegisterForm() {
   var handleCreateListing = async function() {
     setLoading(true); setErrors([]);
     try {
-      var data = await createListing({
+      // A brand-new user hasn't paid the £1 registration fee yet. Stash the
+      // listing they entered and send them to Stripe; the dashboard creates the
+      // listing once registrationPaidAt is set (on return from checkout).
+      sessionStorage.setItem("swaptest_pending_listing", JSON.stringify({
         type: userType, centre: centre, currentDate: currentDate, currentTime: currentTime,
-        preferredDateFrom: prefFrom, preferredDateTo: prefTo || undefined,
-      });
-      if (data.matches && data.matches.length > 0) {
-        sessionStorage.setItem("swaptest_matches", JSON.stringify(data.matches));
-        sessionStorage.setItem("swaptest_listing", JSON.stringify(data.listing));
+      }));
+      var r = await startRegistrationCheckout();
+      if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
+      if (r && r.alreadyPaid) {
+        // Edge case: already paid — create the listing straight away.
+        var data = await createListing({ type: userType, centre: centre, currentDate: currentDate, currentTime: currentTime });
+        if (data.matches && data.matches.length > 0) {
+          sessionStorage.setItem("swaptest_matches", JSON.stringify(data.matches));
+          sessionStorage.setItem("swaptest_listing", JSON.stringify(data.listing));
+        }
+        sessionStorage.removeItem("swaptest_pending_listing");
+        router.push("/dashboard");
       }
-      router.push("/dashboard");
-    } catch (err) { setErrors(err.errors || ["Failed to create listing"]); }
+    } catch (err) { setErrors(err.errors || ["Could not continue to payment"]); }
     finally { setLoading(false); }
   };
 
@@ -226,38 +233,14 @@ function RegisterForm() {
               </div>
             </div>
 
-            {/* Preferred range */}
             <div style={{
-              padding: "20px", borderRadius: "12px", background: "var(--bg-raised)",
-              border: "1px solid var(--border)",
+              padding: "14px 16px", borderRadius: "10px", background: "var(--bg-raised)",
+              border: "1px solid var(--border)", fontSize: "13px", color: "var(--muted)", lineHeight: 1.5,
             }}>
-              <label style={{ ...labelStyle, fontSize: "14px", marginBottom: "4px" }}>
-                {isEarlier ? "What dates would work for you?" : "When would you prefer to take your test?"}
-              </label>
-              <p style={{ fontSize: "12px", color: "var(--muted-2)", margin: "0 0 14px" }}>
-                {isEarlier
-                  ? "Pick a range of dates earlier than your current test."
-                  : "Pick a range of dates later than your current test."
-                }
-              </p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                <div>
-                  <label style={{ ...labelStyle, fontSize: "12px", color: "var(--muted-2)" }}>From</label>
-                  <input type="date" value={prefFrom}
-                    min={isEarlier ? tomorrowStr : (currentDate || tomorrowStr)}
-                    max={isEarlier ? (currentDate || undefined) : undefined}
-                    onChange={function(e) { setPrefFrom(e.target.value); clearErrors(); }}
-                    style={inputStyle} />
-                </div>
-                <div>
-                  <label style={{ ...labelStyle, fontSize: "12px", color: "var(--muted-2)" }}>To <span style={hintStyle}>(optional)</span></label>
-                  <input type="date" value={prefTo}
-                    min={prefFrom || tomorrowStr}
-                    max={isEarlier ? (currentDate || undefined) : undefined}
-                    onChange={function(e) { setPrefTo(e.target.value); clearErrors(); }}
-                    style={inputStyle} />
-                </div>
-              </div>
+              {isEarlier
+                ? "We'll match you with anyone at your centre (or a nearby one) who has an earlier slot and wants a later date."
+                : "We'll match you with anyone at your centre (or a nearby one) who has a later slot and wants an earlier date."}
+              {" "}A one-time £1 registration fee lists your test.
             </div>
 
             <button onClick={handleCreateListing} disabled={loading} style={{
@@ -267,7 +250,7 @@ function RegisterForm() {
               opacity: loading ? 0.6 : 1, touchAction: "manipulation",
               boxShadow: "0 4px 16px rgba(29,158,117,0.25)",
             }}>
-              {loading ? "Searching..." : (isEarlier ? "Find matches" : "List my test")}
+              {loading ? "One moment…" : "Continue — £1 to list your test"}
             </button>
 
             <p style={{ fontSize: "12px", color: "var(--faint)", textAlign: "center", lineHeight: 1.5 }}>

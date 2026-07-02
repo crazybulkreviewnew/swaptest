@@ -37,7 +37,7 @@ export default function PrivacyPage() {
         <div style={sectionStyle}>
           <h2 style={h2Style}>Who we are</h2>
           <p style={pStyle}>
-            SwapTest is a free online platform that helps UK driving test candidates swap their test dates with each other.
+            SwapTest is an online platform that helps UK driving test candidates swap their test dates with each other.
             This privacy policy explains how we collect, use, store, and protect your personal information when you use our website at www.swaptest.co.uk.
           </p>
         </div>

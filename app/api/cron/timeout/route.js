@@ -13,9 +13,9 @@
 // }
 //
 // This endpoint:
-// 1. Finds matches where laterPayDeadline or earlierPayDeadline
-//    has passed and status is still PENDING.
-// 2. Expires them, releases locks, refunds if needed.
+// 1. Finds PENDING matches whose payDeadline has passed.
+// 2. Expires them, releases listing locks, and refunds the earlier-seeker
+//    if they had already paid.
 // ============================================================
 
 import { NextResponse } from "next/server";

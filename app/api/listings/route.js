@@ -6,15 +6,20 @@ import { findMatches, findMatchesForLater } from "@/lib/matching";
 
 export async function POST(request) {
   var user = await requireAuth();
+
+  // Registration gate: a user must have paid the one-time registration fee
+  // before they can create a listing.
+  if (!user.registrationPaidAt) {
+    return NextResponse.json({ error: "REGISTRATION_REQUIRED", errors: ["Please pay the one-time registration fee to create a listing."] }, { status: 403 });
+  }
+
   var body = await request.json();
   var type = body.type;
   var centre = body.centre;
   var currentDate = body.currentDate;
   var currentTime = body.currentTime;
-  var preferredDateFrom = body.preferredDateFrom;
-  var preferredDateTo = body.preferredDateTo;
 
-  var validation = validateListing({ type: type, centre: centre, currentDate: currentDate, currentTime: currentTime, preferredDateFrom: preferredDateFrom, preferredDateTo: preferredDateTo });
+  var validation = validateListing({ type: type, centre: centre, currentDate: currentDate, currentTime: currentTime });
   if (!validation.valid) {
     return NextResponse.json({ errors: validation.errors }, { status: 400 });
   }
@@ -30,8 +35,6 @@ export async function POST(request) {
     data: {
       userId: user.id, type: type, centre: centre,
       currentDate: new Date(currentDate), currentTime: currentTime,
-      preferredDateFrom: new Date(preferredDateFrom),
-      preferredDateTo: preferredDateTo ? new Date(preferredDateTo) : null,
       status: "AVAILABLE",
     },
   });
@@ -54,11 +57,11 @@ export async function GET() {
     orderBy: { createdAt: "desc" },
     include: {
       matchesAsEarlier: {
-        where: { status: { notIn: ["EXPIRED_TIMER1", "EXPIRED_TIMER2", "DECLINED", "CANCELLED"] } },
+        where: { status: { notIn: ["EXPIRED", "DECLINED", "CANCELLED"] } },
         include: { laterUser: { select: { name: true } }, laterListing: true },
       },
       matchesAsLater: {
-        where: { status: { notIn: ["EXPIRED_TIMER1", "EXPIRED_TIMER2", "DECLINED", "CANCELLED"] } },
+        where: { status: { notIn: ["EXPIRED", "DECLINED", "CANCELLED"] } },
         include: { earlierUser: { select: { name: true } }, earlierListing: true },
       },
     },

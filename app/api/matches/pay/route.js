@@ -7,6 +7,8 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { createSwapCheckoutSession } from "@/lib/stripe";
+import { completeSwapPayment } from "@/lib/matching";
+import { paymentsEnabled } from "@/lib/payments";
 
 export async function POST(request) {
   const user = await requireAuth();
@@ -42,6 +44,12 @@ export async function POST(request) {
     where: { id: matchId },
     data: { earlierConsentAt: match.earlierConsentAt || new Date() },
   });
+
+  // Payments off: complete the swap for free (still requires both consents).
+  if (!paymentsEnabled()) {
+    const result = await completeSwapPayment(matchId, user.id, "free-mode");
+    return NextResponse.json({ freeMode: true, completed: result.completed });
+  }
 
   const amountPence = parseInt(process.env.SWAP_FEE_PENCE || "800", 10);
   const payment = await db.payment.create({

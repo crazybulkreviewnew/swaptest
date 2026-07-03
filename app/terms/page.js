@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ThemeToggle from "@/components/theme-toggle";
+import { paymentsEnabled } from "@/lib/payments";
 
 export const metadata = {
   title: "Terms & Conditions | SwapTest",
@@ -8,6 +9,7 @@ export const metadata = {
 };
 
 export default function TermsPage() {
+  const pay = paymentsEnabled();
   const sectionStyle = { marginBottom: "40px" };
   const h2Style = { fontSize: "20px", fontWeight: 700, color: "var(--fg)", marginBottom: "16px", letterSpacing: "-0.3px" };
   const pStyle = { fontSize: "14px", color: "var(--muted)", lineHeight: 1.75, marginBottom: "12px" };
@@ -108,18 +110,29 @@ export default function TermsPage() {
 
         <div style={sectionStyle}>
           <h2 style={h2Style}>8. Fees</h2>
-          <p style={pStyle}>
-            There is a one-time <strong style={strong}>£1 registration fee</strong> that you pay before you can list
-            a test. Viewing your matches is free. If you choose to go ahead with a swap, an
-            <strong style={strong}> £8 swap fee</strong> applies and is paid only by the person who wants an earlier
-            date; the person moving to a later date pays nothing. All fees are shown before you pay. Any DVSA test
-            fees are separate and payable directly to the DVSA.
-          </p>
-          <p style={pStyle}>
-            Fees are collected securely through our payment provider, Stripe. If a confirmed swap does not go ahead
-            because the match expires before it is completed, the £8 swap fee is refunded to the person who paid it.
-            The £1 registration fee is non-refundable once paid, as it grants access to list tests and view matches.
-          </p>
+          {pay ? (
+            <>
+              <p style={pStyle}>
+                There is a one-time <strong style={strong}>£1 registration fee</strong> that you pay before you can list
+                a test. Viewing your matches is free. If you choose to go ahead with a swap, an
+                <strong style={strong}> £8 swap fee</strong> applies and is paid only by the person who wants an earlier
+                date; the person moving to a later date pays nothing. All fees are shown before you pay. Any DVSA test
+                fees are separate and payable directly to the DVSA.
+              </p>
+              <p style={pStyle}>
+                Fees are collected securely through our payment provider, Stripe. If a confirmed swap does not go ahead
+                because the match expires before it is completed, the £8 swap fee is refunded to the person who paid it.
+                The £1 registration fee is non-refundable once paid, as it grants access to list tests and view matches.
+              </p>
+            </>
+          ) : (
+            <p style={pStyle}>
+              SwapTest is currently <strong style={strong}>free to use</strong> — there is no charge to register, list a
+              test, view your matches, or complete a swap. We may introduce fees in the future (a small registration
+              fee and a swap fee paid by the person who wants an earlier date); if we do, the fees will be shown
+              clearly before you pay. Any DVSA test fees are separate and payable directly to the DVSA.
+            </p>
+          )}
         </div>
 
         <div style={sectionStyle}>

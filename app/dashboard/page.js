@@ -9,6 +9,7 @@ import {
   EmptyState, StatCard, Countdown, PageShell, formatDate,
 } from "@/components/ui";
 import { getListings, createListing, selectMatch, deleteListing, editListing, startRegistrationCheckout } from "@/lib/api-client";
+import { paymentsEnabled } from "@/lib/payments";
 import { UK_CENTRES } from "@/lib/centres";
 
 export default function DashboardPage() {
@@ -122,7 +123,7 @@ export default function DashboardPage() {
     try {
       var r = await startRegistrationCheckout();
       if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
-      if (r && r.alreadyPaid) { await loadData(); setShowForm(true); }
+      if (r && (r.alreadyPaid || r.freeMode)) { await loadData(); setShowForm(true); }
     } catch (err) {
       setErrors(err.errors || ["Could not start checkout. Please try again."]);
     } finally {
@@ -277,13 +278,13 @@ export default function DashboardPage() {
                 {refreshing ? "Checking..." : "Refresh matches"}
               </button>
               <SecondaryButton onClick={startNewListing}>
-                {startingCheckout ? "…" : (user && !user.registrationPaidAt ? "List a test — £1" : "+ New listing")}
+                {startingCheckout ? "…" : (paymentsEnabled() && user && !user.registrationPaidAt ? "List a test — £1" : "+ New listing")}
               </SecondaryButton>
             </div>
           )}
         </div>
 
-        {user && !user.registrationPaidAt && (
+        {paymentsEnabled() && user && !user.registrationPaidAt && (
           <div className="mb-5 p-3 rounded-lg border border-[var(--border)] bg-[var(--bg-raised)] text-sm text-[var(--muted)]">
             A one-time £1 registration fee is required to list a test and start finding swaps.
           </div>

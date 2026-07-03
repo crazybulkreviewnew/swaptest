@@ -6,6 +6,7 @@ import Link from "next/link";
 import Navbar from "@/components/navbar";
 import { ErrorBox } from "@/components/ui";
 import { register, createListing, startRegistrationCheckout } from "@/lib/api-client";
+import { paymentsEnabled } from "@/lib/payments";
 import { UK_CENTRES } from "@/lib/centres";
 
 function RegisterForm() {
@@ -57,8 +58,8 @@ function RegisterForm() {
       }));
       var r = await startRegistrationCheckout();
       if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
-      if (r && r.alreadyPaid) {
-        // Edge case: already paid — create the listing straight away.
+      if (r && (r.freeMode || r.alreadyPaid)) {
+        // Free mode (or already paid) — create the listing straight away.
         var data = await createListing({ type: userType, centre: centre, currentDate: currentDate, currentTime: currentTime });
         if (data.matches && data.matches.length > 0) {
           sessionStorage.setItem("swaptest_matches", JSON.stringify(data.matches));
@@ -240,7 +241,7 @@ function RegisterForm() {
               {isEarlier
                 ? "We'll match you with anyone at your centre (or a nearby one) who has an earlier slot and wants a later date."
                 : "We'll match you with anyone at your centre (or a nearby one) who has a later slot and wants an earlier date."}
-              {" "}A one-time £1 registration fee lists your test.
+              {paymentsEnabled() ? " A one-time £1 registration fee lists your test." : ""}
             </div>
 
             <button onClick={handleCreateListing} disabled={loading} style={{
@@ -250,7 +251,7 @@ function RegisterForm() {
               opacity: loading ? 0.6 : 1, touchAction: "manipulation",
               boxShadow: "0 4px 16px rgba(29,158,117,0.25)",
             }}>
-              {loading ? "One moment…" : "Continue — £1 to list your test"}
+              {loading ? "One moment…" : (paymentsEnabled() ? "Continue — £1 to list your test" : "List my test")}
             </button>
 
             <p style={{ fontSize: "12px", color: "var(--faint)", textAlign: "center", lineHeight: 1.5 }}>

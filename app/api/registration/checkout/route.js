@@ -6,12 +6,19 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { createRegistrationCheckoutSession } from "@/lib/stripe";
+import { paymentsEnabled } from "@/lib/payments";
 
 export async function POST() {
   const user = await requireAuth();
 
   if (user.registrationPaidAt) {
     return NextResponse.json({ alreadyPaid: true });
+  }
+
+  // Payments off: mark the user registered for free, no Stripe.
+  if (!paymentsEnabled()) {
+    await db.user.updateMany({ where: { id: user.id, registrationPaidAt: null }, data: { registrationPaidAt: new Date() } });
+    return NextResponse.json({ freeMode: true });
   }
 
   const amountPence = parseInt(process.env.REGISTRATION_FEE_PENCE || "100", 10);

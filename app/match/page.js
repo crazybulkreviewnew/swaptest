@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar";
 import { ErrorBox, SuccessBanner, PrimaryButton, SecondaryButton, Badge, Card, Countdown, formatDate } from "@/components/ui";
 import { getMatch, paySwap, consentToMatch, declineMatch } from "@/lib/api-client";
 import { DATA_SHARING_DISCLAIMER, DISCLAIMER_CHECKBOX_LABEL } from "@/lib/disclaimer";
+import { paymentsEnabled } from "@/lib/payments";
 
 function MatchDetail() {
   var router = useRouter();
@@ -175,16 +176,18 @@ function MatchDetail() {
     var youDone = isEarlier ? match.earlierPaid : match.youConsented;
     var otherDoneLabel = isEarlier
       ? "Waiting for the other person to agree to the swap."
-      : "Waiting for the other person to pay the swap fee.";
+      : (paymentsEnabled() ? "Waiting for the other person to pay the swap fee." : "Waiting for the other person to agree to the swap.");
 
     return (<>
       <h2 className="text-xl font-semibold text-[var(--fg)] mb-2">
         {isInitiator ? "Confirm your swap" : "Someone wants to swap with you!"}
       </h2>
       <p className="text-sm text-[var(--muted)] mb-2">
-        {isEarlier
-          ? "To confirm this swap and unlock contact details, accept the disclaimer and pay the £8 swap fee. The other person pays nothing."
-          : "To confirm this swap and unlock contact details, accept the disclaimer below. It is free for you — the other person pays the swap fee."}
+        {paymentsEnabled()
+          ? (isEarlier
+              ? "To confirm this swap and unlock contact details, accept the disclaimer and pay the £8 swap fee. The other person pays nothing."
+              : "To confirm this swap and unlock contact details, accept the disclaimer below. It is free for you — the other person pays the swap fee.")
+          : "To confirm this swap and unlock contact details, accept the disclaimer below."}
       </p>
       {deadlineIsReal && <Countdown deadline={match.payDeadline} onExpired={loadMatch} />}
       {swapDetails}
@@ -196,7 +199,7 @@ function MatchDetail() {
           {disclaimerBox}
           <div className="flex gap-3">
             {isEarlier ? (
-              <PrimaryButton onClick={handlePay} loading={actionLoading} disabled={!agreed} className="flex-1">Accept &amp; pay £8 to swap</PrimaryButton>
+              <PrimaryButton onClick={handlePay} loading={actionLoading} disabled={!agreed} className="flex-1">{paymentsEnabled() ? "Accept & pay £8 to swap" : "Agree to swap"}</PrimaryButton>
             ) : (
               <PrimaryButton onClick={handleConsent} loading={actionLoading} disabled={!agreed} className="flex-1">Agree to swap (free)</PrimaryButton>
             )}

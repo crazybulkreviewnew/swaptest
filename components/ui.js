@@ -116,7 +116,7 @@ export function Badge({ children, variant = "default" }) {
 
 // ── Countdown Timer ───────────────────────────────────────
 
-export function Countdown({ deadline, onExpired }) {
+export function Countdown({ deadline, onExpired, totalMs = 24 * 60 * 60 * 1000 }) {
   const [remaining, setRemaining] = useState(Math.max(0, new Date(deadline).getTime() - Date.now()));
 
   useEffect(() => {
@@ -131,10 +131,17 @@ export function Countdown({ deadline, onExpired }) {
     return () => clearInterval(iv);
   }, [deadline, onExpired]);
 
-  const mins = Math.floor(remaining / 60000);
+  const days = Math.floor(remaining / 86400000);
+  const hours = Math.floor((remaining % 86400000) / 3600000);
+  const mins = Math.floor((remaining % 3600000) / 60000);
   const secs = Math.floor((remaining % 60000) / 1000);
-  const urgent = remaining < 5 * 60 * 1000;
-  const totalMs = 30 * 60 * 1000;
+  const urgent = remaining < 60 * 60 * 1000; // under an hour
+
+  // Human-readable: days/hours for long windows, MM:SS only in the last hour.
+  let label;
+  if (days > 0) label = `${days}d ${hours}h left`;
+  else if (hours > 0) label = `${hours}h ${mins}m left`;
+  else label = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")} left`;
 
   return (
     <div className="flex items-center gap-3 mt-2">
@@ -148,10 +155,10 @@ export function Countdown({ deadline, onExpired }) {
         />
       </div>
       <span
-        className="font-mono tabular-nums text-sm font-semibold min-w-[52px] text-right"
+        className="tabular-nums text-sm font-semibold whitespace-nowrap text-right"
         style={{ color: urgent ? "#E24B4A" : "var(--fg-2)" }}
       >
-        {String(mins).padStart(2, "0")}:{String(secs).padStart(2, "0")}
+        {label}
       </span>
     </div>
   );

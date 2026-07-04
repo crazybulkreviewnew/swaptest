@@ -21,12 +21,12 @@
   --border-strong: #d6d3ca;     /* hover borders */
   --chip: #eeece6;              /* neutral pill background */
 
-  --fg-strong: #1b1a16;         /* headings */
-  --fg: #33322d;                /* body text */
-  --fg-2: #4c4b43;              /* slightly dimmed text */
-  --muted: #5f5e56;             /* secondary text */
-  --muted-2: #76756d;           /* tertiary text */
-  --faint: #9b998f;             /* faintest text */
+  --fg-strong: #141310;         /* headings */
+  --fg: #26251f;                /* body text */
+  --fg-2: #3a382f;              /* slightly dimmed text */
+  --muted: #47463d;             /* secondary text — darkened for readability */
+  --muted-2: #58564d;           /* tertiary text */
+  --faint: #74726a;             /* faintest text */
 
   --nav-bg: rgba(255, 255, 255, 0.8);
   --cta-end: #edf5f1;           /* CTA gradient end tint */

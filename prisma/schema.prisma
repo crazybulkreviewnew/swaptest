@@ -46,6 +46,11 @@ enum ListingType {
   LATER    // user wants a later date (willing to swap for later)
 }
 
+enum TestType {
+  WEEKDAY          // weekday test (£62)
+  EVENING_WEEKEND  // evening, weekend or bank holiday test (£75)
+}
+
 enum ListingStatus {
   AVAILABLE  // open for matching
   LOCKED     // someone selected this, pending confirmation
@@ -59,6 +64,8 @@ model Listing {
   userId            String
   type              ListingType
   centre            String        // exact DVSA test centre name
+  testType          TestType      @default(WEEKDAY) // must match for a swap (DVSA rule)
+  originalCentre    String?       // if they swapped before, the centre they can move back to
   currentDate       DateTime      // user's existing test date
   currentTime       String        // e.g. "09:30"
   status            ListingStatus @default(AVAILABLE)

@@ -24,6 +24,9 @@ export default function DashboardPage() {
   var [formType, setFormType] = useState("EARLIER");
   var [formLoading, setFormLoading] = useState(false);
   var [centre, setCentre] = useState("");
+  var [testType, setTestType] = useState("WEEKDAY");
+  var [swappedBefore, setSwappedBefore] = useState(false);
+  var [originalCentre, setOriginalCentre] = useState("");
   var [currentDate, setCurrentDate] = useState("");
   var [currentTime, setCurrentTime] = useState("");
   var [startingCheckout, setStartingCheckout] = useState(false);
@@ -93,7 +96,9 @@ export default function DashboardPage() {
     setErrors([]);
     try {
       var data = await createListing({
-        type: formType, centre: centre, currentDate: currentDate, currentTime: currentTime,
+        type: formType, centre: centre, testType: testType,
+        originalCentre: swappedBefore ? (originalCentre || undefined) : undefined,
+        currentDate: currentDate, currentTime: currentTime,
       });
       if (data.matches && data.matches.length > 0) {
         setMatchResults(data.matches);
@@ -102,7 +107,7 @@ export default function DashboardPage() {
         setSuccess("Listing created. No matches found yet. Check back later or click Refresh.");
       }
       setShowForm(false);
-      setCentre(""); setCurrentDate(""); setCurrentTime("");
+      setCentre(""); setTestType("WEEKDAY"); setSwappedBefore(false); setOriginalCentre(""); setCurrentDate(""); setCurrentTime("");
       await loadData();
     } catch (err) {
       if (err.status === 403) {
@@ -215,6 +220,8 @@ export default function DashboardPage() {
     setEditingId(listing.id);
     setEditForm({
       type: listing.type, centre: listing.centre,
+      testType: listing.testType || "WEEKDAY",
+      originalCentre: listing.originalCentre || "",
       currentDate: new Date(listing.currentDate).toISOString().split("T")[0],
       currentTime: listing.currentTime,
     });
@@ -226,7 +233,10 @@ export default function DashboardPage() {
     setErrors([]);
     try {
       await editListing(editingId, {
-        type: editForm.type, centre: editForm.centre, currentDate: editForm.currentDate,
+        type: editForm.type, centre: editForm.centre,
+        testType: editForm.testType,
+        originalCentre: editForm.originalCentre || null,
+        currentDate: editForm.currentDate,
         currentTime: editForm.currentTime,
       });
       setEditingId(null);
@@ -353,6 +363,25 @@ export default function DashboardPage() {
                   {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
                 </select>
               </div>
+              <div>
+                <label className="block text-xs text-[var(--muted)] mb-1">Test type <span className="text-red-500">*</span></label>
+                <select value={testType} onChange={function(e) { setTestType(e.target.value); }}>
+                  <option value="WEEKDAY">Weekday test (£62)</option>
+                  <option value="EVENING_WEEKEND">Evening, weekend or bank holiday (£75)</option>
+                </select>
+              </div>
+              <div>
+                <label className="flex gap-2 items-start text-xs text-[var(--fg-2)] cursor-pointer">
+                  <input type="checkbox" checked={swappedBefore} onChange={function(e) { setSwappedBefore(e.target.checked); }} style={{ width: "auto" }} className="mt-0.5" />
+                  <span>I've swapped before (I can also move back to my original centre)</span>
+                </label>
+                {swappedBefore && (
+                  <select className="mt-2" value={originalCentre} onChange={function(e) { setOriginalCentre(e.target.value); }}>
+                    <option value="">Original test centre...</option>
+                    {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
+                  </select>
+                )}
+              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs text-[var(--muted)] mb-1">Current test date <span className="text-red-500">*</span></label>
@@ -399,6 +428,20 @@ export default function DashboardPage() {
                         <div>
                           <label className="block text-xs text-[var(--muted)] mb-1">Test centre</label>
                           <select value={editForm.centre} onChange={function(e) { setEditForm(Object.assign({}, editForm, { centre: e.target.value })); }}>
+                            {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Test type</label>
+                          <select value={editForm.testType} onChange={function(e) { setEditForm(Object.assign({}, editForm, { testType: e.target.value })); }}>
+                            <option value="WEEKDAY">Weekday test (£62)</option>
+                            <option value="EVENING_WEEKEND">Evening, weekend or bank holiday (£75)</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Original centre <span className="text-[var(--faint)]">(if you swapped before)</span></label>
+                          <select value={editForm.originalCentre || ""} onChange={function(e) { setEditForm(Object.assign({}, editForm, { originalCentre: e.target.value })); }}>
+                            <option value="">None</option>
                             {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
                           </select>
                         </div>

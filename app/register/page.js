@@ -26,6 +26,9 @@ function RegisterForm() {
   var [password, setPassword] = useState("");
 
   var [centre, setCentre] = useState("");
+  var [testType, setTestType] = useState("WEEKDAY");
+  var [swappedBefore, setSwappedBefore] = useState(false);
+  var [originalCentre, setOriginalCentre] = useState("");
   var [currentDate, setCurrentDate] = useState("");
   var [currentTime, setCurrentTime] = useState("");
 
@@ -54,13 +57,15 @@ function RegisterForm() {
       // listing they entered and send them to Stripe; the dashboard creates the
       // listing once registrationPaidAt is set (on return from checkout).
       sessionStorage.setItem("swaptest_pending_listing", JSON.stringify({
-        type: userType, centre: centre, currentDate: currentDate, currentTime: currentTime,
+        type: userType, centre: centre, testType: testType,
+        originalCentre: swappedBefore ? (originalCentre || undefined) : undefined,
+        currentDate: currentDate, currentTime: currentTime,
       }));
       var r = await startRegistrationCheckout();
       if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
       if (r && (r.freeMode || r.alreadyPaid)) {
         // Free mode (or already paid) — create the listing straight away.
-        var data = await createListing({ type: userType, centre: centre, currentDate: currentDate, currentTime: currentTime });
+        var data = await createListing({ type: userType, centre: centre, testType: testType, originalCentre: swappedBefore ? (originalCentre || undefined) : undefined, currentDate: currentDate, currentTime: currentTime });
         if (data.matches && data.matches.length > 0) {
           sessionStorage.setItem("swaptest_matches", JSON.stringify(data.matches));
           sessionStorage.setItem("swaptest_listing", JSON.stringify(data.listing));
@@ -208,6 +213,34 @@ function RegisterForm() {
               <p style={{ fontSize: "12px", color: "var(--faint)", marginTop: "6px" }}>
                 We'll also search 3 nearby centres automatically.
               </p>
+            </div>
+
+            {/* Test type */}
+            <div>
+              <label style={labelStyle}>What type of test is it?</label>
+              <select value={testType} onChange={function(e) { setTestType(e.target.value); clearErrors(); }}
+                style={{ ...inputStyle, appearance: "auto", cursor: "pointer" }}>
+                <option value="WEEKDAY">Weekday test (£62)</option>
+                <option value="EVENING_WEEKEND">Evening, weekend or bank holiday test (£75)</option>
+              </select>
+              <p style={{ fontSize: "12px", color: "var(--faint)", marginTop: "6px" }}>
+                DVSA only allows swaps between the same test type.
+              </p>
+            </div>
+
+            {/* Swapped before? */}
+            <div>
+              <label style={{ display: "flex", gap: "8px", alignItems: "flex-start", cursor: "pointer", fontSize: "13px", color: "var(--fg-2)" }}>
+                <input type="checkbox" checked={swappedBefore} onChange={function(e) { setSwappedBefore(e.target.checked); clearErrors(); }} style={{ width: "auto", marginTop: "2px" }} />
+                <span>I've swapped my test before (I can also move back to my original centre)</span>
+              </label>
+              {swappedBefore && (
+                <select value={originalCentre} onChange={function(e) { setOriginalCentre(e.target.value); clearErrors(); }}
+                  style={{ ...inputStyle, appearance: "auto", cursor: "pointer", marginTop: "10px" }}>
+                  <option value="">Choose your original test centre...</option>
+                  {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
+                </select>
+              )}
             </div>
 
             {/* Current date & time */}

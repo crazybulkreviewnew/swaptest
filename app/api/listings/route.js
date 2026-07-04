@@ -16,10 +16,12 @@ export async function POST(request) {
   var body = await request.json();
   var type = body.type;
   var centre = body.centre;
+  var testType = body.testType;
+  var originalCentre = body.originalCentre || null;
   var currentDate = body.currentDate;
   var currentTime = body.currentTime;
 
-  var validation = validateListing({ type: type, centre: centre, currentDate: currentDate, currentTime: currentTime });
+  var validation = validateListing({ type: type, centre: centre, testType: testType, originalCentre: originalCentre, currentDate: currentDate, currentTime: currentTime });
   if (!validation.valid) {
     return NextResponse.json({ errors: validation.errors }, { status: 400 });
   }
@@ -34,6 +36,7 @@ export async function POST(request) {
   var listing = await db.listing.create({
     data: {
       userId: user.id, type: type, centre: centre,
+      testType: testType, originalCentre: originalCentre,
       currentDate: new Date(currentDate), currentTime: currentTime,
       status: "AVAILABLE",
     },

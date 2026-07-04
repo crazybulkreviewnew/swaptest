@@ -26,13 +26,15 @@ export async function PUT(request, { params }) {
   var body = await request.json();
   var type = body.type || listing.type;
   var centre = body.centre || listing.centre;
+  var testType = body.testType || listing.testType;
+  var originalCentre = body.originalCentre !== undefined ? (body.originalCentre || null) : listing.originalCentre;
   var currentDate = body.currentDate;
   var currentTime = body.currentTime || listing.currentTime;
-  var validation = validateListing({ type: type, centre: centre, currentDate: currentDate, currentTime: currentTime });
+  var validation = validateListing({ type: type, centre: centre, testType: testType, originalCentre: originalCentre, currentDate: currentDate, currentTime: currentTime });
   if (!validation.valid) return NextResponse.json({ errors: validation.errors }, { status: 400 });
   var updated = await db.listing.update({
     where: { id: id },
-    data: { type: type, centre: centre, currentDate: new Date(currentDate), currentTime: currentTime },
+    data: { type: type, centre: centre, testType: testType, originalCentre: originalCentre, currentDate: new Date(currentDate), currentTime: currentTime },
   });
   return NextResponse.json({ listing: updated });
 }

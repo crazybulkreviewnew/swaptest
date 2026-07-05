@@ -239,8 +239,8 @@ export default function HomePage() {
                 color: "#C084FC",
               },
               {
-                title: "30-minute windows",
-                desc: "When someone wants to swap with you, you get 30 minutes to respond. Fast, decisive, no ghosting.",
+                title: "24-hour windows",
+                desc: "When someone wants to swap with you, you get 24 hours to respond. Plenty of time to decide, no endless waiting.",
                 color: "#F0997B",
               },
               {
@@ -385,7 +385,7 @@ export default function HomePage() {
               },
               {
                 q: "What happens if the other person doesn't respond?",
-                a: "When you select a match, the other person has 30 minutes to agree. If they don't respond, the match expires automatically and your listing goes back into the pool. No harm done.",
+                a: "When you select a match, the other person has 24 hours to agree. If they don't respond, the match expires automatically and your listing goes back into the pool. No harm done.",
               },
               {
                 q: "Can I cancel or edit my listing?",

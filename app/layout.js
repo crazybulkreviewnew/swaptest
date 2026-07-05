@@ -144,7 +144,7 @@ const jsonLd = {
           name: "What happens if the other person doesn't respond?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "When you select a match, the other person has 30 minutes to agree. If they don't respond, the match expires automatically and your listing goes back into the pool. No harm done.",
+            text: "When you select a match, the other person has 24 hours to agree. If they don't respond, the match expires automatically and your listing goes back into the pool. No harm done.",
           },
         },
         {

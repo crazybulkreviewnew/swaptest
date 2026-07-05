@@ -134,7 +134,7 @@ function MatchDetail() {
     if (s === "COMPLETED") {
       return (<>
         <div className="text-center mb-6">
-          <div className="w-16 h-16 rounded-full bg-[#085041] flex items-center justify-center mx-auto mb-4"><span aria-hidden="true" className="text-3xl text-[var(--brand-text)]">✓</span></div>
+          <div className="w-16 h-16 rounded-full bg-[#0F6E56] flex items-center justify-center mx-auto mb-4"><span aria-hidden="true" className="text-3xl text-white">✓</span></div>
           <h2 className="text-2xl font-bold text-[var(--fg)] mb-2">Swap confirmed!</h2>
           <p className="text-sm text-[var(--muted)]">Both of you agreed. Here are your swap partner&apos;s details.</p>
         </div>
@@ -159,7 +159,7 @@ function MatchDetail() {
 
     if (s === "EXPIRED") {
       return (<div className="text-center">
-        <div className="w-16 h-16 rounded-full bg-red-950/60 flex items-center justify-center mx-auto mb-4"><span aria-hidden="true" className="text-3xl text-red-400">✕</span></div>
+        <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-950/60 flex items-center justify-center mx-auto mb-4"><span aria-hidden="true" className="text-3xl text-red-600 dark:text-red-400">✕</span></div>
         <h2 className="text-xl font-semibold text-[var(--fg)] mb-2">Match expired</h2>
         <p className="text-sm text-[var(--muted)] max-w-sm mx-auto leading-relaxed">This swap was not completed in time. Both listings are back in the pool.</p>
       </div>);

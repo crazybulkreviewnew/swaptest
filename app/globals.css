@@ -11,7 +11,8 @@
   color-scheme: light;
 
   --brand: #1D9E75;
-  --brand-text: #15805e;        /* brand used as text/icon on a light bg */
+  --brand-text: #15805e;        /* brand green as text/icon (readable on light bg) */
+  --accent-amber: #8a5d00;      /* "later" amber as text (readable on light bg) */
 
   --bg: #ffffff;                /* page background */
   --bg-raised: #f7f6f3;         /* alternating section background */
@@ -46,6 +47,7 @@ html.dark {
 
   --brand: #1D9E75;
   --brand-text: #5DCAA5;
+  --accent-amber: #E8A838;
 
   --bg: #111110;
   --bg-raised: #161614;

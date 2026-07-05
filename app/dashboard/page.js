@@ -349,7 +349,7 @@ export default function DashboardPage() {
               {["EARLIER", "LATER"].map(function(t) {
                 return (
                   <button key={t} onClick={function() { setFormType(t); }}
-                    className={"px-4 py-2 rounded-lg text-sm font-medium transition " + (formType === t ? "bg-[#085041] text-[var(--brand-text)] border border-[#0F6E56]" : "bg-[var(--chip)] text-[var(--muted-2)] border border-[var(--border)] hover:border-[var(--border-strong)]")}>
+                    className={"px-4 py-2 rounded-lg text-sm font-medium transition " + (formType === t ? "bg-[#0F6E56] text-white border border-[#0F6E56]" : "bg-[var(--chip)] text-[var(--fg-2)] border border-[var(--border)] hover:border-[var(--border-strong)]")}>
                     {t === "EARLIER" ? "Want earlier" : "Want later"}
                   </button>
                 );

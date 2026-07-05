@@ -114,7 +114,7 @@ function RegisterForm() {
             display: "inline-block", padding: "5px 14px", borderRadius: "20px", marginBottom: "16px",
             fontSize: "12px", fontWeight: 600, letterSpacing: "0.5px",
             background: isEarlier ? "rgba(29,158,117,0.12)" : "rgba(232,168,56,0.12)",
-            color: isEarlier ? "var(--brand-text)" : "#E8A838",
+            color: isEarlier ? "var(--brand-text)" : "var(--accent-amber)",
             border: isEarlier ? "1px solid rgba(29,158,117,0.25)" : "1px solid rgba(232,168,56,0.25)",
           }}>
             {isEarlier ? "Looking for an earlier date" : "Looking for a later date"}
@@ -194,7 +194,7 @@ function RegisterForm() {
               padding: "14px 16px", borderRadius: "10px",
               background: isEarlier ? "rgba(29,158,117,0.06)" : "rgba(232,168,56,0.06)",
               border: isEarlier ? "1px solid rgba(29,158,117,0.15)" : "1px solid rgba(232,168,56,0.15)",
-              fontSize: "13px", color: isEarlier ? "#7dd4b3" : "#e8c078", lineHeight: 1.5,
+              fontSize: "13px", color: isEarlier ? "var(--brand-text)" : "var(--accent-amber)", lineHeight: 1.5,
             }}>
               {isEarlier
                 ? "Enter your current test details below. We'll find people with earlier dates who want to swap to your later date."

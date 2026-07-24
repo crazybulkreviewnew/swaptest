@@ -13,6 +13,12 @@ function RegisterForm() {
   var router = useRouter();
   var searchParams = useSearchParams();
   var typeParam = searchParams.get("type") || "earlier";
+  // City landing pages link here with the centre already chosen, e.g.
+  // /register?type=later&centre=Bury%20(Manchester). Validated against the real
+  // centre list so a junk or stale query string just leaves the field empty
+  // rather than putting an unmatchable value into the form.
+  var centreParam = searchParams.get("centre") || "";
+  var prefilledCentre = UK_CENTRES.includes(centreParam) ? centreParam : "";
 
   var [step, setStep] = useState(1);
   var [loading, setLoading] = useState(false);
@@ -25,7 +31,7 @@ function RegisterForm() {
   var [phone, setPhone] = useState("");
   var [password, setPassword] = useState("");
 
-  var [centre, setCentre] = useState("");
+  var [centre, setCentre] = useState(prefilledCentre);
   var [testType, setTestType] = useState("WEEKDAY");
   var [swappedBefore, setSwappedBefore] = useState(false);
   var [originalCentre, setOriginalCentre] = useState("");
@@ -131,6 +137,15 @@ function RegisterForm() {
                 : "We'll search for people who want an earlier date at your centre or nearby."
             }
           </p>
+
+          {/* Arrived from a city page with a centre already chosen. Confirm it
+              on step 1, otherwise the choice is invisible until step 2 and the
+              page looks like it forgot where they came from. */}
+          {step === 1 && prefilledCentre && (
+            <p style={{ fontSize: "13px", color: "var(--muted-2)", margin: "10px 0 0", lineHeight: 1.5 }}>
+              Listing a test at <strong style={{ color: "var(--fg-2)" }}>{prefilledCentre}</strong>. You can change this on the next step.
+            </p>
+          )}
         </div>
 
         {/* Step progress */}

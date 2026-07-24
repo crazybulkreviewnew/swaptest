@@ -171,7 +171,17 @@ export default async function CityPage({ params }) {
             <tbody>
               {city.centres.map((centre) => (
                 <tr key={centre}>
-                  <th scope="row" style={{ ...cell, fontWeight: 600, color: "var(--fg)", textAlign: "left" }}>{centre.replace(` (${city.name})`, "")}</th>
+                  <th scope="row" style={{ ...cell, fontWeight: 600, textAlign: "left" }}>
+                    {/* Straight into a prefilled form. Saves picking from a list
+                        of 320 centres, and gives the page internal links whose
+                        anchor text is the centre name people search for. */}
+                    <Link
+                      href={`/register?centre=${encodeURIComponent(centre)}`}
+                      style={{ color: "var(--fg)", textDecoration: "none", borderBottom: "1px solid var(--border-strong)" }}
+                    >
+                      {centre.replace(` (${city.name})`, "")}
+                    </Link>
+                  </th>
                   <td style={{ ...cell, color: "var(--muted)" }}>
                     {(NEARBY_CENTRES[centre] || []).map((n) => n.replace(` (${city.name})`, "")).join(", ")}
                   </td>
@@ -181,7 +191,7 @@ export default async function CityPage({ params }) {
           </table>
         </div>
         <p style={{ fontSize: "12px", color: "var(--muted-2)", marginBottom: "8px" }}>
-          You can also move back to the centre you first booked at, even if it is not on this list.
+          Pick your centre above to start listing your test. You can also move back to the centre you first booked at, even if it is not on this list.
         </p>
 
         <h2 style={h2}>The DVSA rules worth knowing</h2>

@@ -1,21 +1,21 @@
 // ============================================================
 // GET /api/cron/timeout
 // ============================================================
-// Called every minute by Vercel Cron to check for expired matches.
-// Protected by CRON_SECRET to prevent external calls.
+// BACKSTOP for expiring matches. Protected by CRON_SECRET.
 //
-// vercel.json config:
-// {
-//   "crons": [{
-//     "path": "/api/cron/timeout",
-//     "schedule": "* * * * *"
-//   }]
-// }
+// Each match now schedules its own expiry through QStash the moment it is
+// created (lib/scheduler.js), which is what makes expiry timely. This cron is
+// the safety net for matches whose scheduled job was never created (QStash
+// unconfigured) or was lost.
+//
+// It runs on whatever schedule vercel.json sets — currently daily, because
+// Vercel's Hobby plan allows no more than one cron run per day. That is
+// precisely why the QStash path exists: relying on this alone leaves listings
+// LOCKED and unmatchable for up to 24h after their window closes.
 //
 // This endpoint:
 // 1. Finds PENDING matches whose payDeadline has passed.
-// 2. Expires them, releases listing locks, and refunds the earlier-seeker
-//    if they had already paid.
+// 2. Expires them and releases both listing locks.
 // ============================================================
 
 import { NextResponse } from "next/server";

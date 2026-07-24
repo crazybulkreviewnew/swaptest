@@ -226,6 +226,30 @@ Flip `NEXT_PUBLIC_PAYMENTS_ENABLED=true`. Before doing so:
 - [ ] Run `004_verify.sql` right before flipping, to confirm every existing user still
       carries the free-for-life flag.
 
+## Match reminders
+
+A match opens a 24h window (`SWAP_DEADLINE_HOURS`) for both parties to agree. The failure
+mode this addresses: the responder gets two emails within minutes of the match being created
+and then nothing at all until it silently expires. Miss that first burst and the swap dies.
+
+When a match is created, [lib/scheduler.js](lib/scheduler.js) schedules its whole timeline
+through QStash: reminder nudges at **6h and 2h before the deadline**, and the **expiry
+itself**. Jobs call back to [/api/jobs/match](app/api/jobs/match/route.js), authenticated by
+QStash's request signature — that endpoint fails closed if the signing keys are missing,
+because it changes match state.
+
+Reminders only go to whoever hasn't agreed yet, decided at fire time, so nobody is nudged
+about something they've already done.
+
+**Why QStash and not a cron:** Vercel's Hobby plan permits one cron run per day. The daily
+cron remains as a backstop, but on its own it means a window closing at 06:42 leaves both
+listings `LOCKED` and invisible to matching until midnight. QStash delivers each job at its
+own time regardless of plan.
+
+Scheduling is skipped when `QSTASH_TOKEN` is unset or `NEXT_PUBLIC_APP_URL` isn't a public
+https URL (QStash can't call into localhost). In that state the app still works — expiry just
+falls back to the daily cron and no reminders are sent.
+
 ## Known gaps / candidate work
 
 - `workingDaysUntil()` ignores UK bank holidays, so the 10-working-day check can be
@@ -235,6 +259,13 @@ Flip `NEXT_PUBLIC_PAYMENTS_ENABLED=true`. Before doing so:
   transactional parts of `lib/matching.js` need a database (or mocks) and are untested.
 - If a member's subscription lapses **mid-match**, they can't agree to that swap and their
   partner waits out the 24h window. Acceptable for now, but worth revisiting.
+- **The expiry email tells both parties "the other person did not respond"** — so the person
+  who ignored it is told the responsive one went quiet. Should be tailored per party, and the
+  one who did respond should be pointed straight at fresh matches.
+- **Push notifications are collected but never sent.** `/api/push/register` stores an APNs
+  token for every app user and nothing reads it. The largest untapped reach for nudges.
+- `SWAP_DEADLINE_HOURS` is 24h. For learner drivers who check email once a day that is tight;
+  48h is worth considering (env change only, no deploy).
 - `Match.payDeadline` is now just a response deadline; the name is misleading.
 - `sendRefundNotification` in [lib/email.js](lib/email.js) is never called.
 - `readme.md` is a single line.

@@ -10,10 +10,10 @@ const BASE_URL = "https://www.swaptest.co.uk";
 export default function sitemap() {
   const lastModified = new Date();
 
-  // City landing pages. High priority: these target the searches people
-  // actually type ("swap driving test manchester") and carry real content.
+  // City landing pages at the root, e.g. /manchester. High priority: these
+  // target the searches people actually type and carry real content.
   const cityPages = allCitySlugs().map((slug) => ({
-    url: `${BASE_URL}/swap-driving-test/${slug}`,
+    url: `${BASE_URL}/${slug}`,
     lastModified,
     changeFrequency: "daily", // live listing counts change
     priority: 0.9,

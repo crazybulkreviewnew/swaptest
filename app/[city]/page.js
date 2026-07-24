@@ -1,11 +1,19 @@
 // ============================================================
-// /swap-driving-test/[city] — city landing pages
+// /[city] — city landing pages, e.g. /manchester
 // ============================================================
 // A server component on purpose: these pages exist to be crawled, so they need
 // their own metadata and real HTML on first response. No "use client" here.
 //
 // Live listing counts are read at build and refreshed hourly (revalidate), so
 // the page stays static for search engines while the numbers stay honest.
+//
+// NOTE ON THE ROOT SEGMENT
+// This route sits at the top level, so it shares a namespace with /login,
+// /register, /terms and the rest. Next gives static routes priority over this
+// dynamic one, so those keep working. `dynamicParams = false` then limits this
+// route to the slugs in lib/cities.js, so /anything-else returns a real 404
+// instead of an empty city page. Do not remove it, and do not name a city after
+// an existing route.
 // ============================================================
 
 import Link from "next/link";
@@ -19,6 +27,10 @@ import { getCopy } from "./copy";
 const BASE_URL = "https://www.swaptest.co.uk";
 
 export const revalidate = 3600; // refresh the live counts hourly
+
+// Only the slugs in lib/cities.js resolve. Anything else 404s rather than
+// rendering a blank city page at an arbitrary URL.
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return allCitySlugs().map((city) => ({ city }));
@@ -35,8 +47,8 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
-    alternates: { canonical: `${BASE_URL}/swap-driving-test/${city.slug}` },
-    openGraph: { title, description, url: `${BASE_URL}/swap-driving-test/${city.slug}`, type: "website" },
+    alternates: { canonical: `${BASE_URL}/${city.slug}` },
+    openGraph: { title, description, url: `${BASE_URL}/${city.slug}`, type: "website" },
   };
 }
 

@@ -5,7 +5,7 @@ import CookieConsent from "@/components/cookie-consent";
 import { paymentsEnabled } from "@/lib/payments";
 
 const pay = paymentsEnabled();
-const priceBlurb = pay ? "£1 to list your test, viewing matches is free, £8 only if you swap." : "Currently free to use.";
+const priceBlurb = pay ? "Just £1 a week, with no fee to swap." : "Currently free to use.";
 
 export const metadata = {
   metadataBase: new URL("https://www.swaptest.co.uk"),
@@ -127,7 +127,7 @@ const jsonLd = {
           acceptedAnswer: {
             "@type": "Answer",
             text: pay
-              ? "It costs £1 to register and list your test, and viewing your matches is free. If you decide to go ahead with a swap, only the person who wants an earlier date pays an £8 swap fee — the person moving to a later date pays nothing. There are no subscriptions and no hidden charges."
+              ? "SwapTest costs £1 a week. That covers listing your test, viewing your matches and as many swaps as you need — there is no separate swap fee and no hidden charges. You can cancel at any time."
               : "SwapTest is currently free to use — there is no charge to register, list your test, view matches, or complete a swap. We may introduce a small fee in the future, but there are no hidden charges.",
           },
         },

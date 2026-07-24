@@ -8,13 +8,14 @@ import {
   ErrorBox, SuccessBanner, PrimaryButton, SecondaryButton, Badge, Card,
   EmptyState, StatCard, Countdown, PageShell, formatDate,
 } from "@/components/ui";
-import { getListings, createListing, selectMatch, deleteListing, editListing, startRegistrationCheckout } from "@/lib/api-client";
+import { getListings, createListing, selectMatch, deleteListing, editListing, startSubscriptionCheckout, openBillingPortal } from "@/lib/api-client";
 import { paymentsEnabled } from "@/lib/payments";
 import { UK_CENTRES } from "@/lib/centres";
 
 export default function DashboardPage() {
   var router = useRouter();
   var [user, setUser] = useState(null);
+  var [subscription, setSubscription] = useState(null);
   var [listings, setListings] = useState([]);
   var [loading, setLoading] = useState(true);
   var [errors, setErrors] = useState([]);
@@ -30,6 +31,7 @@ export default function DashboardPage() {
   var [currentDate, setCurrentDate] = useState("");
   var [currentTime, setCurrentTime] = useState("");
   var [startingCheckout, setStartingCheckout] = useState(false);
+  var [openingPortal, setOpeningPortal] = useState(false);
 
   var [matchResults, setMatchResults] = useState([]);
   var [matchListing, setMatchListing] = useState(null);
@@ -53,6 +55,7 @@ export default function DashboardPage() {
         getListings(),
       ]);
       if (results[0].user) setUser(results[0].user);
+      setSubscription(results[0].subscription || null);
       setListings(results[1].listings || []);
 
       if (results[1].newMatches && results[1].newMatches.length > 0 && !matchResults.length) {
@@ -111,8 +114,8 @@ export default function DashboardPage() {
       await loadData();
     } catch (err) {
       if (err.status === 403) {
-        // Not yet registered — send to the £1 checkout.
-        handleStartRegistration();
+        // No active membership — send them to the weekly checkout.
+        handleStartSubscription();
       } else {
         setErrors(err.errors || ["Failed to create listing"]);
       }
@@ -121,14 +124,14 @@ export default function DashboardPage() {
     }
   };
 
-  // Registration gate: start the one-time £1 Stripe checkout.
-  var handleStartRegistration = async function() {
+  // Membership gate: start the £1/week Stripe subscription checkout.
+  var handleStartSubscription = async function() {
     setStartingCheckout(true);
     setErrors([]);
     try {
-      var r = await startRegistrationCheckout();
+      var r = await startSubscriptionCheckout();
       if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
-      if (r && (r.alreadyPaid || r.freeMode)) { await loadData(); setShowForm(true); }
+      if (r && (r.alreadyActive || r.freeMode)) { await loadData(); setShowForm(true); }
     } catch (err) {
       setErrors(err.errors || ["Could not start checkout. Please try again."]);
     } finally {
@@ -136,23 +139,40 @@ export default function DashboardPage() {
     }
   };
 
-  // "+ New listing" entry point — paid users see the form, unpaid go to checkout.
+  // Stripe-hosted billing portal — change card details or cancel.
+  var handleManageBilling = async function() {
+    setOpeningPortal(true);
+    setErrors([]);
+    try {
+      var r = await openBillingPortal();
+      if (r && r.portalUrl) { window.location.href = r.portalUrl; return; }
+    } catch (err) {
+      setErrors(err.errors || ["Could not open billing settings."]);
+    } finally {
+      setOpeningPortal(false);
+    }
+  };
+
+  var membershipActive = !paymentsEnabled() || (subscription && subscription.active);
+
+  // "+ New listing" entry point — members see the form, everyone else subscribes.
   var startNewListing = function() {
-    if (user && !user.registrationPaidAt) { handleStartRegistration(); }
+    if (!membershipActive) { handleStartSubscription(); }
     else { setShowForm(true); }
   };
 
-  // After returning from the registration checkout, create the listing the user
+  // After returning from the subscription checkout, create the listing the user
   // entered during sign-up (stashed in sessionStorage), once the webhook has
-  // marked them as paid.
+  // activated their membership.
   var finalizePendingListing = useCallback(async function() {
     var raw = sessionStorage.getItem("swaptest_pending_listing");
     if (!raw) { await loadData(); return; }
     var pending;
     try { pending = JSON.parse(raw); } catch (e) { sessionStorage.removeItem("swaptest_pending_listing"); return; }
+    // Poll until the webhook has activated the membership.
     for (var i = 0; i < 12; i++) {
       var me = await fetch("/api/auth/me").then(function(r) { return r.json(); }).catch(function() { return {}; });
-      if (me.user && me.user.registrationPaidAt) break;
+      if (me.subscription && me.subscription.active) break;
       await new Promise(function(res) { setTimeout(res, 2000); });
     }
     try {
@@ -162,7 +182,7 @@ export default function DashboardPage() {
         setMatchResults(data.matches);
         setMatchListing(data.listing);
       } else {
-        setSuccess("Registration complete and your test is now listed!");
+        setSuccess("You're a member and your test is now listed!");
       }
       await loadData();
     } catch (err) {
@@ -176,12 +196,12 @@ export default function DashboardPage() {
   useEffect(function() {
     var sp = new URLSearchParams(window.location.search);
     var status = sp.get("status");
-    if (status === "registered") {
-      setSuccess("Registration complete! Setting up your listing…");
+    if (status === "subscribed") {
+      setSuccess("You're in! Setting up your listing…");
       window.history.replaceState({}, "", "/dashboard");
       finalizePendingListing();
-    } else if (status === "registration_cancelled") {
-      setErrors(["Registration payment was cancelled. You can try again whenever you're ready."]);
+    } else if (status === "subscription_cancelled") {
+      setErrors(["Checkout was cancelled. You can join whenever you're ready."]);
       window.history.replaceState({}, "", "/dashboard");
     }
   }, [finalizePendingListing]);
@@ -272,6 +292,59 @@ export default function DashboardPage() {
 
   var isEarlier = formType === "EARLIER";
 
+  // Membership status strip. Only rendered when payments are switched on.
+  var renderMembershipBanner = function() {
+    var box = "mb-5 p-3 rounded-lg border text-sm flex flex-wrap items-center justify-between gap-3";
+    var neutral = box + " border-[var(--border)] bg-[var(--bg-raised)] text-[var(--muted)]";
+    var warn = box + " border-amber-500/40 bg-amber-500/10 text-[var(--fg-2)]";
+
+    // Founding members — free for life. Never ask these users for money.
+    if (subscription.lifetimeFree) {
+      return (
+        <div className={neutral}>
+          <span>
+            You joined SwapTest early, so your access is <strong>free for life</strong> —
+            listing, matching and swapping, with nothing to pay. Thank you for being here from the start.
+          </span>
+        </div>
+      );
+    }
+
+    // No access: either never joined, or the membership lapsed.
+    if (!subscription.active) {
+      var lapsed = subscription.reason === "subscription_lapsed";
+      return (
+        <div className={warn}>
+          <span>
+            {lapsed
+              ? "Your membership has ended. Your listings are hidden from matching until you resubscribe."
+              : "Membership is £1 a week. It lets you list your test, get matched and swap as often as you need."}
+          </span>
+          <SecondaryButton onClick={handleStartSubscription}>
+            {startingCheckout ? "…" : (lapsed ? "Resubscribe — £1 a week" : "Join — £1 a week")}
+          </SecondaryButton>
+        </div>
+      );
+    }
+
+    // Active. CANCELLED-but-still-paid reads as "ends on", otherwise "renews".
+    var ending = subscription.status === "CANCELLED";
+    return (
+      <div className={neutral}>
+        <span>
+          Membership active — £1 a week.
+          {subscription.currentPeriodEnd
+            ? (ending ? " Access ends " : " Renews ") + formatDate(subscription.currentPeriodEnd) + "."
+            : ""}
+        </span>
+        <button onClick={handleManageBilling} disabled={openingPortal}
+          className="text-[var(--muted-2)] hover:text-[var(--fg-2)] underline transition disabled:opacity-50">
+          {openingPortal ? "Opening…" : (ending ? "Restart membership" : "Manage billing")}
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen">
       <Navbar user={user} onLogout={function() { router.push("/"); }} />
@@ -288,17 +361,13 @@ export default function DashboardPage() {
                 {refreshing ? "Checking..." : "Refresh matches"}
               </button>
               <SecondaryButton onClick={startNewListing}>
-                {startingCheckout ? "…" : (paymentsEnabled() && user && !user.registrationPaidAt ? "List a test — £1" : "+ New listing")}
+                {startingCheckout ? "…" : (!membershipActive ? "Join — £1 a week" : "+ New listing")}
               </SecondaryButton>
             </div>
           )}
         </div>
 
-        {paymentsEnabled() && user && !user.registrationPaidAt && (
-          <div className="mb-5 p-3 rounded-lg border border-[var(--border)] bg-[var(--bg-raised)] text-sm text-[var(--muted)]">
-            A one-time £1 registration fee is required to list a test and start finding swaps.
-          </div>
-        )}
+        {paymentsEnabled() && subscription && renderMembershipBanner()}
 
         <ErrorBox errors={errors} />
         {success && <SuccessBanner>{success}</SuccessBanner>}
@@ -407,7 +476,7 @@ export default function DashboardPage() {
           <h2 className="text-lg font-semibold text-[var(--fg)] mb-4">Your listings</h2>
           {listings.length === 0 && !showForm && (
             <EmptyState title="No listings yet" description="List your test to start finding swap matches."
-              action={<SecondaryButton onClick={startNewListing}>{user && !user.registrationPaidAt ? "List a test — £1" : "+ Create listing"}</SecondaryButton>} />
+              action={<SecondaryButton onClick={startNewListing}>{!membershipActive ? "Join — £1 a week" : "+ Create listing"}</SecondaryButton>} />
           )}
           <div className="flex flex-col gap-3">
             {listings.map(function(listing) {

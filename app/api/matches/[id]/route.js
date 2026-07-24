@@ -33,12 +33,11 @@ export async function GET(request, { params }) {
   var safeMatch = {
     id: match.id,
     status: match.status,
-    earlierPaid: match.earlierPaid,
     earlierConsentAt: match.earlierConsentAt,
     laterConsentAt: match.laterConsentAt,
-    // Whether the current viewer has already consented / paid, for the UI.
+    // Consent is the only thing either side needs to do — swaps carry no fee.
     youConsented: role === "earlier" ? !!match.earlierConsentAt : !!match.laterConsentAt,
-    youPaid: role === "earlier" ? match.earlierPaid : true, // later never pays
+    partnerConsented: role === "earlier" ? !!match.laterConsentAt : !!match.earlierConsentAt,
     payDeadline: match.payDeadline,
     createdAt: match.createdAt,
     completedAt: match.completedAt,

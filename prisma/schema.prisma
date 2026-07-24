@@ -25,7 +25,32 @@ model User {
   phone        String
   password     String   // bcrypt hash
   tokenVersion Int      @default(0) // bumped on password reset to invalidate all existing JWTs
-  registrationPaidAt DateTime? // set once the one-time £1 registration fee is paid; gates listing creation
+
+  // ── Subscription (£1/week) ──
+  // Access to listing a test and starting a swap is gated on an active
+  // subscription. See lib/subscription.js for the single source of truth on
+  // what counts as "active".
+  stripeCustomerId     String?            @unique // Stripe Customer, created on first checkout
+  stripeSubscriptionId String?            @unique // the current/most recent subscription
+  subscriptionStatus   SubscriptionStatus @default(NONE)
+  subscriptionCurrentPeriodEnd DateTime?  // access runs until this instant, even after cancelling
+
+  // Founding members: permanent free access, no subscription ever required.
+  //
+  // The default is TRUE on purpose. Every user who signs up while the site is
+  // free is a founding member and keeps free access for life. At paid launch
+  // this default is flipped to FALSE (see prisma/manual-migrations/004), so only
+  // users onboarded AFTER that point ever pay. Existing rows are never changed.
+  //
+  // Getting the flip wrong leaks revenue rather than locking anyone out — the
+  // deliberately safe direction to fail in.
+  lifetimeFreeAccess Boolean @default(true)
+
+  // HISTORICAL: set for users who paid the old one-time £1 registration fee.
+  // No longer affects access (those users are founding members via the flag
+  // above). Kept for the record only.
+  registrationPaidAt DateTime?
+
   pushToken    String?  // APNs device token for push notifications
   pushPlatform String?  // "ios" or "android"
   createdAt    DateTime @default(now())
@@ -37,6 +62,15 @@ model User {
   payments        Payment[]
 
   @@index([email])
+  @@index([subscriptionStatus, subscriptionCurrentPeriodEnd]) // matching filters on this
+}
+
+// Mirrors the Stripe subscription states we care about.
+enum SubscriptionStatus {
+  NONE      // never subscribed
+  ACTIVE    // paying; renews weekly
+  PAST_DUE  // a renewal failed; Stripe is retrying. Access holds until the period end.
+  CANCELLED // ended (by the user or after failed retries)
 }
 
 // ── Listings ──────────────────────────────────────────────
@@ -85,7 +119,7 @@ model Listing {
 // ── Matches ───────────────────────────────────────────────
 
 enum MatchStatus {
-  PENDING      // matched; awaiting both consents + the earlier-seeker's £8 payment
+  PENDING      // matched; awaiting both parties' consent
   COMPLETED    // both consented and earlier paid — contact details exchanged
   EXPIRED      // not completed before payDeadline
   DECLINED     // a party declined
@@ -107,7 +141,9 @@ model Match {
   earlierConsentAt  DateTime?
   laterConsentAt    DateTime?
 
-  // Payment — only the earlier-date seeker pays the £8 swap fee
+  // LEGACY: the old £8 per-swap fee. Swaps are now covered by the weekly
+  // subscription and nothing is charged here. Retained so historic matches keep
+  // their payment record and stay refundable.
   earlierPaid       Boolean     @default(false)
   earlierPaymentId  String?     // Stripe PaymentIntent ID
 
@@ -141,10 +177,10 @@ enum PaymentStatus {
 
 model Payment {
   id                String        @id @default(cuid())
-  purpose           String        @default("swap") // "swap" | "registration"
-  matchId           String?       // null for registration payments
+  purpose           String        @default("subscription") // "subscription" | legacy: "registration" | "swap"
+  matchId           String?       // only ever set on legacy "swap" payments
   userId            String
-  amountPence       Int           // e.g. 100 = £1.00 registration, 800 = £8.00 swap
+  amountPence       Int           // e.g. 100 = £1.00 weekly subscription
   stripeSessionId   String?       @unique // Stripe Checkout Session ID
   stripePaymentId   String?       // Stripe PaymentIntent ID
   status            PaymentStatus @default(PENDING)

@@ -37,7 +37,7 @@ export default function HomePage() {
                 className="inline-block px-4 py-1.5 rounded-full text-[13px] font-semibold text-[var(--brand-text)] mb-6 tracking-wide"
                 style={{ background: "rgba(29,158,117,0.12)", border: "1px solid rgba(29,158,117,0.25)" }}
               >
-                {pay ? "£1 to list · £8 only if you swap" : "Currently free while we grow"}
+                {pay ? "£1 a week · no fee to swap" : "Currently free while we grow"}
               </div>
 
               <h1 className="text-[clamp(36px,5vw,60px)] font-extrabold leading-[1.1] text-[var(--fg-strong)] tracking-tight mb-5">
@@ -74,8 +74,8 @@ export default function HomePage() {
                 {(pay
                   ? [
                       { value: "320+", label: "test centres" },
-                      { value: "£1", label: "to list your test" },
-                      { value: "£8", label: "only if you swap" },
+                      { value: "£1", label: "a week" },
+                      { value: "£0", label: "to swap" },
                     ]
                   : [
                       { value: "320+", label: "test centres" },
@@ -217,9 +217,9 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                title: pay ? "Simple, low fees" : "Free to use",
+                title: pay ? "One simple price" : "Free to use",
                 desc: pay
-                  ? "Just £1 to list your test, and £8 only if you go ahead with a swap. No subscriptions and no hidden charges."
+                  ? "Just £1 a week for as many swaps as you need. No fee to swap, no hidden charges, cancel any time."
                   : "SwapTest is currently free while we grow. No subscriptions and no hidden charges.",
                 color: "#1D9E75",
               },
@@ -298,7 +298,7 @@ export default function HomePage() {
               means lost confidence, extra lessons, and missed opportunities such as a new job or a university
               place. Being able to swap a driving test date with someone lets you bring your test forward without
               paying for cancellation checker apps. It also helps the other learner, who may genuinely want a later
-              date, so every swap is designed to be fair to both sides.{pay ? " It costs just £1 to list your test, and you" : " It is currently free to list your test, and you"}
+              date, so every swap is designed to be fair to both sides.{pay ? " Membership costs just £1 a week, and you" : " It is currently free to list your test, and you"}
               stay in full control of which match you accept.
             </p>
 
@@ -329,8 +329,8 @@ export default function HomePage() {
             </h3>
             <p>
               Your contact details stay private until both people agree to swap, and your password is encrypted, so
-              your data is protected at every step.{pay ? " It costs £1 to list your test and £8 to confirm a swap, with no" : " SwapTest is currently free to use, with no"}
-              subscriptions and no hidden charges. You can list, edit or delete your test at any time from your
+              your data is protected at every step.{pay ? " Membership is £1 a week, covers every swap, and can be cancelled at any time, with no" : " SwapTest is currently free to use, with no"}
+              hidden charges. You can list, edit or delete your test at any time from your
               dashboard, and you are notified by email the moment someone wants your date.
             </p>
 
@@ -376,7 +376,7 @@ export default function HomePage() {
               {
                 q: "How much does SwapTest cost?",
                 a: pay
-                  ? "It costs £1 to register and list your test, and viewing your matches is free. If you decide to go ahead with a swap, only the person who wants an earlier date pays an £8 swap fee — the person moving to a later date pays nothing. There are no subscriptions and no hidden charges."
+                  ? "SwapTest costs £1 a week. That covers listing your test, viewing your matches and as many swaps as you need — there is no separate swap fee and no hidden charges. You can cancel at any time."
                   : "SwapTest is currently free to use — there is no charge to register, list your test, view matches, or complete a swap. We may introduce a small fee in the future, but there are no hidden charges.",
               },
               {

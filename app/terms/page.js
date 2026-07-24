@@ -113,24 +113,30 @@ export default function TermsPage() {
           {pay ? (
             <>
               <p style={pStyle}>
-                There is a one-time <strong style={strong}>£1 registration fee</strong> that you pay before you can list
-                a test. Viewing your matches is free. If you choose to go ahead with a swap, an
-                <strong style={strong}> £8 swap fee</strong> applies and is paid only by the person who wants an earlier
-                date; the person moving to a later date pays nothing. All fees are shown before you pay. Any DVSA test
-                fees are separate and payable directly to the DVSA.
+                SwapTest membership costs <strong style={strong}>£1 per week</strong>. Membership lets you list a test,
+                view your matches and complete as many swaps as you need. There is
+                <strong style={strong}> no separate swap fee</strong> — neither party pays anything to confirm a swap.
+                Any DVSA test fees are separate and payable directly to the DVSA.
               </p>
               <p style={pStyle}>
-                Fees are collected securely through our payment provider, Stripe. If a confirmed swap does not go ahead
-                because the match expires before it is completed, the £8 swap fee is refunded to the person who paid it.
-                The £1 registration fee is non-refundable once paid, as it grants access to list tests and view matches.
+                Membership is a <strong style={strong}>recurring subscription</strong>. Payment is taken when you join
+                and automatically every week thereafter until you cancel. Payments are collected securely through our
+                payment provider, Stripe, and the price is shown before you pay.
+              </p>
+              <p style={pStyle}>
+                You can <strong style={strong}>cancel at any time</strong> from your dashboard, which opens Stripe&apos;s
+                billing portal. Cancelling stops future payments; your membership then runs to the end of the week you
+                have already paid for. Weeks already paid for are not refunded on a pro-rata basis except where required
+                by law. If your membership ends, your listings are hidden from matching rather than deleted, and they
+                become visible again if you rejoin.
               </p>
             </>
           ) : (
             <p style={pStyle}>
               SwapTest is currently <strong style={strong}>free to use</strong> — there is no charge to register, list a
-              test, view your matches, or complete a swap. We may introduce fees in the future (a small registration
-              fee and a swap fee paid by the person who wants an earlier date); if we do, the fees will be shown
-              clearly before you pay. Any DVSA test fees are separate and payable directly to the DVSA.
+              test, view your matches, or complete a swap. We may introduce a small weekly membership fee in the future;
+              if we do, the price will be shown clearly before you pay and you will be able to cancel at any time. Any
+              DVSA test fees are separate and payable directly to the DVSA.
             </p>
           )}
         </div>

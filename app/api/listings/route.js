@@ -3,14 +3,21 @@ import { db } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { validateListing } from "@/lib/validation";
 import { findMatches, findMatchesForLater } from "@/lib/matching";
+import { platformAccess } from "@/lib/subscription";
 
 export async function POST(request) {
   var user = await requireAuth();
 
-  // Registration gate: a user must have paid the one-time registration fee
-  // before they can create a listing.
-  if (!user.registrationPaidAt) {
-    return NextResponse.json({ error: "REGISTRATION_REQUIRED", errors: ["Please pay the one-time registration fee to create a listing."] }, { status: 403 });
+  // Subscription gate: listing a test requires an active £1/week membership.
+  var access = platformAccess(user);
+  if (!access.allowed) {
+    return NextResponse.json({
+      error: "SUBSCRIPTION_REQUIRED",
+      reason: access.reason,
+      errors: [access.reason === "subscription_lapsed"
+        ? "Your membership has ended. Resubscribe for £1 a week to list a test."
+        : "A £1 a week membership is required to list a test."],
+    }, { status: 403 });
   }
 
   var body = await request.json();

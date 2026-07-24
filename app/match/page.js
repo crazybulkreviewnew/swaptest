@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import { ErrorBox, SuccessBanner, PrimaryButton, SecondaryButton, Badge, Card, Countdown, formatDate } from "@/components/ui";
-import { getMatch, paySwap, consentToMatch, declineMatch } from "@/lib/api-client";
+import { getMatch, consentToMatch, declineMatch } from "@/lib/api-client";
 import { DATA_SHARING_DISCLAIMER, DISCLAIMER_CHECKBOX_LABEL } from "@/lib/disclaimer";
 import { paymentsEnabled } from "@/lib/payments";
 
@@ -13,7 +13,6 @@ function MatchDetail() {
   var router = useRouter();
   var searchParams = useSearchParams();
   var matchId = searchParams.get("id");
-  var payStatus = searchParams.get("status"); // "paid" | "cancelled" after Stripe
 
   var [user, setUser] = useState(null);
   var [match, setMatch] = useState(null);
@@ -46,22 +45,7 @@ function MatchDetail() {
     return function() { clearInterval(iv); };
   }, [matchId, loadMatch]);
 
-  // Earlier-seeker: accept disclaimer + pay £8 → Stripe Checkout.
-  var handlePay = async function() {
-    setActionLoading(true);
-    setErrors([]);
-    try {
-      var res = await paySwap(matchId);
-      if (res.checkoutUrl) { window.location.href = res.checkoutUrl; return; }
-      await loadMatch();
-    } catch (err) {
-      setErrors(err.errors || ["Could not start checkout"]);
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
-  // Later-seeker: accept disclaimer (free).
+  // Either party: accept the disclaimer. Swaps carry no fee.
   var handleConsent = async function() {
     setActionLoading(true);
     setErrors([]);
@@ -172,37 +156,27 @@ function MatchDetail() {
       </div>);
     }
 
-    // PENDING
-    var youDone = isEarlier ? match.earlierPaid : match.youConsented;
-    var otherDoneLabel = isEarlier
-      ? "Waiting for the other person to agree to the swap."
-      : (paymentsEnabled() ? "Waiting for the other person to pay the swap fee." : "Waiting for the other person to agree to the swap.");
+    // PENDING — both parties simply agree; there is no fee to confirm a swap.
+    var youDone = match.youConsented;
 
     return (<>
       <h2 className="text-xl font-semibold text-[var(--fg)] mb-2">
         {isInitiator ? "Confirm your swap" : "Someone wants to swap with you!"}
       </h2>
       <p className="text-sm text-[var(--muted)] mb-2">
-        {paymentsEnabled()
-          ? (isEarlier
-              ? "To confirm this swap and unlock contact details, accept the disclaimer and pay the £8 swap fee. The other person pays nothing."
-              : "To confirm this swap and unlock contact details, accept the disclaimer below. It is free for you — the other person pays the swap fee.")
-          : "To confirm this swap and unlock contact details, accept the disclaimer below."}
+        To confirm this swap and unlock contact details, accept the disclaimer below.
+        {paymentsEnabled() ? " There is nothing to pay — swaps are included in your membership." : " There is nothing to pay."}
       </p>
       {deadlineIsReal && <Countdown deadline={match.payDeadline} onExpired={loadMatch} />}
       {swapDetails}
 
       {youDone ? (
-        <Card><div className="text-sm text-[var(--muted)]">{"You're all set. " + otherDoneLabel}</div></Card>
+        <Card><div className="text-sm text-[var(--muted)]">You&apos;re all set. Waiting for the other person to agree to the swap.</div></Card>
       ) : (
         <>
           {disclaimerBox}
           <div className="flex gap-3">
-            {isEarlier ? (
-              <PrimaryButton onClick={handlePay} loading={actionLoading} disabled={!agreed} className="flex-1">{paymentsEnabled() ? "Accept & pay £8 to swap" : "Agree to swap"}</PrimaryButton>
-            ) : (
-              <PrimaryButton onClick={handleConsent} loading={actionLoading} disabled={!agreed} className="flex-1">Agree to swap (free)</PrimaryButton>
-            )}
+            <PrimaryButton onClick={handleConsent} loading={actionLoading} disabled={!agreed} className="flex-1">Agree to swap</PrimaryButton>
             {!isInitiator && (
               <SecondaryButton onClick={handleDecline} className="shrink-0">{declineLoading ? "..." : "Decline"}</SecondaryButton>
             )}
@@ -224,8 +198,8 @@ function MatchDetail() {
             {match.status === "COMPLETED" ? "Complete" : match.status === "EXPIRED" ? "Expired" : match.status === "DECLINED" ? "Declined" : match.status === "CANCELLED" ? "Cancelled" : "In progress"}
           </Badge>
         </div>
-        {payStatus === "paid" && match.status !== "COMPLETED" && (
-          <SuccessBanner>Payment received. Finalising your swap…</SuccessBanner>
+        {match.status === "PENDING" && match.youConsented && !match.partnerConsented && (
+          <SuccessBanner>You&apos;ve agreed. We&apos;ll email you the moment the other person does too.</SuccessBanner>
         )}
         <ErrorBox errors={errors} />
         {renderStatus()}

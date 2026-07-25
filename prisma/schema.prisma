@@ -70,6 +70,9 @@ model Listing {
   currentTime       String        // e.g. "09:30"
   status            ListingStatus @default(AVAILABLE)
   lockedByMatchId   String?       // which match locked this listing
+  // When we last emailed this listing's owner that a swap is waiting for them.
+  // Stops the daily alert job telling the same person the same thing every day.
+  lastMatchAlertAt  DateTime?
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
 

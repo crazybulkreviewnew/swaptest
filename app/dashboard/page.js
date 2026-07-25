@@ -32,6 +32,7 @@ export default function DashboardPage() {
   var [startingCheckout, setStartingCheckout] = useState(false);
 
   var [matchResults, setMatchResults] = useState([]);
+  var [allMatches, setAllMatches] = useState([]);
   var [matchListing, setMatchListing] = useState(null);
   var [selectingId, setSelectingId] = useState(null);
 
@@ -54,6 +55,11 @@ export default function DashboardPage() {
       ]);
       if (results[0].user) setUser(results[0].user);
       setListings(results[1].listings || []);
+
+      // Every listing that has matches, not just the first. Someone with two
+      // listings used to be shown matches for one of them and never told the
+      // other had any, which made the alert email point at an empty dashboard.
+      setAllMatches(results[1].newMatches || []);
 
       if (results[1].newMatches && results[1].newMatches.length > 0 && !matchResults.length) {
         var first = results[1].newMatches[0];
@@ -306,11 +312,42 @@ export default function DashboardPage() {
         {/* Match Results */}
         {matchResults.length > 0 && (
           <div className="mb-8">
+            {/* Matches can exist on more than one listing. Without this, only
+                the first listing's matches were ever visible and the rest were
+                invisible for as long as they lasted. */}
+            {allMatches.length > 1 && (
+              <div className="flex flex-wrap gap-2 mb-3">
+                {allMatches.map(function(group) {
+                  var l = listings.find(function(x) { return x.id === group.listingId; });
+                  var active = matchListing && matchListing.id === group.listingId;
+                  return (
+                    <button
+                      key={group.listingId}
+                      onClick={function() {
+                        setMatchResults(group.matches);
+                        setMatchListing(l || null);
+                      }}
+                      className={"px-3 py-2 rounded-lg text-sm font-medium border transition min-h-[44px] [touch-action:manipulation] " +
+                        (active
+                          ? "border-[#1D9E75] text-[var(--fg)] bg-[rgba(29,158,117,0.08)]"
+                          : "border-[var(--border)] text-[var(--muted)] hover:border-[var(--border-strong)]")}
+                    >
+                      {(l ? l.centre : "Listing") + " (" + group.matches.length + ")"}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
             <h2 className="text-lg font-semibold text-[var(--fg)] mb-1">
-              {matchResults.length} match{matchResults.length !== 1 ? "es" : ""} found
+              {matchResults.length === 1
+                ? "Somebody can swap with you"
+                : matchResults.length + " people can swap with you"}
             </h2>
             <p className="text-sm text-[var(--muted-2)] mb-4">
-              {"Matches found at " + (matchListing ? matchListing.centre : "") + " and nearby centres. Select one to start the swap."}
+              {"These learners have a test that works with yours at " + (matchListing ? matchListing.centre : "") + " or a nearby centre. "}
+              <strong className="text-[var(--fg-2)]">Nothing happens until you ask them.</strong>
+              {" Press the button to send a swap request. They then have 24 hours to say yes or no."}
             </p>
             <div className="flex flex-col gap-3">
               {matchResults.map(function(listing) {
@@ -326,7 +363,7 @@ export default function DashboardPage() {
                       </div>
                       <button onClick={function() { handleSelectMatch(listing.id); }} disabled={selectingId === listing.id}
                         className="px-4 py-2 rounded-lg bg-[#1D9E75] hover:bg-[#1ab87f] text-white text-sm font-semibold transition disabled:opacity-50">
-                        {selectingId === listing.id ? "Selecting..." : "Select"}
+                        {selectingId === listing.id ? "Sending…" : "Ask to swap"}
                       </button>
                     </div>
                   </Card>

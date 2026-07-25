@@ -130,7 +130,7 @@ export const COPY = {
     ],
 
     localNote: [
-      "There is no such thing as a London wide swap. Someone at Morden and someone at Wood Green could both wait a year with perfectly matching dates and never be allowed to trade places, because neither centre appears on the other's list.",
+      "There is no such thing as a London wide swap. Someone at Morden and someone at Wood Green could both wait a year with perfectly matching dates and never be allowed to change places, because neither centre appears on the other's list.",
       "The narrowest centres are Morden, Erith, Loughton and Slough. Each has a single possible partner: Tolworth, Belvedere, Chingford and Uxbridge respectively. If your test is at one of those four, everything depends on that one other centre, so listing early is worth far more than it is elsewhere.",
       "It is not all bad news. Several London centres pair outwards to places you might not expect, because DVSA's lists ignore the boundary. Tolworth reaches Chertsey and Isleworth. Uxbridge reaches Slough. Brentwood reaches Basildon. Wood Green reaches Tottenham. Those count as ordinary swaps.",
       "The table below is the exact list for every London centre, taken from the DVSA data. Where a centre is marked one way, the permission does not run both ways and no swap is possible.",

@@ -309,6 +309,54 @@ export const COPY = {
       },
     ],
   },
+  glasgow: {
+    h1: "Swap your driving test date in Glasgow",
+    standfirst:
+      "Glasgow has three test centres, and they do not all connect to each other. Which half of the city you are in decides who you can swap with.",
+
+    intro: [
+      "Anniesland and Shieldhall sit on the west side and pair with each other. Baillieston sits out east and pairs with neither of them. So although all three say Glasgow on the booking, a learner at Anniesland cannot swap with a learner at Baillieston.",
+      "One centre holds the city together. Bishopbriggs pairs with all three, which makes it the best connected test centre in Glasgow and the only one that reaches both halves.",
+      "That does not mean Bishopbriggs joins the two sides up for everybody else. A swap is a direct pairing between two centres, never a chain through a third, so Anniesland and Baillieston stay out of reach of each other no matter what sits between them.",
+    ],
+
+    localNote: [
+      "Think of it as two groups and a bridge. West is Anniesland, Shieldhall and Paisley. East is Baillieston, Airdrie and Hamilton. Bishopbriggs is the bridge, and it is the only centre in the city with all three Glasgow centres open to it.",
+      "Paisley is the strongest option on the west side after the city centres. It pairs with both Anniesland and Shieldhall and with Dumbarton, which is three usable partners. Hamilton is its equivalent in the east, reaching Baillieston, Airdrie and East Kilbride.",
+      "Several nearby towns look connected to Glasgow and are not. East Kilbride lists Baillieston and Shieldhall, and neither lists it back, so Hamilton is the only swap it can make. Dumbarton lists Anniesland and Shieldhall and can only actually pair with Paisley. Greenock lists Paisley and cannot pair with it either.",
+      "Lanark is the hardest case in Scotland. It lists Hamilton, Airdrie and Livingston, and not one of the three lists Lanark in return, so there is no swap available from Lanark at all. The only route out is moving back to a centre you originally booked at, which DVSA always permits.",
+    ],
+
+    emptyState:
+      "Nothing is listed around Glasgow today. Bishopbriggs reaches more of the city than any other centre, so a listing there rarely stays unseen for long.",
+
+    faqs: [
+      {
+        q: "Can I swap between Glasgow's test centres?",
+        a: "Sometimes. Anniesland and Shieldhall pair with each other, and Bishopbriggs pairs with all three Glasgow centres. Anniesland and Baillieston cannot swap with each other, and neither can Shieldhall and Baillieston, because neither appears on the other's list.",
+      },
+      {
+        q: "Which Glasgow centre gives me the most options?",
+        a: "Bishopbriggs. It is the only centre that pairs with Anniesland, Shieldhall and Baillieston, so it reaches both sides of the city. If you have a choice of where to book in the first place, that is worth knowing.",
+      },
+      {
+        q: "I am at East Kilbride. Who can I swap with?",
+        a: "Hamilton, and only Hamilton. East Kilbride lists Baillieston and Shieldhall as centres it can move to, but neither lists East Kilbride back, so those do not work as swaps. Hamilton is well connected in its own right, so it is not a bad single option to have.",
+      },
+      {
+        q: "Can I swap a test at Lanark?",
+        a: "Realistically no. Lanark lists Hamilton, Airdrie and Livingston, and none of those three list Lanark in return, so no pairing works in both directions. It is the only centre in Scotland we have found with no possible swap partner. The one exception is moving back to a centre you originally booked at.",
+      },
+      {
+        q: "Why can Greenock not swap with Paisley?",
+        a: "Greenock can move to Paisley, but Paisley cannot move to Greenock, so the permission only runs one way. Greenock's actual partners are Dunoon and Rothesay, both of which involve a ferry, so it is worth thinking carefully before agreeing to one.",
+      },
+      {
+        q: "Do the same DVSA rules apply in Scotland?",
+        a: "Yes. The 10 working day notice, the limit of two changes per booking and the nearest centres rule all work the same way across Great Britain. Northern Ireland runs its own separate system.",
+      },
+    ],
+  },
 };
 
 export function getCopy(slug) {

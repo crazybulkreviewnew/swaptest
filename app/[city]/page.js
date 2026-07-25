@@ -18,7 +18,7 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ThemeToggle from "@/components/theme-toggle";
+import Navbar from "@/components/navbar";
 import { db } from "@/lib/db";
 import { NEARBY_CENTRES } from "@/lib/centres";
 import { getCity, allCitySlugs } from "@/lib/cities";
@@ -109,10 +109,14 @@ export default async function CityPage({ params }) {
   };
 
   const page = { minHeight: "100vh", background: "var(--bg)" };
-  const wrap = { maxWidth: "760px", margin: "0 auto", padding: "0 20px 64px" };
+  // Matches the homepage container (max-w-6xl) so the site feels like one site
+  // on a laptop. Prose is capped separately below: a paragraph running the full
+  // 1152px would be ~150 characters per line and unreadable.
+  const wrap = { maxWidth: "1152px", margin: "0 auto", padding: "0 20px 64px" };
+  const prose = { maxWidth: "68ch" };
   const h2 = { fontSize: "22px", fontWeight: 700, color: "var(--fg)", margin: "40px 0 14px", letterSpacing: "-0.3px" };
   const h3 = { fontSize: "16px", fontWeight: 700, color: "var(--fg)", margin: "0 0 6px" };
-  const p = { fontSize: "15px", color: "var(--muted)", lineHeight: 1.75, marginBottom: "14px" };
+  const p = { fontSize: "15px", color: "var(--muted)", lineHeight: 1.75, marginBottom: "14px", maxWidth: "68ch" };
   const cell = { padding: "10px 12px", fontSize: "14px", borderTop: "1px solid var(--border)", verticalAlign: "top" };
 
   return (
@@ -143,12 +147,7 @@ export default async function CityPage({ params }) {
 
       <a href="#city-main" className="city-skip">Skip to content</a>
 
-      <header style={{ padding: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: "760px", margin: "0 auto" }}>
-        <Link href="/" style={{ fontSize: "20px", fontWeight: 700, color: "var(--fg)", textDecoration: "none", letterSpacing: "-0.5px" }}>
-          Swap<span style={{ color: "#1D9E75" }}>Test</span>
-        </Link>
-        <ThemeToggle />
-      </header>
+      <Navbar />
 
       <main style={wrap} id="city-main">
         <nav aria-label="Breadcrumb" style={{ fontSize: "13px", color: "var(--muted-2)", marginBottom: "20px" }}>
@@ -157,42 +156,53 @@ export default async function CityPage({ params }) {
           <span style={{ color: "var(--fg-2)" }}>{city.name}</span>
         </nav>
 
-        <h1 style={{ fontSize: "clamp(28px,5vw,40px)", fontWeight: 800, color: "var(--fg-strong)", lineHeight: 1.15, letterSpacing: "-0.8px", marginBottom: "14px" }}>
-          {copy.h1}
-        </h1>
-        <p style={{ fontSize: "17px", color: "var(--muted)", lineHeight: 1.65, marginBottom: "28px" }}>
-          {copy.standfirst}
-        </p>
+        {/* Two columns on a laptop, stacked on mobile. Mirrors the homepage
+            hero so the site reads as one site instead of a bolted-on page. */}
+        <div style={{ display: "flex", gap: "48px", flexWrap: "wrap", alignItems: "flex-start", marginBottom: "8px" }}>
+          <div style={{ flex: "1 1 460px", minWidth: 0 }}>
+            <h1 style={{ fontSize: "clamp(28px,4.4vw,44px)", fontWeight: 800, color: "var(--fg-strong)", lineHeight: 1.15, letterSpacing: "-0.8px", marginBottom: "14px" }}>
+              {copy.h1}
+            </h1>
+            <p style={{ fontSize: "17px", color: "var(--muted)", lineHeight: 1.65, marginBottom: "24px", ...prose }}>
+              {copy.standfirst}
+            </p>
 
-        {/* Live picture. Fresh numbers on a static page, and it shows the
-            imbalance honestly rather than pretending the pool is bigger. */}
-        {stats && stats.total > 0 && (
-          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", padding: "16px", borderRadius: "10px", background: "var(--bg-raised)", border: "1px solid var(--border)", marginBottom: "28px" }}>
-            <div style={{ flex: "1 1 120px" }}>
-              <div className="city-stat" style={{ fontSize: "24px", fontWeight: 800, color: "var(--fg)" }}>{stats.total}</div>
-              <div style={{ fontSize: "12px", color: "var(--muted-2)" }}>tests listed in {city.name}</div>
-            </div>
-            <div style={{ flex: "1 1 120px" }}>
-              <div className="city-stat" style={{ fontSize: "24px", fontWeight: 800, color: "var(--fg)" }}>{stats.earlier}</div>
-              <div style={{ fontSize: "12px", color: "var(--muted-2)" }}>want an earlier date</div>
-            </div>
-            <div style={{ flex: "1 1 120px" }}>
-              <div className="city-stat" style={{ fontSize: "24px", fontWeight: 800, color: "#1D9E75" }}>{stats.later}</div>
-              <div style={{ fontSize: "12px", color: "var(--muted-2)" }}>happy to go later</div>
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", maxWidth: "520px" }}>
+              <Link href="/register?type=later" className="city-cta" style={{ flex: "1 1 220px", textAlign: "center", padding: "14px 20px", borderRadius: "10px", background: "linear-gradient(135deg,#1D9E75,#15805e)", color: "#fff", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
+                I would take a later date
+              </Link>
+              <Link href="/register?type=earlier" className="city-cta city-cta-secondary" style={{ flex: "1 1 220px", textAlign: "center", padding: "14px 20px", borderRadius: "10px", border: "1px solid var(--border-strong)", color: "var(--fg)", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
+                I want an earlier date
+              </Link>
             </div>
           </div>
-        )}
+
+          {/* Live picture, sitting where the homepage puts its example card.
+              Shows the imbalance honestly rather than inflating the pool. */}
+          {stats && stats.total > 0 && (
+            <aside style={{ flex: "0 1 340px", minWidth: "280px", padding: "22px", borderRadius: "14px", background: "var(--bg-raised)", border: "1px solid var(--border)" }}>
+              <div style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.8px", color: "var(--muted-2)", marginBottom: "16px" }}>
+                Right now in {city.region}
+              </div>
+              {[
+                [stats.total, `tests listed across ${city.centres.length} centres`, "var(--fg)"],
+                [stats.earlier, "want an earlier date", "var(--fg)"],
+                [stats.later, "happy to go later", "#1D9E75"],
+              ].map(([value, label, colour], i) => (
+                <div key={i} style={{ display: "flex", alignItems: "baseline", gap: "12px", paddingTop: i ? "12px" : 0, marginTop: i ? "12px" : 0, borderTop: i ? "1px solid var(--border)" : "none" }}>
+                  <div className="city-stat" style={{ fontSize: "28px", fontWeight: 800, color: colour, minWidth: "44px" }}>{value}</div>
+                  <div style={{ fontSize: "13px", color: "var(--muted-2)", lineHeight: 1.4 }}>{label}</div>
+                </div>
+              ))}
+              <p style={{ fontSize: "12px", color: "var(--muted-2)", margin: "16px 0 0", lineHeight: 1.5 }}>
+                Updated hourly. Anyone willing to move to a later date is usually matched fastest.
+              </p>
+            </aside>
+          )}
+        </div>
 
         {copy.intro.map((para, i) => <p key={i} style={p}>{para}</p>)}
 
-        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", margin: "28px 0" }}>
-          <Link href="/register?type=later" className="city-cta" style={{ flex: "1 1 240px", textAlign: "center", padding: "14px 20px", borderRadius: "10px", background: "linear-gradient(135deg,#1D9E75,#15805e)", color: "#fff", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
-            I would take a later date
-          </Link>
-          <Link href="/register?type=earlier" className="city-cta city-cta-secondary" style={{ flex: "1 1 240px", textAlign: "center", padding: "14px 20px", borderRadius: "10px", border: "1px solid var(--border-strong)", color: "var(--fg)", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
-            I want an earlier date
-          </Link>
-        </div>
 
         <h2 style={h2}>How swapping works</h2>
         <ol style={{ paddingLeft: "20px", margin: 0 }}>
@@ -204,7 +214,7 @@ export default async function CityPage({ params }) {
           ].map(([title, body], i) => (
             <li key={i} style={{ marginBottom: "14px", color: "var(--muted)" }}>
               <div style={h3}>{title}</div>
-              <div style={{ fontSize: "14px", lineHeight: 1.7 }}>{body}</div>
+              <div style={{ fontSize: "14px", lineHeight: 1.7, ...prose }}>{body}</div>
             </li>
           ))}
         </ol>
@@ -212,7 +222,7 @@ export default async function CityPage({ params }) {
         <h2 style={h2}>Test centres in {city.region}</h2>
         {copy.localNote.map((para, i) => <p key={i} style={p}>{para}</p>)}
 
-        <div style={{ overflowX: "auto", border: "1px solid var(--border)", borderRadius: "10px", marginBottom: "8px" }}>
+        <div style={{ overflowX: "auto", border: "1px solid var(--border)", borderRadius: "10px", marginBottom: "8px", maxWidth: "760px" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "460px" }}>
             <caption style={{ captionSide: "top", textAlign: "left", padding: "12px", fontSize: "13px", color: "var(--muted-2)" }}>
               Where you can move your test to from each {city.name} centre, according to DVSA.
@@ -273,11 +283,11 @@ export default async function CityPage({ params }) {
           </div>
         ))}
 
-        <div style={{ marginTop: "40px", padding: "24px", borderRadius: "12px", background: "var(--bg-raised)", border: "1px solid var(--border)", textAlign: "center" }}>
+        <div style={{ marginTop: "40px", padding: "24px", borderRadius: "12px", background: "var(--bg-raised)", border: "1px solid var(--border)", textAlign: "center", maxWidth: "640px" }}>
           {/* "List" is our word, not the visitor's. Somebody arriving from
               search wants to swap a test, not list one. */}
           <h2 style={{ ...h2, margin: "0 0 8px" }}>Swap your {city.name} test</h2>
-          <p style={{ ...p, marginBottom: "18px" }}>
+          <p style={{ ...p, marginBottom: "18px", maxWidth: "none" }}>
             {stats && stats.total > 0
               ? `${stats.total} ${stats.total === 1 ? "person is" : "people are"} already waiting to swap in ${city.region}.`
               : copy.emptyState}

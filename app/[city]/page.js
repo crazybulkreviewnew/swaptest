@@ -41,7 +41,8 @@ export async function generateMetadata({ params }) {
   const { city: slug } = await params;
   const city = getCity(slug);
   if (!city) return {};
-  const title = `Swap Driving Test Date ${city.name} | Trade Test Slots | SwapTest`;
+  // Under 60 characters so it is not truncated in search results.
+  const title = `Swap Driving Test Date in ${city.name} | SwapTest`;
   const description =
     `Swap your driving test date with another learner in ${city.name}. List the test you already hold, ` +
     `get matched at your centre or a nearby one, then change it with DVSA. Free to list.`;
@@ -96,6 +97,17 @@ export default async function CityPage({ params }) {
     })),
   };
 
+  // Breadcrumbs help search engines show the page's place in the site, and
+  // match the visible trail above the heading.
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: city.name, item: `${BASE_URL}/${city.slug}` },
+    ],
+  };
+
   const page = { minHeight: "100vh", background: "var(--bg)" };
   const wrap = { maxWidth: "760px", margin: "0 auto", padding: "0 20px 64px" };
   const h2 = { fontSize: "22px", fontWeight: 700, color: "var(--fg)", margin: "40px 0 14px", letterSpacing: "-0.3px" };
@@ -104,8 +116,32 @@ export default async function CityPage({ params }) {
   const cell = { padding: "10px 12px", fontSize: "14px", borderTop: "1px solid var(--border)", verticalAlign: "top" };
 
   return (
-    <div style={page}>
+    <div style={page} className="city">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
+      {/* Inline styles can't express :focus-visible or media queries, so the
+          interactive states live here. Keeps the page keyboard-operable and
+          gives links a hit area big enough for a thumb. */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .city a:focus-visible { outline: 2px solid #1D9E75; outline-offset: 3px; border-radius: 4px; }
+        .city h2, .city h3 { scroll-margin-top: 80px; }
+        .city-skip { position: absolute; left: -9999px; }
+        .city-skip:focus { left: 20px; top: 12px; z-index: 10; padding: 10px 16px; border-radius: 8px;
+          background: var(--bg-raised); border: 1px solid var(--border-strong); color: var(--fg); }
+        .city-cta { touch-action: manipulation; transition: filter .15s ease, border-color .15s ease; }
+        .city-cta:hover { filter: brightness(1.07); }
+        .city-cta-secondary:hover { border-color: var(--fg-2); }
+        /* 44px minimum touch target on mobile, per the interface guidelines. */
+        .city-centre-link { display: block; padding: 12px 0; min-height: 44px; touch-action: manipulation; }
+        .city-centre-link:hover { color: #1D9E75; }
+        .city-stat { font-variant-numeric: tabular-nums; }
+        @media (prefers-reduced-motion: reduce) {
+          .city-cta { transition: none; }
+        }
+      ` }} />
+
+      <a href="#city-main" className="city-skip">Skip to content</a>
 
       <header style={{ padding: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: "760px", margin: "0 auto" }}>
         <Link href="/" style={{ fontSize: "20px", fontWeight: 700, color: "var(--fg)", textDecoration: "none", letterSpacing: "-0.5px" }}>
@@ -114,7 +150,7 @@ export default async function CityPage({ params }) {
         <ThemeToggle />
       </header>
 
-      <main style={wrap}>
+      <main style={wrap} id="city-main">
         <nav aria-label="Breadcrumb" style={{ fontSize: "13px", color: "var(--muted-2)", marginBottom: "20px" }}>
           <Link href="/" style={{ color: "var(--muted-2)", textDecoration: "none" }}>Home</Link>
           <span aria-hidden="true"> / </span>
@@ -133,15 +169,15 @@ export default async function CityPage({ params }) {
         {stats && stats.total > 0 && (
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", padding: "16px", borderRadius: "10px", background: "var(--bg-raised)", border: "1px solid var(--border)", marginBottom: "28px" }}>
             <div style={{ flex: "1 1 120px" }}>
-              <div style={{ fontSize: "24px", fontWeight: 800, color: "var(--fg)" }}>{stats.total}</div>
+              <div className="city-stat" style={{ fontSize: "24px", fontWeight: 800, color: "var(--fg)" }}>{stats.total}</div>
               <div style={{ fontSize: "12px", color: "var(--muted-2)" }}>tests listed in {city.name}</div>
             </div>
             <div style={{ flex: "1 1 120px" }}>
-              <div style={{ fontSize: "24px", fontWeight: 800, color: "var(--fg)" }}>{stats.earlier}</div>
+              <div className="city-stat" style={{ fontSize: "24px", fontWeight: 800, color: "var(--fg)" }}>{stats.earlier}</div>
               <div style={{ fontSize: "12px", color: "var(--muted-2)" }}>want an earlier date</div>
             </div>
             <div style={{ flex: "1 1 120px" }}>
-              <div style={{ fontSize: "24px", fontWeight: 800, color: "#1D9E75" }}>{stats.later}</div>
+              <div className="city-stat" style={{ fontSize: "24px", fontWeight: 800, color: "#1D9E75" }}>{stats.later}</div>
               <div style={{ fontSize: "12px", color: "var(--muted-2)" }}>happy to go later</div>
             </div>
           </div>
@@ -150,10 +186,10 @@ export default async function CityPage({ params }) {
         {copy.intro.map((para, i) => <p key={i} style={p}>{para}</p>)}
 
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", margin: "28px 0" }}>
-          <Link href="/register?type=later" style={{ flex: "1 1 240px", textAlign: "center", padding: "14px 20px", borderRadius: "10px", background: "linear-gradient(135deg,#1D9E75,#15805e)", color: "#fff", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
+          <Link href="/register?type=later" className="city-cta" style={{ flex: "1 1 240px", textAlign: "center", padding: "14px 20px", borderRadius: "10px", background: "linear-gradient(135deg,#1D9E75,#15805e)", color: "#fff", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
             I would take a later date
           </Link>
-          <Link href="/register?type=earlier" style={{ flex: "1 1 240px", textAlign: "center", padding: "14px 20px", borderRadius: "10px", border: "1px solid var(--border-strong)", color: "var(--fg)", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
+          <Link href="/register?type=earlier" className="city-cta city-cta-secondary" style={{ flex: "1 1 240px", textAlign: "center", padding: "14px 20px", borderRadius: "10px", border: "1px solid var(--border-strong)", color: "var(--fg)", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
             I want an earlier date
           </Link>
         </div>
@@ -163,7 +199,7 @@ export default async function CityPage({ params }) {
           {[
             ["List the test you already have", "Your centre, your date and time. Nothing is cancelled and nothing changes yet."],
             ["We look for someone going the other way", "At your centre, or one of the three centres DVSA lets you move to."],
-            ["You both agree", "Only then do you see each other's contact details. Names stay hidden until that point."],
+            ["You both agree", "Only then do you see each other’s contact details. Names stay hidden until that point."],
             ["One of you rings DVSA", "Call 0300 200 1122 with both booking references. It takes about ten minutes and there is no charge."],
           ].map(([title, body], i) => (
             <li key={i} style={{ marginBottom: "14px", color: "var(--muted)" }}>
@@ -196,7 +232,8 @@ export default async function CityPage({ params }) {
                         anchor text is the centre name people search for. */}
                     <Link
                       href={`/register?centre=${encodeURIComponent(centre)}`}
-                      style={{ color: "var(--fg)", textDecoration: "none", borderBottom: "1px solid var(--border-strong)" }}
+                      className="city-centre-link"
+                      style={{ color: "var(--fg)", textDecoration: "none" }}
                     >
                       {centre.replace(` (${city.name})`, "")}
                     </Link>
@@ -215,7 +252,7 @@ export default async function CityPage({ params }) {
 
         <h2 style={h2}>The DVSA rules worth knowing</h2>
         <p style={p}>
-          <strong style={{ color: "var(--fg-2)" }}>Give 10 full working days notice.</strong> That is counted before the earlier of the two tests.
+          <strong style={{ color: "var(--fg-2)" }}>Give 10 full working days notice.</strong> That is counted before the earlier of the two tests.
           Monday to Saturday count. Sundays and bank holidays do not. Miss it and you lose the test fee, so we stop offering a swap once that window shuts.
         </p>
         <p style={p}>
@@ -243,7 +280,7 @@ export default async function CityPage({ params }) {
               ? `${stats.total} ${stats.total === 1 ? "person is" : "people are"} already waiting to swap in ${city.region}.`
               : copy.emptyState}
           </p>
-          <Link href="/register" style={{ display: "inline-block", padding: "14px 28px", borderRadius: "10px", background: "linear-gradient(135deg,#1D9E75,#15805e)", color: "#fff", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
+          <Link href="/register" className="city-cta" style={{ display: "inline-block", padding: "14px 28px", borderRadius: "10px", background: "linear-gradient(135deg,#1D9E75,#15805e)", color: "#fff", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
             List my test
           </Link>
         </div>

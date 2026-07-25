@@ -13,20 +13,22 @@ export const COPY = {
   manchester: {
     h1: "Swap your driving test date in Manchester",
     // Shown under the h1. Keep it to two sentences.
+    // Wording note: never "trade", "sell" or "slot for sale". Nobody is buying
+    // anything. Two learners agree to change places and DVSA makes the change.
     standfirst:
-      "Trade your test slot with another learner in Greater Manchester. You keep your booking until you both agree, and nothing is cancelled.",
+      "Find another learner in Greater Manchester who wants your date, and take theirs. You keep your booking until you both agree, and nothing is cancelled.",
 
     intro: [
-      "Waiting months for a practical test around Manchester has become normal. If your date sits further away than you want, and somebody else has a slot they would rather push back, the two of you can simply trade.",
-      "That is the whole idea behind SwapTest. Nobody cancels anything. You list the test you already hold, we look for someone at your centre or one of the three centres DVSA lets you move to, and if you both agree we pass on each other's details so you can ring DVSA and make the change.",
-      "It works in both directions, and that matters more than most people realise. Plenty of learners want an earlier date. Far fewer are willing to take a later one, which is why anyone happy to move back tends to get matched quickly.",
+      "Waiting months for a practical test around Manchester has become normal. If your date sits further away than you want, and somebody else would rather push theirs back, the two of you can simply change places.",
+      "That is the whole idea behind SwapTest. Nobody cancels anything and nobody buys anything. You list the test you already hold, we look for someone at your centre or one of the three centres DVSA lets you move to, and if you both agree we pass on each other’s details so you can ring DVSA and make the change.",
+      "It works in both directions, and that matters more than most people realise. Plenty of learners want an earlier date. Far fewer are willing to take a later one, which is why anyone happy to move back tends to be matched quickly.",
     ],
 
     // Something genuinely local. This is the bit that stops the page reading
     // like every other city page on the internet.
     localNote: [
       "Greater Manchester is unusually well suited to swapping because the centres sit close together. Bury, Bolton and Rochdale form one cluster in the north. Sale, West Didsbury, Cheetham Hill and Bredbury cover the south and the centre. Atherton reaches across to Bolton, Warrington and Chorley.",
-      "DVSA only lets you move to one of the three nearest centres, so those clusters decide who you can realistically trade with. Someone in Sale can swap with West Didsbury or Cheetham Hill without much thought. Someone in Atherton cannot reach Bury, even though both say Manchester on the booking.",
+      "DVSA only lets you move to one of the three nearest centres, so those clusters decide who you can realistically swap with. Someone in Sale can pair up with West Didsbury or Cheetham Hill without much thought. Someone in Atherton cannot reach Bury, even though both say Manchester on the booking.",
       "The table below shows exactly where each Manchester centre can move to, taken from the DVSA list.",
     ],
 
@@ -37,7 +39,7 @@ export const COPY = {
     faqs: [
       {
         q: "Is swapping a driving test allowed by DVSA?",
-        a: "Yes. You are not selling or transferring a booking. Each of you changes your own test through DVSA in the normal way, using the date the other person is giving up. One of you rings DVSA on 0300 200 1122 with both sets of booking details and it takes about ten minutes.",
+        a: "Yes. Nothing is bought, sold or transferred. Each of you changes your own test through DVSA in the normal way, using the date the other person is giving up. One of you rings DVSA on 0300 200 1122 with both sets of booking details and it takes about ten minutes.",
       },
       {
         q: "How much notice do I need to give?",

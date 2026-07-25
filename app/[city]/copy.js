@@ -214,6 +214,53 @@ export const COPY = {
       },
     ],
   },
+  southampton: {
+    h1: "Swap your driving test date in Southampton",
+    standfirst:
+      "Southampton sits in the middle of a chain of centres running along the Solent, which gives it more genuine options than most cities its size.",
+
+    intro: [
+      "Southampton Maybush is one of the better connected test centres in the country. It pairs properly with Portsmouth, Lee On The Solent and Winchester, and each of those can move back, which is what a swap actually needs.",
+      "Better still, Southampton, Portsmouth and Lee On The Solent all pair with each other as well. Three centres, any combination, all valid. That is unusual and it is worth knowing if your test is at one of them.",
+      "The chain then carries on outwards. Chichester joins on through Portsmouth, and Basingstoke joins on through Winchester, so the run of centres stretches from West Sussex to the edge of Berkshire.",
+    ],
+
+    localNote: [
+      "Think of it as a line rather than a circle. Basingstoke to Winchester to Southampton to Lee On The Solent and Portsmouth, then out to Chichester. Each link works both ways, but only between neighbours. Somebody at Basingstoke cannot swap with somebody at Chichester, even though both sit on the same chain, because a swap is a direct pairing and never a chain of them.",
+      "The middle of the line is the best place to be. Southampton and Portsmouth each have three centres they can pair with, which is as good as it gets outside the largest cities.",
+      "Two nearby towns look like they belong and do not. Poole and Salisbury both list Southampton as somewhere they can move to, but Southampton does not list either of them in return, so a swap between them cannot happen. It is a frustrating one because the move looks perfectly reasonable on a map, and it is exactly the sort of thing worth knowing before you get your hopes up. Poole pairs with Dorchester instead, and Salisbury pairs with Trowbridge.",
+    ],
+
+    emptyState:
+      "Nothing is listed along the Solent today. The chain here works well when people use it, so it is worth adding yours.",
+
+    faqs: [
+      {
+        q: "Which centres can I swap with from Southampton?",
+        a: "Portsmouth, Lee On The Solent and Winchester. All three can move to Southampton and Southampton can move to all three, so any of them is a genuine option. Southampton is one of the better connected centres in the country in that respect.",
+      },
+      {
+        q: "Can I swap between Southampton and Poole?",
+        a: "No, and this catches people out. Poole lists Southampton as a centre it can move to, but Southampton does not list Poole in return, and a swap needs the permission to run both ways. If your test is at Poole your realistic swap partner is Dorchester.",
+      },
+      {
+        q: "Can I swap between Southampton and Salisbury?",
+        a: "No, for the same reason as Poole. Salisbury can move to Southampton but not the other way round. Salisbury pairs with Trowbridge instead, which is a longer drive but is at least a swap that DVSA will actually allow.",
+      },
+      {
+        q: "Can I swap between Portsmouth and Winchester?",
+        a: "No. Winchester lists Portsmouth, but Portsmouth does not list Winchester back. Both of them can pair with Southampton though, so Southampton is the bridge between the two rather than a direct swap.",
+      },
+      {
+        q: "Is it worth swapping to a centre I have never driven at?",
+        a: "That is a personal call and worth thinking about properly. The roads and the test routes will be unfamiliar, and around here the difference between Portsmouth and Winchester is meaningful in driving terms. Some learners take an earlier date anywhere. Others would rather wait for their own centre. Both are reasonable.",
+      },
+      {
+        q: "What if my test is on the Isle of Wight?",
+        a: "Island centres are not part of the Solent chain, so a swap to the mainland is not an option through the nearest centre rules. The one exception, as everywhere, is that DVSA always lets you move back to the centre you originally booked at.",
+      },
+    ],
+  },
 };
 
 export function getCopy(slug) {

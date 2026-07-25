@@ -57,7 +57,12 @@ export const COPY = {
       },
       {
         q: "Does it cost anything?",
-        a: "Listing your test and viewing your matches is free at the moment. You only ever deal with DVSA directly for the change itself, and DVSA does not charge to move a test as long as you give the required notice.",
+        // Answered at render time from the payments switch, so this cannot go
+        // stale the day charging is turned on. See lib/payments.js.
+        a: (paid) =>
+          paid
+            ? "Membership is £1 a week and covers listing your test, viewing your matches and as many swaps as you need. There is no separate fee for a swap. You only ever deal with DVSA directly for the change itself, and DVSA does not charge to move a test as long as you give the required notice."
+            : "No. Listing your test, viewing your matches and swapping are all free at the moment. You only ever deal with DVSA directly for the change itself, and DVSA does not charge to move a test as long as you give the required notice.",
       },
     ],
   },

@@ -22,6 +22,7 @@ import ThemeToggle from "@/components/theme-toggle";
 import { db } from "@/lib/db";
 import { NEARBY_CENTRES } from "@/lib/centres";
 import { getCity, allCitySlugs } from "@/lib/cities";
+import { paymentsEnabled } from "@/lib/payments";
 import { getCopy } from "./copy";
 
 const BASE_URL = "https://www.swaptest.co.uk";
@@ -79,10 +80,16 @@ export default async function CityPage({ params }) {
 
   const stats = await getCityStats(city.centres);
 
+  // Some answers depend on whether charging is switched on, so they are written
+  // as functions in copy.js and resolved here. Keeps the page from claiming the
+  // service is free the day it stops being free.
+  const paid = paymentsEnabled();
+  const faqs = copy.faqs.map((f) => ({ q: f.q, a: typeof f.a === "function" ? f.a(paid) : f.a }));
+
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: copy.faqs.map((f) => ({
+    mainEntity: faqs.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -222,7 +229,7 @@ export default async function CityPage({ params }) {
         </p>
 
         <h2 style={h2}>Common questions</h2>
-        {copy.faqs.map((f, i) => (
+        {faqs.map((f, i) => (
           <div key={i} style={{ marginBottom: "18px" }}>
             <h3 style={h3}>{f.q}</h3>
             <p style={{ ...p, marginBottom: 0 }}>{f.a}</p>

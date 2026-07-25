@@ -94,7 +94,7 @@ const jsonLd = {
           name: "How do you swap a driving test date?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "You swap a driving test date in four steps. First, add your test centre, your current test date, and whether you want an earlier or later date. Second, SwapTest searches your centre and three nearby centres for a matching candidate. Third, both people agree to the swap. Fourth, you contact DVSA to arrange swapping your dates. You do not need to cancel your test first.",
+            text: "You swap a driving test date in four steps. First, add your test centre, your current test date, and whether you want an earlier or later date. Second, SwapTest looks through the tests other learners have already listed on our own site, at your centre and the three nearby centres DVSA lets you move to. We do not search the DVSA booking system. Third, both people agree to the swap. Fourth, you contact DVSA to arrange swapping your dates. You do not need to cancel your test first.",
           },
         },
         {

@@ -178,7 +178,7 @@ export default function HomePage() {
               {
                 num: "2",
                 title: "We find your match",
-                desc: "Our system searches across your centre and 3 nearby centres for someone who wants to swap.",
+                desc: "We check the tests other learners have listed with us, at your centre and the 3 nearby centres DVSA lets you move to. We never search the DVSA booking system.",
                 icon: "🔍",
               },
               {
@@ -287,9 +287,11 @@ export default function HomePage() {
               How to swap a driving test date with someone
             </h3>
             <p>
-              The idea is simple. You tell us your current DVSA test centre, your booked date, and the range of
-              dates you are looking for. Our matching system then searches your test centre and three nearby
-              centres for another candidate who wants to move to your date while offering one that suits you. When
+              The idea is simple. You tell us your current DVSA test centre, your booked date, and whether you
+              want an earlier or a later one. We then look through the tests other learners have already listed on
+              SwapTest, at your centre and the three nearby centres DVSA lets you move to, for somebody who wants
+              to go the other way. To be clear, we are reading our own list of listed tests. We have no connection
+              to the DVSA booking system and never search it. When
               a fair match is found, both people agree, swap contact details, and contact DVSA to arrange the
               change. There is no need to cancel your test first, and no need to refresh the booking site for hours
               hoping for a cancellation.
@@ -415,7 +417,7 @@ export default function HomePage() {
               },
               {
                 q: "How do you swap a driving test date?",
-                a: "You swap a driving test date in four steps. First, add your test centre, your current test date, and whether you want an earlier or later date. Second, SwapTest searches your centre and three nearby centres for a matching candidate. Third, both people agree to the swap. Fourth, you contact DVSA to arrange swapping your dates. You do not need to cancel your test first.",
+                a: "You swap a driving test date in four steps. First, add your test centre, your current test date, and whether you want an earlier or later date. Second, SwapTest looks through the tests other learners have already listed on our own site, at your centre and the three nearby centres DVSA lets you move to. We do not search the DVSA booking system. Third, both people agree to the swap. Fourth, you contact DVSA to arrange swapping your dates. You do not need to cancel your test first.",
               },
               {
                 q: "Can you swap driving test dates with someone?",

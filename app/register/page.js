@@ -133,8 +133,8 @@ function RegisterForm() {
             {step === 1
               ? "Your contact details are only shared after both parties agree to swap."
               : isEarlier
-                ? "We'll search for people who want a later date at your centre or nearby."
-                : "We'll search for people who want an earlier date at your centre or nearby."
+                ? "We'll check the tests other learners have listed with us at your centre and nearby, looking for someone who wants a later date."
+                : "We'll check the tests other learners have listed with us at your centre and nearby, looking for someone who wants an earlier date."
             }
           </p>
 
@@ -226,7 +226,7 @@ function RegisterForm() {
                 {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
               </select>
               <p style={{ fontSize: "12px", color: "var(--faint)", marginTop: "6px" }}>
-                We'll also search 3 nearby centres automatically.
+                We'll also include listings at the 3 nearby centres DVSA lets you move to.
               </p>
             </div>
 

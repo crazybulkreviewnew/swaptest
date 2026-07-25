@@ -20,7 +20,7 @@ export const COPY = {
 
     intro: [
       "Waiting months for a practical test around Manchester has become normal. If your date sits further away than you want, and somebody else would rather push theirs back, the two of you can simply change places.",
-      "That is the whole idea behind SwapTest. Nobody cancels anything and nobody buys anything. You list the test you already hold, we look for someone at your centre or one of the three centres DVSA lets you move to, and if you both agree we pass on each other’s details so you can each ring DVSA and make the change.",
+      "That is the whole idea behind SwapTest. Nobody cancels anything and nobody buys anything. You list the test you already hold, we look through the tests other learners have listed with us, at your centre or one of the three centres DVSA lets you move to, and if you both agree we pass on each other’s details so you can each ring DVSA and make the change.",
       "It works in both directions, and that matters more than most people realise. Plenty of learners want an earlier date. Far fewer are willing to take a later one, which is why anyone happy to move back tends to be matched quickly.",
     ],
 

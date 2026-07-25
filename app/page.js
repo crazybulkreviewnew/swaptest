@@ -244,9 +244,14 @@ export default function HomePage() {
                 color: "#F0997B",
               },
               {
-                title: "Email notifications",
-                desc: "Get notified instantly when someone wants your date. No need to keep checking the site.",
+                title: "Not ready? That is fine",
+                desc: "Plenty of learners want to push their test back because they need more practice. Move yours to a later date and give your slot to someone who is ready. Nobody wastes a test and nobody sits one too soon.",
                 color: "var(--brand-text)",
+              },
+              {
+                title: "No paying over the odds",
+                desc: "A practical test costs £62, or £75 evenings and weekends. Resellers have been reported charging several times that for the same slot. Swapping with another learner costs you nothing extra, because you both keep the test you already paid DVSA for.",
+                color: "#85B7EB",
               },
             ].map((item) => (
               <div
@@ -369,17 +374,24 @@ export default function HomePage() {
                 booking you made yourself. When two of you agree to change places, you each ring DVSA and change
                 your own test, which is the process DVSA already offers for free.
               </p>
+              <p className="mb-3">
+                This matters because learners have been badly stung. A practical test costs{" "}
+                <strong className="text-[var(--fg-2)]">£62</strong>, or £75 evenings, weekends and bank holidays.
+                Sites that hoard slots with bots have been reported charging several times that for the very same
+                appointment, and DVSA has been shutting them down. Swapping with another learner costs you nothing
+                on top of the fee you have already paid, because neither of you is buying anything. You are just
+                changing places.
+              </p>
               <p className="mb-0">
-                The only money you should ever pay for a practical test is the official DVSA fee: £62 for a
-                weekday test, or £75 for an evening, weekend or bank holiday test. If a website asks you for more
-                than that to secure a test, report it at{" "}
+                The only money you should ever pay for a practical test is the official DVSA fee. If a website asks
+                for more than that to secure you a test, you can{" "}
                 <a
                   href="https://www.gov.uk/guidance/report-driving-test-resellers-cancellation-finders-or-booking-services"
                   target="_blank"
                   rel="nofollow noopener"
                   className="text-[#1D9E75] hover:underline"
                 >
-                  gov.uk
+                  report it to DVSA
                 </a>
                 .
               </p>

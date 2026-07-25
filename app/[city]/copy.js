@@ -20,7 +20,7 @@ export const COPY = {
 
     intro: [
       "Waiting months for a practical test around Manchester has become normal. If your date sits further away than you want, and somebody else would rather push theirs back, the two of you can simply change places.",
-      "That is the whole idea behind SwapTest. Nobody cancels anything and nobody buys anything. You list the test you already hold, we look for someone at your centre or one of the three centres DVSA lets you move to, and if you both agree we pass on each other’s details so you can ring DVSA and make the change.",
+      "That is the whole idea behind SwapTest. Nobody cancels anything and nobody buys anything. You list the test you already hold, we look for someone at your centre or one of the three centres DVSA lets you move to, and if you both agree we pass on each other’s details so you can each ring DVSA and make the change.",
       "It works in both directions, and that matters more than most people realise. Plenty of learners want an earlier date. Far fewer are willing to take a later one, which is why anyone happy to move back tends to be matched quickly.",
     ],
 
@@ -39,7 +39,7 @@ export const COPY = {
     faqs: [
       {
         q: "Is swapping a driving test allowed by DVSA?",
-        a: "Yes. Nothing is bought, sold or transferred. Each of you changes your own test through DVSA in the normal way, using the date the other person is giving up. One of you rings DVSA on 0300 200 1122 with both sets of booking details and it takes about ten minutes.",
+        a: "Yes. Nothing is bought, sold or transferred. Each of you changes your own test through DVSA in the normal way, using the date the other person is giving up. You both ring DVSA on 0300 200 1122 and confirm the swap for your own booking, because DVSA will not move your test on somebody else’s say so. Have both sets of booking details to hand.",
       },
       {
         q: "How much notice do I need to give?",

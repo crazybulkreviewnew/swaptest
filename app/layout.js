@@ -133,6 +133,14 @@ const jsonLd = {
         },
         {
           "@type": "Question",
+          name: "Is SwapTest a driving test reseller?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: 'SwapTest is not a driving test reseller. DVSA asks people to report anyone who resells test appointments, uses bots to search the booking service, or books car tests on behalf of other people, and DVSA states that it is against the law for anyone other than the learner driver to book a car driving test. SwapTest does none of these things. We never hold, buy or sell appointments, no money changes hands between learners, and we do not touch the DVSA booking service. You keep the booking you made yourself, and when two of you agree to change places you each ring DVSA and change your own test. The only fee for a practical test is the official DVSA fee of £62 for a weekday test or £75 for an evening, weekend or bank holiday test.',
+          },
+        },
+        {
+          "@type": "Question",
           name: "Is my personal information safe?",
           acceptedAnswer: {
             "@type": "Answer",

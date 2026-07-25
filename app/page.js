@@ -270,7 +270,7 @@ export default function HomePage() {
           </h2>
           <div className="space-y-5 text-[15px] leading-relaxed text-[var(--muted)]">
             <p>
-              SwapTest is a low-cost service built to help UK learner drivers swap a driving test for a date that
+              SwapTest helps UK learner drivers swap a driving test for a date that
               actually works for them. If you have passed your theory test and booked a practical, you may have
               been handed a slot months away. Cancelling and rebooking through DVSA often only offers the same far
               off dates. SwapTest gives you another option: swap a driving test date with someone who wants your
@@ -325,7 +325,7 @@ export default function HomePage() {
             </p>
 
             <h3 className="text-[18px] font-bold text-[var(--fg)] pt-2">
-              Safe, simple and low-cost
+              Safe, simple and private
             </h3>
             <p>
               Your contact details stay private until both people agree to swap, and your password is encrypted, so
@@ -340,6 +340,50 @@ export default function HomePage() {
               and contact DVSA to lock it in. It really is that simple to swap a driving test date in the UK and
               take control of when you sit your practical test.
             </p>
+
+            {/* Test reselling is a real problem learners get caught by, and it
+                is the first thing a cautious visitor will wonder about us.
+                Wording checked against gov.uk rather than paraphrased: DVSA
+                says booking a car test for anyone other than the learner is
+                against the law, and lists reselling as reportable. */}
+            <div className="mt-8 rounded-xl border border-[var(--border)] bg-[var(--bg-raised)] p-6">
+              <h3 className="text-[18px] font-bold text-[var(--fg)] mb-3">
+                Nobody buys or sells a test here
+              </h3>
+              <p className="mb-3">
+                Driving test appointments are not something to be bought and sold, and DVSA is clear about it.
+                Reselling test appointments breaks DVSA&apos;s rules and can be reported, and DVSA states that{" "}
+                <strong className="text-[var(--fg-2)]">
+                  it is against the law for anyone other than the learner driver to book a car driving test
+                </strong>
+                . DVSA works with app stores, hosting providers and the police where it finds criminal activity.
+              </p>
+              <p className="mb-3">
+                DVSA asks people to report anyone who resells test appointments, searches the booking service
+                using bots, books car tests on behalf of other people, or uses someone else&apos;s details to book
+                a test. SwapTest does none of those things.
+              </p>
+              <p className="mb-3">
+                We never hold, buy or sell test appointments, and no money changes hands between learners. We do
+                not touch the DVSA booking service at all, so there are no bots and no bulk bookings. You keep the
+                booking you made yourself. When two of you agree to change places, you each ring DVSA and change
+                your own test, which is the process DVSA already offers for free.
+              </p>
+              <p className="mb-0">
+                The only money you should ever pay for a practical test is the official DVSA fee: £62 for a
+                weekday test, or £75 for an evening, weekend or bank holiday test. If a website asks you for more
+                than that to secure a test, report it at{" "}
+                <a
+                  href="https://www.gov.uk/guidance/report-driving-test-resellers-cancellation-finders-or-booking-services"
+                  target="_blank"
+                  rel="nofollow noopener"
+                  className="text-[#1D9E75] hover:underline"
+                >
+                  gov.uk
+                </a>
+                .
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -378,6 +422,10 @@ export default function HomePage() {
                 a: pay
                   ? "It costs £1 to register and list your test, and viewing your matches is free. If you decide to go ahead with a swap, only the person who wants an earlier date pays an £8 swap fee — the person moving to a later date pays nothing. There are no subscriptions and no hidden charges."
                   : "SwapTest is currently free to use — there is no charge to register, list your test, view matches, or complete a swap. We may introduce a small fee in the future, but there are no hidden charges.",
+              },
+              {
+                q: "Is SwapTest a driving test reseller?",
+                a: 'SwapTest is not a driving test reseller. DVSA asks people to report anyone who resells test appointments, uses bots to search the booking service, or books car tests on behalf of other people, and DVSA states that it is against the law for anyone other than the learner driver to book a car driving test. SwapTest does none of these things. We never hold, buy or sell appointments, no money changes hands between learners, and we do not touch the DVSA booking service. You keep the booking you made yourself, and when two of you agree to change places you each ring DVSA and change your own test. The only fee for a practical test is the official DVSA fee of £62 for a weekday test or £75 for an evening, weekend or bank holiday test.',
               },
               {
                 q: "Is my personal information safe?",

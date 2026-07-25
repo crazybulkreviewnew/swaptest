@@ -210,7 +210,7 @@ export default async function CityPage({ params }) {
             ["List the test you already have", "Your centre, your date and time. Nothing is cancelled and nothing changes yet."],
             ["We look for someone going the other way", "At your centre, or one of the three centres DVSA lets you move to."],
             ["You both agree", "Only then do you see each other’s contact details. Names stay hidden until that point."],
-            ["One of you rings DVSA", "Call 0300 200 1122 with both booking references. It takes about ten minutes and there is no charge."],
+            ["You both ring DVSA", "Each of you calls 0300 200 1122 and confirms the swap for your own booking. DVSA will not change your test on somebody else’s say so. There is no charge."],
           ].map(([title, body], i) => (
             <li key={i} style={{ marginBottom: "14px", color: "var(--muted)" }}>
               <div style={h3}>{title}</div>

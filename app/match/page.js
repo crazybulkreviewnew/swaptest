@@ -151,7 +151,7 @@ function MatchDetail() {
         </Card>
         <Card className="mt-4">
           <div className="text-sm text-[var(--muted)] leading-relaxed">
-            <strong className="text-[var(--fg)]">Next steps:</strong> Contact each other, then contact DVSA to arrange swapping your test dates. You do not need to cancel your test first.
+            <strong className="text-[var(--fg)]">Next steps:</strong> Contact each other and agree a time, then you each ring DVSA on 0300 200 1122 to change your own booking. Both of you need to call, because DVSA will not move your test on somebody else&apos;s say so. You do not need to cancel your test first.
           </div>
         </Card>
       </>);

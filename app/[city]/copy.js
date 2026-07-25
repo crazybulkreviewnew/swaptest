@@ -261,6 +261,54 @@ export const COPY = {
       },
     ],
   },
+  edinburgh: {
+    h1: "Swap your driving test date in Edinburgh",
+    standfirst:
+      "Almost everything in this part of Scotland runs through Currie. If your test is there you have the most options in the region, and if it is not, Currie is usually the centre you are aiming at.",
+
+    intro: [
+      "Edinburgh has two test centres, Currie in the south west and Musselburgh out to the east, and the good news is that they pair with each other. That is not something every city gets. Birmingham has five centres and some of them cannot swap at all.",
+      "Currie is also the busiest junction in the east of Scotland. It pairs with Musselburgh, with Livingston out towards the M8, and across the Firth of Forth with Dunfermline. Three genuine options from one centre.",
+      "That Forth crossing is worth a mention on its own. A swap between Currie and Dunfermline is perfectly allowed, so if you are willing to drive over the bridge on test day, the pool you can reach is noticeably bigger than it first looks.",
+    ],
+
+    localNote: [
+      "The shape here is a hub with spokes rather than a ring. Musselburgh, Livingston and Dunfermline all pair with Currie, but they do not pair with each other, so Currie is the middle of everything and the others are not connected sideways.",
+      "That has a practical consequence. If your test is at Musselburgh, your options are Currie and Haddington, and that is it. Livingston reaches Currie and Grangemouth. Neither of them can reach the other, even though both are a short drive from the city.",
+      "Kirkcaldy is the one to be careful about. It lists Currie and Perth as places it can move to, but neither lists Kirkcaldy back, so a swap with either is impossible. Dunfermline is the only centre Kirkcaldy can genuinely pair with.",
+      "If you are outside the city, Dunfermline is the strongest place to be after Currie. It reaches Currie, Grangemouth and Kirkcaldy, which is three usable partners and better than most centres manage.",
+    ],
+
+    emptyState:
+      "Nothing is listed around Edinburgh today. Currie connects to more centres than most, so a listing here tends not to sit unnoticed for long.",
+
+    faqs: [
+      {
+        q: "Can I swap between the two Edinburgh test centres?",
+        a: "Yes. Currie and Musselburgh pair with each other in both directions, so a swap between them is allowed. It is worth knowing that not every city works this way. Some cities have centres a few miles apart that DVSA will not let you move between.",
+      },
+      {
+        q: "Can I swap a test in Edinburgh for one in Fife?",
+        a: "Yes, if you are at Currie and they are at Dunfermline. That pairing works both ways, so a swap across the Firth of Forth is allowed. Musselburgh and Livingston cannot reach Fife, and Kirkcaldy cannot reach Edinburgh at all.",
+      },
+      {
+        q: "My test is at Musselburgh. Who can I swap with?",
+        a: "Currie and Haddington. Musselburgh lists Livingston as somewhere it can move to, but Livingston does not list Musselburgh back, so that one will not work as a swap. Two options is fewer than Currie gets, but both are genuinely usable.",
+      },
+      {
+        q: "Can I swap between Livingston and Musselburgh?",
+        a: "No. They sit on opposite sides of the city and neither appears on the other's list in a way that works both ways. Both can reach Currie though, so Currie is the common ground rather than a direct swap between the two.",
+      },
+      {
+        q: "Why can I not swap my Kirkcaldy test for Edinburgh?",
+        a: "Kirkcaldy can move to Currie, but Currie cannot move to Kirkcaldy, and a swap needs the permission to run both ways. Dunfermline is the centre Kirkcaldy can properly pair with, and Dunfermline in turn pairs with Currie, though that does not chain into a swap for you.",
+      },
+      {
+        q: "Do Scottish test centres follow the same rules as England?",
+        a: "Yes. The 10 working day notice period, the limit of two changes per booking and the nearest centres rule all apply the same way across Great Britain. Northern Ireland runs a separate system, so those rules do not apply there.",
+      },
+    ],
+  },
 };
 
 export function getCopy(slug) {

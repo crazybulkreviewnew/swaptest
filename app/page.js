@@ -433,11 +433,11 @@ export default function HomePage() {
                 q: "How much does SwapTest cost?",
                 a: pay
                   ? "It costs £1 to register and list your test, and viewing your matches is free. If you decide to go ahead with a swap, only the person who wants an earlier date pays an £8 swap fee — the person moving to a later date pays nothing. There are no subscriptions and no hidden charges."
-                  : "SwapTest is currently free to use — there is no charge to register, list your test, view matches, or complete a swap. We may introduce a small fee in the future, but there are no hidden charges.",
+                  : "SwapTest is currently free to use — there is no charge to register, list your test, view matches, or complete a swap. We may introduce a small fee in the future to cover our infrastructure cost, but there are no hidden charges.",
               },
               {
                 q: "Is SwapTest a driving test reseller?",
-                a: 'SwapTest is not a driving test reseller. DVSA asks people to report anyone who resells test appointments, uses bots to search the booking service, or books car tests on behalf of other people, and DVSA states that it is against the law for anyone other than the learner driver to book a car driving test. SwapTest does none of these things. We never hold, buy or sell appointments, no money changes hands between learners, and we do not touch the DVSA booking service. You keep the booking you made yourself, and when two of you agree to change places you each ring DVSA and change your own test. The only fee for a practical test is the official DVSA fee of £62 for a weekday test or £75 for an evening, weekend or bank holiday test.',
+                a: 'SwapTest is not a driving test reseller. DVSA asks people to report anyone who resells test appointments, uses bots to search the booking service, or books car tests on behalf of other people, and DVSA states that it is against the law for anyone other than the learner driver to book a car driving test. SwapTest does none of these things. We never hold, buy or sell appointments, no money changes hands between learners, and we do not touch the DVSA booking service. You keep the booking you made yourself, and when two of you agree to change places you each ring DVSA and change your own test.',
               },
               {
                 q: "Is my personal information safe?",

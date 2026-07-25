@@ -164,7 +164,7 @@ export default function HomePage() {
             How does it work?
           </h2>
           <p className="text-center text-[var(--muted-2)] text-[15px] mb-12 max-w-[480px] mx-auto">
-            Three simple steps. No complicated forms. No waiting on hold with DVSA.
+            Three simple steps. You keep the test you already booked, and nothing is cancelled.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

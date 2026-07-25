@@ -20,7 +20,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/navbar";
 import { db } from "@/lib/db";
-import { NEARBY_CENTRES } from "@/lib/centres";
+import { NEARBY_CENTRES, canSwapCentres } from "@/lib/centres";
 import { getCity, allCitySlugs } from "@/lib/cities";
 import { paymentsEnabled } from "@/lib/payments";
 import { getCopy } from "./copy";
@@ -54,11 +54,25 @@ export async function generateMetadata({ params }) {
   };
 }
 
+// Centre names come in two shapes: "Bury (Manchester)" and
+// "Birmingham (Kings Heath)". Strip whichever part repeats the city so the
+// table reads as a list of places rather than the city name six times.
+function shortCentre(name, city) {
+  return name.replace(` (${city})`, "").replace(`${city} (`, "").replace(/\)$/, "");
+}
+
 // Live picture of the city: how many are waiting, and which way they want to go.
+//
+// Only counts listings whose test has not already happened. Around one in seven
+// AVAILABLE listings are for a date in the past, because nothing currently
+// retires them. Matching already ignores those (they fail the 10-working-day
+// rule), but counting them here would advertise a bigger pool than exists.
 async function getCityStats(centres) {
   try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const listings = await db.listing.findMany({
-      where: { centre: { in: centres }, status: "AVAILABLE" },
+      where: { centre: { in: centres }, status: "AVAILABLE", currentDate: { gte: today } },
       select: { type: true, centre: true },
     });
     const earlier = listings.filter((l) => l.type === "EARLIER").length;
@@ -245,11 +259,27 @@ export default async function CityPage({ params }) {
                       className="city-centre-link"
                       style={{ color: "var(--fg)", textDecoration: "none" }}
                     >
-                      {centre.replace(` (${city.name})`, "")}
+                      {shortCentre(centre, city.name)}
                     </Link>
                   </th>
                   <td style={{ ...cell, color: "var(--muted)" }}>
-                    {(NEARBY_CENTRES[centre] || []).map((n) => n.replace(` (${city.name})`, "")).join(", ")}
+                    {(NEARBY_CENTRES[centre] || []).map((n, i) => {
+                      // DVSA lets you move there, but a swap also needs them to
+                      // be allowed to move to you. Where that is not mutual, no
+                      // swap is possible and saying so saves wasted hope.
+                      const mutual = canSwapCentres(centre, n);
+                      return (
+                        <span key={n}>
+                          {i > 0 && ", "}
+                          <span style={{ color: mutual ? "var(--muted)" : "var(--muted-2)" }}>
+                            {shortCentre(n, city.name)}
+                          </span>
+                          {!mutual && (
+                            <span style={{ color: "var(--muted-2)", fontSize: "12px" }}> (one way)</span>
+                          )}
+                        </span>
+                      );
+                    })}
                   </td>
                 </tr>
               ))}
@@ -257,7 +287,7 @@ export default async function CityPage({ params }) {
           </table>
         </div>
         <p style={{ fontSize: "12px", color: "var(--muted-2)", marginBottom: "8px" }}>
-          Pick your centre above to start listing your test. You can also move back to the centre you first booked at, even if it is not on this list.
+          Pick your centre above to start listing your test. Where a centre is marked <strong>one way</strong>, DVSA lets you move there but does not let them move to you, so a swap between the two is not possible. You can also move back to the centre you first booked at, even if it is not on this list.
         </p>
 
         <h2 style={h2}>The DVSA rules worth knowing</h2>

@@ -70,6 +70,54 @@ export const COPY = {
       },
     ],
   },
+  birmingham: {
+    h1: "Swap your driving test date in Birmingham",
+    standfirst:
+      "Five test centres sit within a few miles of each other here, which is more choice than almost anywhere in the country. Whether you can use it depends on which one you booked.",
+
+    intro: [
+      "Birmingham has more driving test centres packed into a small area than any other city outside London. Garretts Green, Kings Heath, Kingstanding, Shirley and South Yardley are all within a short drive of one another, with Wednesbury just up the road.",
+      "On paper that is very good news for swapping. In practice it depends entirely on which centre your test is booked at, because DVSA decides which centres you may move between and the list is not what most people expect.",
+      "SwapTest works out the answer for you. You tell us the test you already hold, we look through the tests other learners have listed with us, and we only show you a swap where DVSA will actually allow both of you to move. Nothing is cancelled, nothing is bought or sold, and we never search the DVSA booking system.",
+    ],
+
+    localNote: [
+      "This is the part worth knowing before you get your hopes up. The Birmingham centres are not all connected to each other, and a few of the links only work one way, which means no swap is possible.",
+      "Garretts Green, Shirley and South Yardley form the well connected middle. Any of those three can swap with the other two. Kings Heath joins Shirley and South Yardley but not Garretts Green, even though Garretts Green appears on the Kings Heath list, because the move has to be allowed in both directions.",
+      "Kingstanding is the awkward one. It sits north of the others and can only pair with Garretts Green and Wednesbury. If you are at Kingstanding and hoping for South Yardley, DVSA will not allow it, however close the two look on a map. Redditch is similar from the other side: Redditch learners can move into Birmingham, but Birmingham learners cannot move out to Redditch.",
+      "The table below is the definitive version, taken straight from the DVSA list.",
+    ],
+
+    emptyState:
+      "No Birmingham tests are listed at the moment. Add yours and you will be the one everybody else is matched against.",
+
+    faqs: [
+      {
+        q: "Which Birmingham test centres can swap with each other?",
+        a: "Garretts Green, Shirley and South Yardley can all swap with each other. Kings Heath can swap with Shirley and South Yardley. Kingstanding can only swap with Garretts Green and Wednesbury. The rule is that each of you has to be allowed to move to the other person's centre, so a link that only works one way is no good to anybody.",
+      },
+      {
+        q: "I am at Kingstanding. Why can I not swap with South Yardley?",
+        a: "Because the permission only runs one way. South Yardley is on the list of centres you can move to from Kingstanding, but Kingstanding is not on the list for South Yardley. A swap needs both people to be able to move, so DVSA would refuse it. From Kingstanding your realistic options are Garretts Green and Wednesbury.",
+      },
+      {
+        q: "Can I swap between Birmingham and Coventry or Redditch?",
+        a: "Not usually. Coventry pairs with Nuneaton, Hinckley and Warwick rather than Birmingham. Redditch can move into Birmingham but Birmingham cannot move out to Redditch, so a swap between the two will not work. The one exception is if Redditch or Coventry is the centre you originally booked at, because DVSA always lets you move back to that.",
+      },
+      {
+        q: "How long does it take to arrange a swap?",
+        a: "The matching part is usually quick if somebody suitable has listed. After that you have 24 hours to agree between you, then the DVSA call takes about ten minutes each. The thing that catches people out is the notice period, not the paperwork.",
+      },
+      {
+        q: "What happens if the other person never replies?",
+        a: "The match expires after 24 hours and both tests go straight back into the pool, so you have lost nothing but a day. We send reminders before that happens, because a missed email is the most common reason a good swap falls through.",
+      },
+      {
+        q: "Do I need to tell my driving instructor?",
+        a: "You do not have to, but it is worth doing before you agree. Your instructor may be booked with somebody else on the new date, and if you use their car for the test that matters more than the date itself.",
+      },
+    ],
+  },
 };
 
 export function getCopy(slug) {

@@ -274,14 +274,16 @@ export default async function CityPage({ params }) {
         ))}
 
         <div style={{ marginTop: "40px", padding: "24px", borderRadius: "12px", background: "var(--bg-raised)", border: "1px solid var(--border)", textAlign: "center" }}>
-          <h2 style={{ ...h2, margin: "0 0 8px" }}>List your {city.name} test</h2>
+          {/* "List" is our word, not the visitor's. Somebody arriving from
+              search wants to swap a test, not list one. */}
+          <h2 style={{ ...h2, margin: "0 0 8px" }}>Swap your {city.name} test</h2>
           <p style={{ ...p, marginBottom: "18px" }}>
             {stats && stats.total > 0
               ? `${stats.total} ${stats.total === 1 ? "person is" : "people are"} already waiting to swap in ${city.region}.`
               : copy.emptyState}
           </p>
           <Link href="/register" className="city-cta" style={{ display: "inline-block", padding: "14px 28px", borderRadius: "10px", background: "linear-gradient(135deg,#1D9E75,#15805e)", color: "#fff", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
-            List my test
+            Swap your test
           </Link>
         </div>
 

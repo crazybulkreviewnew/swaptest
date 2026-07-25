@@ -10,7 +10,14 @@ import { login } from "@/lib/api-client";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/dashboard";
+  // Only ever follow a path on this site. Without this check, a link like
+  // /login?redirect=https://evil.example is a phishing tool: the link and the
+  // login page are genuinely ours, so it survives the checks a careful person
+  // makes, and the victim is handed to the attacker the moment they sign in.
+  // The leading "/" must not be followed by another, because "//evil.example"
+  // is read by the browser as a host, not a path.
+  const requestedRedirect = searchParams.get("redirect") || "";
+  const redirect = /^\/(?!\/)/.test(requestedRedirect) ? requestedRedirect : "/dashboard";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -9,7 +9,17 @@
 import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
+// Same guard as lib/auth.js, checked on use rather than on import. Middleware
+// runs on the Edge as its own bundle, so it reads the environment
+// independently and needs its own check.
+function jwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT_SECRET is not set. Refusing to verify a token with a guessable key.");
+  }
+  return new TextEncoder().encode(secret);
+}
+
 const TOKEN_NAME = "swaptest_token";
 
 // Routes that require authentication
@@ -25,7 +35,7 @@ export async function middleware(request) {
   let isAuthenticated = false;
   if (token) {
     try {
-      await jwtVerify(token, JWT_SECRET);
+      await jwtVerify(token, jwtSecret());
       isAuthenticated = true;
     } catch {
       // Invalid/expired token — treat as unauthenticated

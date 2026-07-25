@@ -166,6 +166,54 @@ export const COPY = {
       },
     ],
   },
+  northampton: {
+    h1: "Swap your driving test date in Northampton",
+    standfirst:
+      "Northampton, Kettering and Wellingborough all pair up with each other, which makes this one of the more straightforward places in the country to swap a test.",
+
+    intro: [
+      "Not every part of the country is well set up for swapping. Some centres are stranded, and some pair up in only one direction so no swap is possible at all. Northamptonshire got lucky.",
+      "Northampton, Kettering and Wellingborough form a clean triangle. Each one can move to the other two, and each of those can move back, which is what a swap actually needs. Three centres, all genuinely open to each other, sitting within about twenty miles.",
+      "That matters more than the raw number of people waiting. A busy centre with nobody to pair with is worth less than a quiet one that connects properly, and this corner of the country connects properly.",
+    ],
+
+    localNote: [
+      "The triangle is the useful part. If your test is at Northampton, Kettering or Wellingborough, the other two are open to you and you are open to them. Wellingborough is the best connected of the three because it also reaches Bedford.",
+      "Two nearby centres look like options and are not. Rugby lists Hinckley, Coventry and Nuneaton, but none of those three list Rugby back, so a learner at Rugby cannot swap with anybody at all. It is the clearest dead end we have found anywhere in the country. Peterborough is a milder version: it lists Kettering, but Kettering does not list Peterborough, so that one does not work either.",
+      "Bedford sits on the edge. It can pair with Wellingborough, and through nobody else in this group, so a Bedford learner is really looking at Wellingborough or nothing locally.",
+      "If you are at Rugby or Peterborough, the honest advice is that a swap is not going to happen from where you are. The one thing that would change it is moving back to a centre you originally booked at, which DVSA always allows.",
+    ],
+
+    emptyState:
+      "Nothing is listed here today. The triangle works well when people use it, so adding yours is worth doing even if it looks quiet.",
+
+    faqs: [
+      {
+        q: "Which centres can I swap between around Northampton?",
+        a: "Northampton, Kettering and Wellingborough can all swap with each other. Wellingborough can also swap with Bedford. Those are the only combinations that work in this area, because a swap needs both people to be allowed to move and the rest of the nearby centres do not pair up both ways.",
+      },
+      {
+        q: "I am at Rugby. Can I swap with Coventry or Northampton?",
+        a: "Unfortunately not. Rugby can move to Hinckley, Coventry and Nuneaton, but none of those three can move to Rugby, so there is no pairing that works in both directions. Northampton lists Rugby but Rugby does not list Northampton back, so that fails too. Rugby is the one centre we have found with no possible swap partner at all.",
+      },
+      {
+        q: "Can I swap between Kettering and Peterborough?",
+        a: "No. Peterborough can move to Kettering, but Kettering cannot move to Peterborough, and a swap needs the permission to run both ways. Peterborough pairs with Boston instead.",
+      },
+      {
+        q: "Is a smaller area worse for swapping than a big city?",
+        a: "Not necessarily, and Northamptonshire is the example. What matters is whether your centre pairs properly with others, not how many centres are nearby. There are learners in London whose centre has exactly one possible partner. Here you have two, and they are genuinely usable.",
+      },
+      {
+        q: "How far apart are these centres?",
+        a: "Northampton, Kettering and Wellingborough sit within about twenty miles of each other, so swapping between them rarely means a difficult journey on test day. Worth checking you are happy to drive to the other centre before you agree, since the roads and routes will be unfamiliar.",
+      },
+      {
+        q: "What if nobody is listed at my centre yet?",
+        a: "List anyway. Matching runs whenever somebody new joins, and we email you the moment a swap becomes possible, so you do not have to keep checking. In a well connected area like this one, being listed early usually means being first in line.",
+      },
+    ],
+  },
 };
 
 export function getCopy(slug) {

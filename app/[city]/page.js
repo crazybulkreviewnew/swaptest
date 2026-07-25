@@ -58,7 +58,14 @@ export async function generateMetadata({ params }) {
 // "Birmingham (Kings Heath)". Strip whichever part repeats the city so the
 // table reads as a list of places rather than the city name six times.
 function shortCentre(name, city) {
-  return name.replace(` (${city})`, "").replace(`${city} (`, "").replace(/\)$/, "");
+  // "Bury (Manchester)" -> "Bury"
+  if (name.endsWith(` (${city})`)) return name.slice(0, -(city.length + 3));
+  // "Birmingham (Kings Heath)" -> "Kings Heath"
+  if (name.startsWith(`${city} (`) && name.endsWith(")")) return name.slice(city.length + 2, -1);
+  // Anything else is left alone. Names carry their own brackets, so a blanket
+  // strip of the trailing one turned "Barking (Tanner Street)" into
+  // "Barking (Tanner Street".
+  return name;
 }
 
 // Live picture of the city: how many are waiting, and which way they want to go.

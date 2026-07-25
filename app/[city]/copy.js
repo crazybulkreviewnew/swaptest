@@ -118,6 +118,54 @@ export const COPY = {
       },
     ],
   },
+  london: {
+    h1: "Swap your driving test date in London",
+    standfirst:
+      "London has 25 test centres, which sounds like plenty of choice. In practice your test can only be swapped with one to three specific centres, and which ones depends entirely on where you booked.",
+
+    intro: [
+      "Most people picture London as one big pool. List your test, wait for somebody anywhere in the city, done. It is worth knowing before you start that it does not work like that at all.",
+      "DVSA only lets you move your test to one of the three centres nearest to yours, and a swap needs that permission to run in both directions. Once you apply that rule across London, the city stops being a network and becomes a lot of very small, separate pairings. Four London centres have exactly one centre they can swap with. Morden is one of them, and the answer is Tolworth.",
+      "So the honest question is not how busy London is. It is how many people are listed at the handful of centres yours actually pairs with. SwapTest works that out for you and only ever shows a swap DVSA will permit, using the tests other learners have listed with us. We never search the DVSA booking system.",
+    ],
+
+    localNote: [
+      "There is no such thing as a London wide swap. Someone at Morden and someone at Wood Green could both wait a year with perfectly matching dates and never be allowed to trade places, because neither centre appears on the other's list.",
+      "The narrowest centres are Morden, Erith, Loughton and Slough. Each has a single possible partner: Tolworth, Belvedere, Chingford and Uxbridge respectively. If your test is at one of those four, everything depends on that one other centre, so listing early is worth far more than it is elsewhere.",
+      "It is not all bad news. Several London centres pair outwards to places you might not expect, because DVSA's lists ignore the boundary. Tolworth reaches Chertsey and Isleworth. Uxbridge reaches Slough. Brentwood reaches Basildon. Wood Green reaches Tottenham. Those count as ordinary swaps.",
+      "The table below is the exact list for every London centre, taken from the DVSA data. Where a centre is marked one way, the permission does not run both ways and no swap is possible.",
+    ],
+
+    emptyState:
+      "No London tests are listed at the moment. Add yours and you will be first in line at your centre, which counts for a lot when the pairings are this narrow.",
+
+    faqs: [
+      {
+        q: "Can I swap a test in north London for one in south London?",
+        a: "No. DVSA only lets you move to one of the three centres nearest your own, and nothing joins north and south London. It is not a SwapTest restriction and waiting will not change it. Your options are the centres directly paired with yours, which the table on this page lists in full.",
+      },
+      {
+        q: "My test is at Morden. Who can I swap with?",
+        a: "Tolworth, and nobody else. Morden is one of four London centres with a single possible partner, so a swap depends entirely on somebody at Tolworth wanting to move the other way. It is worth listing early and worth being flexible about the date, because you will not get many chances.",
+      },
+      {
+        q: "Why can I not swap with a centre that is only a few miles away?",
+        a: "Because the DVSA list is not simply the closest three by distance, and the permission has to work both ways. Bromley and Mitcham can swap. Morden and Mitcham cannot, even though they are close. If a centre is not on your row in the table, DVSA will refuse the change however sensible it looks on a map.",
+      },
+      {
+        q: "Why are Slough and Chertsey treated as London?",
+        a: "DVSA groups them that way in its own nearest centre lists rather than by where the boundary sits, and it works in your favour. A learner at Uxbridge can swap with Slough and one at Tolworth can swap with Chertsey, even though neither is inside London.",
+      },
+      {
+        q: "Does being in London mean a better chance of swapping?",
+        a: "Not by itself. London has more centres than anywhere else in the country, but you can still only reach the one to three paired with yours, so what matters is how busy those are. A learner in a smaller city with three well connected centres can easily have better odds than someone at Morden.",
+      },
+      {
+        q: "Can I move my test to a quieter centre further out?",
+        a: "Not any more. From 9 June 2026 you can only move to one of the three nearest centres or the one you originally booked at, which was brought in to stop people booking at centres they never intended to travel to. The table here shows everywhere you can actually reach.",
+      },
+    ],
+  },
 };
 
 export function getCopy(slug) {

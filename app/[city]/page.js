@@ -196,6 +196,14 @@ export default async function CityPage({ params }) {
                 I want an earlier date
               </Link>
             </div>
+
+            {/* Intro sits inside the left column on purpose. It used to sit
+                below the whole two column row, which meant it could not start
+                until the stats card had ended, leaving an obvious gap under
+                the buttons whenever the card was the taller of the two. */}
+            <div style={{ marginTop: "28px" }}>
+              {copy.intro.map((para, i) => <p key={i} style={p}>{para}</p>)}
+            </div>
           </div>
 
           {/* Live picture, sitting where the homepage puts its example card.
@@ -222,7 +230,6 @@ export default async function CityPage({ params }) {
           )}
         </div>
 
-        {copy.intro.map((para, i) => <p key={i} style={p}>{para}</p>)}
 
 
         <h2 style={h2}>How swapping works</h2>

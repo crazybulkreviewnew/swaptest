@@ -201,6 +201,22 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+
+          {/* The bridge to the city guides. Sits here on purpose: somebody who
+              has just understood how swapping works immediately wants to know
+              whether it works where they are. It is also how link authority
+              reaches the city pages, which were otherwise only in the sitemap. */}
+          <div className="mt-10 text-center">
+            <Link
+              href="/driving-test-centres"
+              className="inline-flex items-center min-h-[44px] px-6 py-3 rounded-xl border border-[var(--border-strong)] text-[var(--fg)] font-semibold no-underline hover:border-[#1D9E75] transition [touch-action:manipulation]"
+            >
+              See which centres can swap with yours
+            </Link>
+            <p className="text-[13px] text-[var(--muted-2)] mt-3 mb-0">
+              All 320 test centres, plus guides for Manchester, Birmingham, London and more.
+            </p>
+          </div>
         </div>
       </section>
 

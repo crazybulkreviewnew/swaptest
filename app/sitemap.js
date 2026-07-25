@@ -21,6 +21,8 @@ export default function sitemap() {
 
   return [
     { url: BASE_URL, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    // The hub. Links to every city guide, so it is how a crawler finds them.
+    { url: `${BASE_URL}/driving-test-centres`, lastModified, changeFrequency: "weekly", priority: 0.9 },
     ...cityPages,
     { url: `${BASE_URL}/register`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/contact`, lastModified, changeFrequency: "yearly", priority: 0.4 },

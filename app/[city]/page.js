@@ -125,7 +125,8 @@ export default async function CityPage({ params }) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-      { "@type": "ListItem", position: 2, name: city.name, item: `${BASE_URL}/${city.slug}` },
+      { "@type": "ListItem", position: 2, name: "Driving test centres", item: `${BASE_URL}/driving-test-centres` },
+      { "@type": "ListItem", position: 3, name: city.name, item: `${BASE_URL}/${city.slug}` },
     ],
   };
 
@@ -173,6 +174,8 @@ export default async function CityPage({ params }) {
       <main style={wrap} id="city-main">
         <nav aria-label="Breadcrumb" style={{ fontSize: "13px", color: "var(--muted-2)", marginBottom: "20px" }}>
           <Link href="/" style={{ color: "var(--muted-2)", textDecoration: "none" }}>Home</Link>
+          <span aria-hidden="true"> / </span>
+          <Link href="/driving-test-centres" style={{ color: "var(--muted-2)", textDecoration: "none" }}>Driving test centres</Link>
           <span aria-hidden="true"> / </span>
           <span style={{ color: "var(--fg-2)" }}>{city.name}</span>
         </nav>

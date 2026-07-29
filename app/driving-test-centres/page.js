@@ -135,6 +135,44 @@ export default function CentresHubPage() {
           ))}
         </div>
 
+        {/* The full rules live here rather than being repeated on all seven
+            city pages. Those pages link in with #rules. */}
+        <h2 style={h2} id="rules">The four DVSA rules that decide a swap</h2>
+        <p style={p}>
+          A swap is not a special arrangement. Each of you changes your own test the way DVSA already allows, so the
+          ordinary rules apply to both of you. Four of them decide whether a swap is possible at all.
+        </p>
+
+        <h3 style={{ fontSize: "16px", fontWeight: 700, color: "var(--fg)", margin: "24px 0 6px" }}>1. Ten full working days</h3>
+        <p style={p}>
+          Counted before the <strong style={{ color: "var(--fg-2)" }}>earlier</strong> of the two tests, because that
+          is the one with less time on it. Monday to Saturday count as working days. Sundays and bank holidays do not.
+          Miss the window and you lose the test fee, so we stop offering a swap once it shuts rather than letting you
+          walk into a refusal.
+        </p>
+
+        <h3 style={{ fontSize: "16px", fontWeight: 700, color: "var(--fg)", margin: "24px 0 6px" }}>2. Two changes per booking</h3>
+        <p style={p}>
+          Since 31 March 2026 a car test can be changed twice. After that you have to cancel and book again from
+          scratch, which puts you at the back of the queue. A swap uses one of those two changes, so it is worth
+          keeping the other in hand.
+        </p>
+
+        <h3 style={{ fontSize: "16px", fontWeight: 700, color: "var(--fg)", margin: "24px 0 6px" }}>3. The test types must match</h3>
+        <p style={p}>
+          A weekday test can only swap with another weekday test. Evening, weekend and bank holiday tests cost more
+          and sit in their own group. This one catches people out, because two tests can look perfectly compatible on
+          the calendar and still be refused.
+        </p>
+
+        <h3 style={{ fontSize: "16px", fontWeight: 700, color: "var(--fg)", margin: "24px 0 6px" }}>4. Cancellation-checking apps are blocked</h3>
+        <p style={p}>
+          Since 12 May 2026 DVSA has blocked the apps that refreshed the booking service hunting for cancellations,
+          and it asks people to report them. That closed the route most learners were using to bring a test forward.
+          Swapping with another learner is one of the few left that DVSA has no objection to, because nothing is
+          bought, nothing is resold, and each of you changes your own booking.
+        </p>
+
         <h2 style={h2}>Centres with no swap partner</h2>
         <p style={p}>
           {stranded.length} of the {all.length} centres cannot swap with anywhere. In each case the centres they are

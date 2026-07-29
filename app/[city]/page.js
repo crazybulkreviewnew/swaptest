@@ -307,19 +307,19 @@ export default async function CityPage({ params }) {
           Pick your centre above to start listing your test. Where a centre is marked <strong>one way</strong>, DVSA lets you move there but does not let them move to you, so a swap between the two is not possible. You can also move back to the centre you first booked at, even if it is not on this list.
         </p>
 
-        <h2 style={h2}>The DVSA rules worth knowing</h2>
+        {/* The full rules used to be repeated verbatim on every city page:
+            about 200 identical words each, leaving every page only ~70%
+            unique. They now live once on the hub, which gives that page
+            something to rank for besides links. Only the deadline stays here,
+            because it decides whether a swap is possible at all and people
+            need it while they are still looking. */}
+        <h2 style={h2}>Before you swap</h2>
         <p style={p}>
-          <strong style={{ color: "var(--fg-2)" }}>Give 10 full working days notice.</strong> That is counted before the earlier of the two tests.
-          Monday to Saturday count. Sundays and bank holidays do not. Miss it and you lose the test fee, so we stop offering a swap once that window shuts.
+          <strong style={{ color: "var(--fg-2)" }}>You need 10 full working days.</strong> Counted before the earlier of the two tests, with Monday to Saturday counting and Sundays and bank holidays not. Leave it later than that and you lose the test fee, so we stop offering a swap once the window shuts.
         </p>
         <p style={p}>
-          <strong style={{ color: "var(--fg-2)" }}>You get two changes.</strong> Since 31 March 2026 a car test can be changed twice. After that you have to cancel and book again, which puts you back at the end of the queue. A swap uses one change.
-        </p>
-        <p style={p}>
-          <strong style={{ color: "var(--fg-2)" }}>Same test type only.</strong> A weekday test can only swap with another weekday test. Evening, weekend and bank holiday tests cost more and sit in their own group.
-        </p>
-        <p style={p}>
-          <strong style={{ color: "var(--fg-2)" }}>Automated cancellation checkers are no longer allowed.</strong> Since 12 May 2026 DVSA has blocked the apps that refresh the booking system looking for cancellations. Swapping with another learner is one of the few routes left that DVSA is happy with.
+          Three other rules decide whether a swap will actually work: how many times a test may be changed, why both tests have to be the same type, and what changed when DVSA blocked the cancellation-checking apps.{" "}
+          <Link href="/driving-test-centres#rules" style={{ color: "#1D9E75" }}>All four are explained on our rules page</Link>, alongside every test centre in the country and what it can swap with.
         </p>
 
         <h2 style={h2}>Common questions</h2>

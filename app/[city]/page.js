@@ -41,9 +41,14 @@ export async function generateMetadata({ params }) {
   const { city: slug } = await params;
   const city = getCity(slug);
   if (!city) return {};
+  const copy = getCopy(slug);
   // Under 60 characters so it is not truncated in search results.
   const title = `Swap Driving Test Date in ${city.name} | SwapTest`;
+  // Hand-written per city in copy.js. The fallback keeps a page working if a
+  // new city is added without one, but it is the generic line every page used
+  // to share, so write a real one.
   const description =
+    copy?.metaDescription ||
     `Swap your driving test date with another learner in ${city.name}. List the test you already hold, ` +
     `get matched at your centre or a nearby one, then change it with DVSA. Free to list.`;
   return {

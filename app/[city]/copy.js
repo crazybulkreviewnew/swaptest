@@ -11,6 +11,11 @@
 
 export const COPY = {
   manchester: {
+    // Written per city. The generic template read identically on all seven
+    // pages apart from the place name, wasting the one line in search results
+    // that we fully control. Aim for under 160 characters.
+    metaDescription:
+      "Swap a driving test in Manchester. Eight centres from Bury to Sale, and we show you which ones DVSA will actually let you swap between.",
     h1: "Swap your driving test date in Manchester",
     // Shown under the h1. Keep it to two sentences.
     // Wording note: never "trade", "sell" or "slot for sale". Nobody is buying
@@ -71,6 +76,8 @@ export const COPY = {
     ],
   },
   birmingham: {
+    metaDescription:
+      "Swap a driving test in Birmingham. Five centres within a few miles, but they do not all connect. See which ones can genuinely swap with each other.",
     h1: "Swap your driving test date in Birmingham",
     standfirst:
       "Five test centres sit within a few miles of each other here, which is more choice than almost anywhere in the country. Whether you can use it depends on which one you booked.",
@@ -119,6 +126,8 @@ export const COPY = {
     ],
   },
   london: {
+    metaDescription:
+      "Swap a driving test in London. 25 centres, but yours pairs with only one to three of them. Find out which, and who is waiting.",
     h1: "Swap your driving test date in London",
     standfirst:
       "London has 25 test centres, which sounds like plenty of choice. In practice your test can only be swapped with one to three specific centres, and which ones depends entirely on where you booked.",
@@ -167,6 +176,8 @@ export const COPY = {
     ],
   },
   northampton: {
+    metaDescription:
+      "Swap a driving test in Northampton. Northampton, Kettering and Wellingborough all pair with each other, which makes swaps here unusually simple.",
     h1: "Swap your driving test date in Northampton",
     standfirst:
       "Northampton, Kettering and Wellingborough all pair up with each other, which makes this one of the more straightforward places in the country to swap a test.",
@@ -215,6 +226,8 @@ export const COPY = {
     ],
   },
   southampton: {
+    metaDescription:
+      "Swap a driving test in Southampton. A chain of centres runs along the Solent from Basingstoke to Chichester. See which ones you can swap with.",
     h1: "Swap your driving test date in Southampton",
     standfirst:
       "Southampton sits in the middle of a chain of centres running along the Solent, which gives it more genuine options than most cities its size.",
@@ -262,6 +275,8 @@ export const COPY = {
     ],
   },
   edinburgh: {
+    metaDescription:
+      "Swap a driving test in Edinburgh. Currie connects Musselburgh, Livingston and Dunfermline, including across the Forth. See who you can swap with.",
     h1: "Swap your driving test date in Edinburgh",
     standfirst:
       "Almost everything in this part of Scotland runs through Currie. If your test is there you have the most options in the region, and if it is not, Currie is usually the centre you are aiming at.",
@@ -310,6 +325,8 @@ export const COPY = {
     ],
   },
   glasgow: {
+    metaDescription:
+      "Swap a driving test in Glasgow. The city splits in two and only Bishopbriggs reaches both halves. See which centres can genuinely swap.",
     h1: "Swap your driving test date in Glasgow",
     standfirst:
       "Glasgow has three test centres, and they do not all connect to each other. Which half of the city you are in decides who you can swap with.",

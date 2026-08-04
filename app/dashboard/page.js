@@ -10,6 +10,7 @@ import {
 } from "@/components/ui";
 import { getListings, createListing, selectMatch, deleteListing, editListing, startRegistrationCheckout } from "@/lib/api-client";
 import { paymentsEnabled } from "@/lib/payments";
+import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
 import { UK_CENTRES } from "@/lib/centres";
 
 export default function DashboardPage() {
@@ -347,7 +348,7 @@ export default function DashboardPage() {
             <p className="text-sm text-[var(--muted-2)] mb-4">
               {"These learners have a test that works with yours at " + (matchListing ? matchListing.centre : "") + " or a nearby centre. "}
               <strong className="text-[var(--fg-2)]">Nothing happens until you ask them.</strong>
-              {" Press the button to send a swap request. They then have 24 hours to say yes or no."}
+              {" Press the button to send a swap request. They then have " + SWAP_WINDOW_LABEL + " to say yes or no."}
             </p>
             <div className="flex flex-col gap-3">
               {matchResults.map(function(listing) {

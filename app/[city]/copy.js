@@ -9,6 +9,8 @@
 // nothing specific to say about a city, do not build the page.
 // ============================================================
 
+import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
+
 export const COPY = {
   manchester: {
     // Written per city. The generic template read identically on all seven
@@ -113,11 +115,11 @@ export const COPY = {
       },
       {
         q: "How long does it take to arrange a swap?",
-        a: "The matching part is usually quick if somebody suitable has listed. After that you have 24 hours to agree between you, then the DVSA call takes about ten minutes each. The thing that catches people out is the notice period, not the paperwork.",
+        a: "The matching part is usually quick if somebody suitable has listed. After that you have " + SWAP_WINDOW_LABEL + " to agree between you, then the DVSA call takes about ten minutes each. The thing that catches people out is the notice period, not the paperwork.",
       },
       {
         q: "What happens if the other person never replies?",
-        a: "The match expires after 24 hours and both tests go straight back into the pool, so you have lost nothing but a day. We send reminders before that happens, because a missed email is the most common reason a good swap falls through.",
+        a: "The match expires after " + SWAP_WINDOW_LABEL + " and both tests go straight back into the pool, so your own test is never at risk while you wait. We send reminders before that happens, because a missed email is the most common reason a good swap falls through.",
       },
       {
         q: "Do I need to tell my driving instructor?",

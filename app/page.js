@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import { paymentsEnabled } from "@/lib/payments";
+import { SWAP_WINDOW_LABEL, SWAP_WINDOW_ADJECTIVE } from "@/lib/swap-window";
 
 export default function HomePage() {
   const [user, setUser] = useState(null);
@@ -255,8 +256,8 @@ export default function HomePage() {
                 color: "#C084FC",
               },
               {
-                title: "24-hour windows",
-                desc: "When someone wants to swap with you, you get 24 hours to respond. Plenty of time to decide, no endless waiting.",
+                title: SWAP_WINDOW_ADJECTIVE + " windows",
+                desc: "When someone wants to swap with you, you get " + SWAP_WINDOW_LABEL + " to respond. Plenty of time to decide, no endless waiting.",
                 color: "#F0997B",
               },
               {
@@ -463,7 +464,7 @@ export default function HomePage() {
               },
               {
                 q: "What happens if the other person doesn't respond?",
-                a: "When you select a match, the other person has 24 hours to agree. If they don't respond, the match expires automatically and your listing goes back into the pool. No harm done.",
+                a: "When you select a match, the other person has " + SWAP_WINDOW_LABEL + " to agree. If they don't respond, the match expires automatically and your listing goes back into the pool. No harm done.",
               },
               {
                 q: "Can I cancel or edit my listing?",

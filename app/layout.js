@@ -3,6 +3,7 @@ import Script from "next/script";
 import NativeProvider from "@/components/native-provider";
 import CookieConsent from "@/components/cookie-consent";
 import { paymentsEnabled } from "@/lib/payments";
+import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
 
 const pay = paymentsEnabled();
 const priceBlurb = pay ? "£1 to list your test, viewing matches is free, £8 only if you swap." : "Currently free to use.";
@@ -152,7 +153,7 @@ const jsonLd = {
           name: "What happens if the other person doesn't respond?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "When you select a match, the other person has 24 hours to agree. If they don't respond, the match expires automatically and your listing goes back into the pool. No harm done.",
+            text: "When you select a match, the other person has " + SWAP_WINDOW_LABEL + " to agree. If they don't respond, the match expires automatically and your listing goes back into the pool. No harm done.",
           },
         },
         {

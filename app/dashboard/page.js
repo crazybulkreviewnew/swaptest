@@ -8,7 +8,7 @@ import {
   ErrorBox, SuccessBanner, PrimaryButton, SecondaryButton, Badge, Card,
   EmptyState, StatCard, Countdown, PageShell, formatDate,
 } from "@/components/ui";
-import { getListings, createListing, selectMatch, deleteListing, editListing, startRegistrationCheckout } from "@/lib/api-client";
+import { getListings, createListing, deleteListing, editListing, startRegistrationCheckout } from "@/lib/api-client";
 import { paymentsEnabled } from "@/lib/payments";
 import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
 import { UK_CENTRES } from "@/lib/centres";
@@ -35,7 +35,6 @@ export default function DashboardPage() {
   var [matchResults, setMatchResults] = useState([]);
   var [allMatches, setAllMatches] = useState([]);
   var [matchListing, setMatchListing] = useState(null);
-  var [selectingId, setSelectingId] = useState(null);
 
   var [editingId, setEditingId] = useState(null);
   var [editForm, setEditForm] = useState({});
@@ -193,22 +192,13 @@ export default function DashboardPage() {
     }
   }, [finalizePendingListing]);
 
-  var handleSelectMatch = async function(targetListingId) {
+  // Navigation only. This used to create the match here, which locked both
+  // listings, started the clock and emailed the other learner before this
+  // person had agreed to anything. The match is now created on /swap/confirm,
+  // when they actually commit.
+  var handleSelectMatch = function(targetListingId) {
     if (!matchListing) return;
-    setSelectingId(targetListingId);
-    setErrors([]);
-    try {
-      var data = await selectMatch({ myListingId: matchListing.id, targetListingId: targetListingId });
-      setMatchResults([]);
-      setMatchListing(null);
-      setSuccess("Match created! The other person has been notified.");
-      await loadData();
-      router.push("/match?id=" + data.match.id);
-    } catch (err) {
-      setErrors(err.errors || ["Failed to select match"]);
-    } finally {
-      setSelectingId(null);
-    }
+    router.push("/swap/confirm?mine=" + encodeURIComponent(matchListing.id) + "&theirs=" + encodeURIComponent(targetListingId));
   };
 
   var handleDelete = async function(listingId) {
@@ -348,7 +338,7 @@ export default function DashboardPage() {
             <p className="text-sm text-[var(--muted-2)] mb-4">
               {"These learners have a test that works with yours at " + (matchListing ? matchListing.centre : "") + " or a nearby centre. "}
               <strong className="text-[var(--fg-2)]">Nothing happens until you ask them.</strong>
-              {" Press the button to send a swap request. They then have " + SWAP_WINDOW_LABEL + " to say yes or no."}
+              {" Press the button to see the full swap. Nothing is sent until you agree to it on the next page, and they then have " + SWAP_WINDOW_LABEL + " to say yes or no."}
             </p>
             <div className="flex flex-col gap-3">
               {matchResults.map(function(listing) {
@@ -362,9 +352,9 @@ export default function DashboardPage() {
                         <div className="text-sm text-[var(--muted-2)] mt-0.5">Their centre: {listing.centre}</div>
                         <div className="text-xs text-[var(--faint)] mt-0.5">Your centre: {matchListing ? matchListing.centre : ""}</div>
                       </div>
-                      <button onClick={function() { handleSelectMatch(listing.id); }} disabled={selectingId === listing.id}
-                        className="px-4 py-2 rounded-lg bg-[#1D9E75] hover:bg-[#1ab87f] text-white text-sm font-semibold transition disabled:opacity-50">
-                        {selectingId === listing.id ? "Sending…" : "Ask to swap"}
+                      <button onClick={function() { handleSelectMatch(listing.id); }}
+                        className="px-4 py-2 rounded-lg bg-[#1D9E75] hover:bg-[#1ab87f] text-white text-sm font-semibold transition">
+                        See this swap
                       </button>
                     </div>
                   </Card>

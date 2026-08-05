@@ -23,7 +23,7 @@ function jwtSecret() {
 const TOKEN_NAME = "swaptest_token";
 
 // Routes that require authentication
-const PROTECTED_ROUTES = ["/dashboard", "/match"];
+const PROTECTED_ROUTES = ["/dashboard", "/match", "/swap"];
 
 // Routes that should redirect TO dashboard if already logged in
 const AUTH_ROUTES = ["/register", "/login"];
@@ -62,5 +62,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/match/:path*", "/register", "/login"],
+  matcher: ["/dashboard/:path*", "/match/:path*", "/swap/:path*", "/register", "/login"],
 };

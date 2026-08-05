@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verifyResetToken, hashPassword } from "@/lib/auth";
+import { getAuthLimiter, checkRateLimit, getClientIp } from "@/lib/ratelimit";
+import { headers } from "next/headers";
 
 export async function POST(request) {
+  // The token is a signed JWT, so it cannot be guessed, and every other auth
+  // route here is limited. This one was not.
+  var ip = getClientIp(await headers());
+  var rateLimitError = await checkRateLimit(getAuthLimiter, ip);
+  if (rateLimitError) return rateLimitError;
+
   var body = await request.json();
   var token = body.token;
   var newPassword = body.password;

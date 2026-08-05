@@ -16,9 +16,14 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { findMatches, findMatchesForLater } from "@/lib/matching";
+import { getApiLimiter, checkRateLimit } from "@/lib/ratelimit";
 
 export async function GET(request) {
   const user = await requireAuth();
+  // Each call runs the full matching query. Cheap once, not cheap in a loop.
+  const rateLimitError = await checkRateLimit(getApiLimiter, user.id);
+  if (rateLimitError) return rateLimitError;
+
   const { searchParams } = new URL(request.url);
   const mineId = searchParams.get("mine");
   const theirsId = searchParams.get("theirs");

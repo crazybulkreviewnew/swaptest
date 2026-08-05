@@ -46,7 +46,13 @@ export async function middleware(request) {
   if (PROTECTED_ROUTES.some((route) => pathname.startsWith(route))) {
     if (!isAuthenticated) {
       const loginUrl = new URL("/login", request.url);
-      loginUrl.searchParams.set("redirect", pathname);
+      // Keep the query string, not just the path. Without it, a responder who
+      // clicked "Agree to Swap" in an email was sent to /login?redirect=/match,
+      // and after signing in landed on /match with no id — a blank page reading
+      // "No match ID provided", with no way back to the swap they were invited
+      // to. Every responder arriving from an email hit this, which is why none
+      // of them ever completed. The same applied to /swap/confirm?mine=…&theirs=…
+      loginUrl.searchParams.set("redirect", pathname + request.nextUrl.search);
       return NextResponse.redirect(loginUrl);
     }
   }

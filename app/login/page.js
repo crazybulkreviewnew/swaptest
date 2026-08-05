@@ -15,9 +15,14 @@ function LoginForm() {
   // login page are genuinely ours, so it survives the checks a careful person
   // makes, and the victim is handed to the attacker the moment they sign in.
   // The leading "/" must not be followed by another, because "//evil.example"
-  // is read by the browser as a host, not a path.
+  // is read by the browser as a host, not a path. A backslash is blocked for the
+  // same reason: browsers normalise "/\evil.example" to "//evil.example".
+  //
+  // A query string is allowed and must be, because the redirect now carries one
+  // (/match?id=…), which is how somebody arriving from an email gets back to the
+  // right swap after signing in.
   const requestedRedirect = searchParams.get("redirect") || "";
-  const redirect = /^\/(?!\/)/.test(requestedRedirect) ? requestedRedirect : "/dashboard";
+  const redirect = /^\/(?![/\\])/.test(requestedRedirect) ? requestedRedirect : "/dashboard";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

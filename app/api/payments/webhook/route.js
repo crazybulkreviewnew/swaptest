@@ -37,7 +37,7 @@ async function applySubscription(subscription) {
 
   const data = {
     stripeSubscriptionId: subscription.id,
-    subscriptionStatus: mapStripeStatus(subscription.status),
+    subscriptionStatus: mapStripeStatus(subscription.status, subscription.cancel_at_period_end),
     subscriptionCurrentPeriodEnd: periodEnd(subscription),
   };
   if (customerId) data.stripeCustomerId = customerId;

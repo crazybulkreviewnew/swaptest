@@ -347,7 +347,8 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between gap-3 flex-wrap">
                 <p className="text-sm text-[var(--muted)]">
                   {user.subscriptionStatus === "CANCELLED"
-                    ? "Your membership is cancelled. You can still ask for swaps until it runs out."
+                    ? "Membership cancelled. You will not be charged again, and you can still ask for swaps until "
+                      + (user.subscriptionCurrentPeriodEnd ? formatDate(user.subscriptionCurrentPeriodEnd) : "it runs out") + "."
                     : user.subscriptionStatus === "PAST_DUE"
                       ? "We could not take your last £1 payment. Please update your card so you do not lose access."
                       : "Membership active — £1 a week."}

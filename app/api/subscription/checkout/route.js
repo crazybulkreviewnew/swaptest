@@ -4,12 +4,12 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
-import { createSubscriptionCheckoutSession } from "@/lib/stripe";
+import { createSubscriptionCheckoutSession, safeReturnOrigin } from "@/lib/stripe";
 import { canRequestSwap, SUBSCRIPTION_PENCE, TRIAL_DAYS } from "@/lib/subscription";
 import { paymentsEnabled } from "@/lib/payments";
 import { getApiLimiter, checkRateLimit } from "@/lib/ratelimit";
 
-export async function POST() {
+export async function POST(request) {
   const user = await requireAuth();
   const rateLimitError = await checkRateLimit(getApiLimiter, user.id);
   if (rateLimitError) return rateLimitError;
@@ -38,6 +38,8 @@ export async function POST() {
       // A trial is for new customers. Somebody who already had one and let it
       // lapse should not get another by resubscribing.
       trialDays: current.stripeSubscriptionId ? 0 : TRIAL_DAYS,
+      // Come back to wherever they started, not to whatever the env var says.
+      appUrl: safeReturnOrigin(request?.url),
     });
     return NextResponse.json({ checkoutUrl: session.url });
   } catch (err) {

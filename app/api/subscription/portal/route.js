@@ -6,10 +6,10 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
-import { createBillingPortalSession } from "@/lib/stripe";
+import { createBillingPortalSession, safeReturnOrigin } from "@/lib/stripe";
 import { getApiLimiter, checkRateLimit } from "@/lib/ratelimit";
 
-export async function POST() {
+export async function POST(request) {
   const user = await requireAuth();
   const rateLimitError = await checkRateLimit(getApiLimiter, user.id);
   if (rateLimitError) return rateLimitError;
@@ -23,6 +23,7 @@ export async function POST() {
     const session = await createBillingPortalSession({
       stripeCustomerId: current.stripeCustomerId,
       returnPath: "/dashboard",
+      appUrl: safeReturnOrigin(request?.url),
     });
     return NextResponse.json({ portalUrl: session.url });
   } catch (err) {

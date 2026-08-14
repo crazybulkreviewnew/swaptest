@@ -204,17 +204,41 @@ export default function DashboardPage() {
     }
   }, [loadData]);
 
-  // Handle return from Stripe registration checkout.
+  // Handle return from Stripe.
+  //
+  // "subscribed" is the live case. It used to only handle "registered", from
+  // the retired one-time registration fee, so after subscribing the stashed
+  // listing was never created and people arrived at an empty dashboard having
+  // just typed their test details and paid.
   useEffect(function() {
     var sp = new URLSearchParams(window.location.search);
     var status = sp.get("status");
-    if (status === "registered") {
-      setSuccess("Registration complete! Setting up your listing…");
+    if (status === "subscribed" || status === "registered") {
+      setSuccess("Membership active. Setting up your listing…");
       window.history.replaceState({}, "", "/dashboard");
       finalizePendingListing();
-    } else if (status === "registration_cancelled") {
-      setErrors(["Registration payment was cancelled. You can try again whenever you're ready."]);
+    } else if (status === "subscription_cancelled" || status === "registration_cancelled") {
+      // They backed out of Stripe's page. Put the details they had already
+      // typed back into the form rather than making them start again, which is
+      // the quickest way to lose somebody who was only hesitating.
       window.history.replaceState({}, "", "/dashboard");
+      var raw = sessionStorage.getItem("swaptest_pending_listing");
+      if (raw) {
+        try {
+          var p = JSON.parse(raw);
+          setFormType(p.type || "EARLIER");
+          setCentre(p.centre || "");
+          setTestType(p.testType || "WEEKDAY");
+          setSwappedBefore(Boolean(p.originalCentre));
+          setOriginalCentre(p.originalCentre || "");
+          setCurrentDate(p.currentDate || "");
+          setCurrentTime(p.currentTime || "");
+          setShowForm(true);
+          setErrors(["Checkout was cancelled, so nothing has been charged. Your test details are below — submit again when you are ready."]);
+          return;
+        } catch (e) { /* fall through to the plain message */ }
+      }
+      setErrors(["Checkout was cancelled, so nothing has been charged."]);
     }
   }, [finalizePendingListing]);
 

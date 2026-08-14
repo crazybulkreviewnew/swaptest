@@ -32,8 +32,12 @@ model User {
   // migrations 003 and 004 were applied to production from a branch that was
   // never merged. Adding them to the schema is therefore a catch-up, not a
   // change, and needs no migration of its own.
-  stripeCustomerId     String?
-  stripeSubscriptionId String?
+  // @unique because migration 003 created unique indexes on both. Without it
+  // here, the schema and the database disagree, and a later `prisma db push`
+  // would quietly drop the constraint that stops two accounts sharing one
+  // Stripe customer.
+  stripeCustomerId     String? @unique
+  stripeSubscriptionId String? @unique
   subscriptionStatus   SubscriptionStatus @default(NONE)
   subscriptionCurrentPeriodEnd DateTime?
   // Grandfathering. Everybody who signed up while SwapTest was free keeps it
@@ -52,6 +56,8 @@ model User {
   payments        Payment[]
 
   @@index([email])
+  // Created by migration 003, for looking up who still has access.
+  @@index([subscriptionStatus, subscriptionCurrentPeriodEnd])
 }
 
 // ── Listings ──────────────────────────────────────────────
@@ -98,6 +104,7 @@ model Listing {
   @@index([centre, type, status])    // primary matching query
   @@index([userId])
   @@index([status])
+  @@index([status, lastMatchAlertAt]) // created by migration 005; declared here so the two agree
 }
 
 // ── Matches ───────────────────────────────────────────────

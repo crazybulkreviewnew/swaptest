@@ -1,13 +1,60 @@
+// POST /api/payments/webhook — Stripe events.
+//
+// This is the only place subscription state is written. The browser is never
+// trusted for it: a success_url redirect proves somebody reached a page, not
+// that money moved. Stripe tells us here, signed.
+
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { constructWebhookEvent } from "@/lib/stripe";
+import { constructWebhookEvent, getSubscription } from "@/lib/stripe";
 import { completeSwapPayment } from "@/lib/matching";
+import { mapStripeStatus } from "@/lib/subscription";
+
+function periodEnd(subscription) {
+  // Stripe moved current_period_end onto the subscription item in newer API
+  // versions. Read either, so this keeps working across an API version bump.
+  const seconds =
+    subscription.current_period_end ||
+    subscription.items?.data?.[0]?.current_period_end;
+  return seconds ? new Date(seconds * 1000) : null;
+}
+
+// Writes subscription state for whichever user owns this subscription.
+// Resolved by userId in metadata when present, otherwise by customer id, so an
+// event that arrives without metadata (Stripe does not attach it to every
+// event) still lands on the right account.
+async function applySubscription(subscription) {
+  const userId = subscription.metadata?.userId;
+  const customerId = typeof subscription.customer === "string"
+    ? subscription.customer
+    : subscription.customer?.id;
+
+  const where = userId ? { id: userId } : customerId ? { stripeCustomerId: customerId } : null;
+  if (!where) {
+    console.error("Subscription event with no userId and no customer:", subscription.id);
+    return;
+  }
+
+  const data = {
+    stripeSubscriptionId: subscription.id,
+    subscriptionStatus: mapStripeStatus(subscription.status),
+    subscriptionCurrentPeriodEnd: periodEnd(subscription),
+  };
+  if (customerId) data.stripeCustomerId = customerId;
+
+  // updateMany rather than update: it does not throw when nothing matches,
+  // which happens if an account was deleted between the payment and the event.
+  const result = await db.user.updateMany({ where, data });
+  if (result.count === 0) {
+    console.error("Subscription event matched no user:", subscription.id, JSON.stringify(where));
+  }
+}
 
 export async function POST(request) {
-  var body = await request.text();
-  var signature = request.headers.get("stripe-signature");
+  const body = await request.text();
+  const signature = request.headers.get("stripe-signature");
 
-  var event;
+  let event;
   try {
     event = constructWebhookEvent(body, signature);
   } catch (err) {
@@ -15,30 +62,77 @@ export async function POST(request) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  if (event.type === "checkout.session.completed") {
-    var session = event.data.object;
-    var purpose = session.metadata?.purpose;
-    var userId = session.metadata?.userId;
-    var paymentIntentId = session.payment_intent;
+  try {
+    switch (event.type) {
+      case "checkout.session.completed": {
+        const session = event.data.object;
 
-    try {
-      await db.payment.updateMany({
-        where: { stripeSessionId: session.id },
-        data: { status: "SUCCEEDED", stripePaymentId: paymentIntentId },
-      });
+        if (session.mode === "subscription") {
+          // The session carries only the subscription id, so fetch the real
+          // object for its status and period end rather than assuming active.
+          const subscriptionId = typeof session.subscription === "string"
+            ? session.subscription
+            : session.subscription?.id;
+          if (subscriptionId) {
+            const subscription = await getSubscription(subscriptionId);
+            // The session knows the user even when the subscription does not.
+            if (!subscription.metadata?.userId && session.metadata?.userId) {
+              subscription.metadata = { ...subscription.metadata, userId: session.metadata.userId };
+            }
+            await applySubscription(subscription);
+          }
+          break;
+        }
 
-      if (purpose === "registration") {
-        // Idempotent: only sets on the first successful event for this user.
-        await db.user.updateMany({
-          where: { id: userId, registrationPaidAt: null },
-          data: { registrationPaidAt: new Date() },
+        // ── One-time payments (legacy registration fee and swap fee) ──
+        const purpose = session.metadata?.purpose;
+        const userId = session.metadata?.userId;
+
+        await db.payment.updateMany({
+          where: { stripeSessionId: session.id },
+          data: { status: "SUCCEEDED", stripePaymentId: session.payment_intent },
         });
-      } else if (purpose === "swap") {
-        await completeSwapPayment(session.metadata.matchId, userId, paymentIntentId);
+
+        if (purpose === "registration") {
+          await db.user.updateMany({
+            where: { id: userId, registrationPaidAt: null },
+            data: { registrationPaidAt: new Date() },
+          });
+        } else if (purpose === "swap") {
+          await completeSwapPayment(session.metadata.matchId, userId, session.payment_intent);
+        }
+        break;
       }
-    } catch (err) {
-      console.error("Error processing payment webhook:", err.message);
+
+      // Renewals, cancellations, trial ending, card failures recovering.
+      case "customer.subscription.created":
+      case "customer.subscription.updated":
+      case "customer.subscription.deleted":
+        await applySubscription(event.data.object);
+        break;
+
+      // A renewal failed. Stripe also updates the subscription, but this
+      // arrives first and access should reflect it immediately.
+      case "invoice.payment_failed": {
+        const customerId = typeof event.data.object.customer === "string"
+          ? event.data.object.customer
+          : event.data.object.customer?.id;
+        if (customerId) {
+          await db.user.updateMany({
+            where: { stripeCustomerId: customerId, subscriptionStatus: "ACTIVE" },
+            data: { subscriptionStatus: "PAST_DUE" },
+          });
+        }
+        break;
+      }
+
+      default:
+        break; // Stripe sends plenty we do not need.
     }
+  } catch (err) {
+    // A 500 makes Stripe retry, which is what we want for a transient failure.
+    console.error("Error processing webhook", event.type, err?.message);
+    return NextResponse.json({ error: "Handler failed" }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });

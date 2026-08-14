@@ -7,11 +7,14 @@ import { findMatches, findMatchesForLater } from "@/lib/matching";
 export async function POST(request) {
   var user = await requireAuth();
 
-  // Registration gate: a user must have paid the one-time registration fee
-  // before they can create a listing.
-  if (!user.registrationPaidAt) {
-    return NextResponse.json({ error: "REGISTRATION_REQUIRED", errors: ["Please pay the one-time registration fee to create a listing."] }, { status: 403 });
-  }
+  // Listing is free, deliberately. The one-time registration fee that used to
+  // gate this is gone, replaced by the £1/week membership, and that membership
+  // gates asking for a swap rather than listing.
+  //
+  // A pool with listings in it is the product. Charging at the point where
+  // somebody adds supply shrinks the thing everybody is here for, and it takes
+  // money before they have seen a single match. The charge sits at the point
+  // where they get something: asking a real person for a real date.
 
   var body = await request.json();
   var type = body.type;

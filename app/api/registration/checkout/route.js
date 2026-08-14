@@ -1,37 +1,29 @@
-// POST /api/registration/checkout — starts Stripe Checkout for the one-time
-// registration fee. On success the webhook sets user.registrationPaidAt, which
-// unlocks listing creation. Returns { checkoutUrl } or { alreadyPaid: true }.
+// POST /api/registration/checkout — retired.
+//
+// This used to start Stripe Checkout for a one-time £1 registration fee, which
+// gated listing creation. That fee no longer exists: listing is free and the
+// £1/week membership gates asking for a swap instead (see lib/subscription.js).
+//
+// The route is kept, rather than deleted, because older clients still call it —
+// the iOS build in particular ships whatever it shipped with, and a 404 there
+// would strand somebody on a dead button. It now marks the account registered
+// and charges nothing, so those clients carry on working.
+//
+// Returns { alreadyPaid: true } in every case. Nothing here touches Stripe.
 
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
-import { createRegistrationCheckoutSession } from "@/lib/stripe";
-import { paymentsEnabled } from "@/lib/payments";
 
 export async function POST() {
   const user = await requireAuth();
 
-  if (user.registrationPaidAt) {
-    return NextResponse.json({ alreadyPaid: true });
+  if (!user.registrationPaidAt) {
+    await db.user.updateMany({
+      where: { id: user.id, registrationPaidAt: null },
+      data: { registrationPaidAt: new Date() },
+    });
   }
 
-  // Payments off: mark the user registered for free, no Stripe.
-  if (!paymentsEnabled()) {
-    await db.user.updateMany({ where: { id: user.id, registrationPaidAt: null }, data: { registrationPaidAt: new Date() } });
-    return NextResponse.json({ freeMode: true });
-  }
-
-  const amountPence = parseInt(process.env.REGISTRATION_FEE_PENCE || "100", 10);
-  const payment = await db.payment.create({
-    data: { purpose: "registration", userId: user.id, amountPence, status: "PENDING" },
-  });
-
-  try {
-    const session = await createRegistrationCheckoutSession({ userId: user.id, userEmail: user.email });
-    await db.payment.update({ where: { id: payment.id }, data: { stripeSessionId: session.id } });
-    return NextResponse.json({ checkoutUrl: session.url });
-  } catch (err) {
-    console.error("Registration checkout failed:", err?.message);
-    return NextResponse.json({ errors: ["Could not start checkout. Please try again."] }, { status: 500 });
-  }
+  return NextResponse.json({ alreadyPaid: true, freeMode: true });
 }

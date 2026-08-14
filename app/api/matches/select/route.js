@@ -3,11 +3,27 @@ import { requireAuth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { createMatch } from "@/lib/matching";
 import { getMatchLimiter, checkRateLimit } from "@/lib/ratelimit";
+import { canRequestSwap, accessReason } from "@/lib/subscription";
 
 export async function POST(request) {
   var user = await requireAuth();
   var rateLimitError = await checkRateLimit(getMatchLimiter, user.id);
   if (rateLimitError) return rateLimitError;
+
+  // The paywall. Asking for a swap is the one action that needs a membership;
+  // listing, matching and accepting somebody else's request are all free.
+  //
+  // Read fresh from the database rather than trusting the session: the token
+  // was issued before they subscribed, and a stale copy would lock out somebody
+  // who has just paid.
+  var current = await db.user.findUnique({ where: { id: user.id } });
+  if (!canRequestSwap(current)) {
+    return NextResponse.json({
+      error: "SUBSCRIPTION_REQUIRED",
+      reason: accessReason(current),
+      errors: ["You need a SwapTest membership to ask somebody for a swap."],
+    }, { status: 402 });
+  }
 
   var body = await request.json();
   var myListingId = body.myListingId;

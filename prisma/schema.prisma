@@ -25,7 +25,22 @@ model User {
   phone        String
   password     String   // bcrypt hash
   tokenVersion Int      @default(0) // bumped on password reset to invalidate all existing JWTs
-  registrationPaidAt DateTime? // set once the one-time £1 registration fee is paid; gates listing creation
+  registrationPaidAt DateTime? // legacy one-time £1 fee; superseded by the subscription below
+
+  // ── Subscription (£1/week, gates asking for a swap) ──────
+  // These columns already existed in the database before they existed here:
+  // migrations 003 and 004 were applied to production from a branch that was
+  // never merged. Adding them to the schema is therefore a catch-up, not a
+  // change, and needs no migration of its own.
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  subscriptionStatus   SubscriptionStatus @default(NONE)
+  subscriptionCurrentPeriodEnd DateTime?
+  // Grandfathering. Everybody who signed up while SwapTest was free keeps it
+  // free permanently. Migration 006 flips the column default to false so new
+  // signups do not silently inherit it.
+  lifetimeFreeAccess   Boolean @default(false)
+
   pushToken    String?  // APNs device token for push notifications
   pushPlatform String?  // "ios" or "android"
   createdAt    DateTime @default(now())
@@ -134,6 +149,17 @@ model Match {
 }
 
 // ── Payments ──────────────────────────────────────────────
+
+// Mirrors the SubscriptionStatus type already present in the database.
+// Stripe's own "trialing" maps to ACTIVE: a trial is access.
+// CANCELLED means "cancelled but paid up" — access continues until
+// subscriptionCurrentPeriodEnd, because they paid for that period.
+enum SubscriptionStatus {
+  NONE
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+}
 
 enum PaymentStatus {
   PENDING

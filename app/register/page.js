@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import { ErrorBox } from "@/components/ui";
-import { register, createListing, startRegistrationCheckout } from "@/lib/api-client";
+import { register, createListing } from "@/lib/api-client";
 import { paymentsEnabled } from "@/lib/payments";
 import { UK_CENTRES } from "@/lib/centres";
 
@@ -59,27 +59,21 @@ function RegisterForm() {
   var handleCreateListing = async function() {
     setLoading(true); setErrors([]);
     try {
-      // A brand-new user hasn't paid the £1 registration fee yet. Stash the
-      // listing they entered and send them to Stripe; the dashboard creates the
-      // listing once registrationPaidAt is set (on return from checkout).
-      sessionStorage.setItem("swaptest_pending_listing", JSON.stringify({
+      // Listing is free. This used to stash the listing in sessionStorage and
+      // divert through a £1 Stripe checkout, creating it afterwards. There is
+      // nothing to pay at this point any more, so it is created directly and
+      // sign-up no longer detours through a card form.
+      var data = await createListing({
         type: userType, centre: centre, testType: testType,
         originalCentre: swappedBefore ? (originalCentre || undefined) : undefined,
         currentDate: currentDate, currentTime: currentTime,
-      }));
-      var r = await startRegistrationCheckout();
-      if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
-      if (r && (r.freeMode || r.alreadyPaid)) {
-        // Free mode (or already paid) — create the listing straight away.
-        var data = await createListing({ type: userType, centre: centre, testType: testType, originalCentre: swappedBefore ? (originalCentre || undefined) : undefined, currentDate: currentDate, currentTime: currentTime });
-        if (data.matches && data.matches.length > 0) {
-          sessionStorage.setItem("swaptest_matches", JSON.stringify(data.matches));
-          sessionStorage.setItem("swaptest_listing", JSON.stringify(data.listing));
-        }
-        sessionStorage.removeItem("swaptest_pending_listing");
-        router.push("/dashboard");
+      });
+      if (data.matches && data.matches.length > 0) {
+        sessionStorage.setItem("swaptest_matches", JSON.stringify(data.matches));
+        sessionStorage.setItem("swaptest_listing", JSON.stringify(data.listing));
       }
-    } catch (err) { setErrors(err.errors || ["Could not continue to payment"]); }
+      router.push("/dashboard");
+    } catch (err) { setErrors(err.errors || ["Could not create your listing"]); }
     finally { setLoading(false); }
   };
 

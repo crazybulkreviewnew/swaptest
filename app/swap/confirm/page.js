@@ -19,10 +19,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import { ErrorBox, PrimaryButton, SecondaryButton, Card, formatDate } from "@/components/ui";
-import { previewSwap, selectMatch, consentToMatch, paySwap } from "@/lib/api-client";
+import { previewSwap, selectMatch, consentToMatch, paySwap, startSubscriptionCheckout } from "@/lib/api-client";
 import { DATA_SHARING_DISCLAIMER, DISCLAIMER_CHECKBOX_LABEL } from "@/lib/disclaimer";
 import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
-import { paymentsEnabled } from "@/lib/payments";
+import { TRIAL_DAYS, canRequestSwap } from "@/lib/subscription";
 
 function ConfirmSwap() {
   const router = useRouter();
@@ -31,6 +31,7 @@ function ConfirmSwap() {
   const theirsId = searchParams.get("theirs");
 
   const [preview, setPreview] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [agreed, setAgreed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -43,8 +44,12 @@ function ConfirmSwap() {
       return;
     }
     try {
-      const data = await previewSwap(mineId, theirsId);
+      const [data, me] = await Promise.all([
+        previewSwap(mineId, theirsId),
+        fetch("/api/auth/me").then(function (r) { return r.json(); }).catch(function () { return {}; }),
+      ]);
       setPreview(data);
+      setUser(me.user || null);
     } catch (err) {
       setErrors(err.errors || ["Could not load this swap."]);
     } finally {
@@ -66,6 +71,18 @@ function ConfirmSwap() {
       const created = await selectMatch({ myListingId: mineId, targetListingId: theirsId });
       matchId = created.match.id;
     } catch (err) {
+      // 402 from the paywall: send them to Stripe rather than showing an error
+      // for something they can fix in one click.
+      if (err.error === "SUBSCRIPTION_REQUIRED" || err.status === 402) {
+        try {
+          const res = await startSubscriptionCheckout();
+          if (res.checkoutUrl) { window.location.href = res.checkoutUrl; return; }
+        } catch (subErr) {
+          setErrors(subErr.errors || ["Could not open the membership page."]);
+          setSubmitting(false);
+          return;
+        }
+      }
       // Nothing was created, so this is the one failure we can report plainly.
       setErrors(err.errors || ["Could not send the swap request."]);
       setSubmitting(false);
@@ -105,6 +122,12 @@ function ConfirmSwap() {
 
   const { mine, theirs, sameCentre } = preview;
   const wantsEarlier = mine.type === "EARLIER";
+  // canRequestSwap already returns true when payments are off, so this is false
+  // for everybody until the switch is flipped, and false forever for the users
+  // who were grandfathered in.
+  const needsMembership = !canRequestSwap(user);
+  // Somebody who has subscribed before does not get another free trial.
+  const trialAvailable = needsMembership && !user?.stripeSubscriptionId;
 
   return (
     <div className="flex flex-col gap-5">
@@ -170,9 +193,24 @@ function ConfirmSwap() {
         </label>
       </div>
 
+      {needsMembership && (
+        <div className="rounded-xl border border-[#F5C775] bg-[#FFF8E1] p-4">
+          <p className="text-sm font-semibold text-[#8B6914] mb-1">
+            {trialAvailable ? "Your first " + TRIAL_DAYS + " days are free" : "Membership needed to ask"}
+          </p>
+          <p className="text-xs text-[#8B6914] leading-relaxed">
+            Asking somebody to swap needs a SwapTest membership, £1 a week, cancel any time.
+            {trialAvailable ? " You will not be charged for " + TRIAL_DAYS + " days." : ""}
+            {" "}Listing your test and accepting a request somebody sends you are always free.
+          </p>
+        </div>
+      )}
+
       <div className="flex gap-3">
         <PrimaryButton onClick={handleAgree} loading={submitting} disabled={!agreed} className="flex-1">
-          {paymentsEnabled() && wantsEarlier ? "Agree and continue to payment" : "Agree and send the request"}
+          {needsMembership
+            ? (trialAvailable ? "Agree and start free trial" : "Agree and join for £1 a week")
+            : "Agree and send the request"}
         </PrimaryButton>
         <SecondaryButton onClick={function () { router.push("/dashboard"); }} className="shrink-0">
           Cancel

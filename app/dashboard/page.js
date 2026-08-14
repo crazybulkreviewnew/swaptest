@@ -8,9 +8,10 @@ import {
   ErrorBox, SuccessBanner, PrimaryButton, SecondaryButton, Badge, Card,
   EmptyState, StatCard, Countdown, PageShell, formatDate,
 } from "@/components/ui";
-import { getListings, createListing, deleteListing, editListing, startRegistrationCheckout } from "@/lib/api-client";
+import { getListings, createListing, deleteListing, editListing, startSubscriptionCheckout, openBillingPortal } from "@/lib/api-client";
 import { paymentsEnabled } from "@/lib/payments";
 import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
+import { canRequestSwap, TRIAL_DAYS } from "@/lib/subscription";
 import { UK_CENTRES } from "@/lib/centres";
 
 export default function DashboardPage() {
@@ -31,6 +32,7 @@ export default function DashboardPage() {
   var [currentDate, setCurrentDate] = useState("");
   var [currentTime, setCurrentTime] = useState("");
   var [startingCheckout, setStartingCheckout] = useState(false);
+  var [managingBilling, setManagingBilling] = useState(false);
 
   var [matchResults, setMatchResults] = useState([]);
   var [allMatches, setAllMatches] = useState([]);
@@ -116,37 +118,47 @@ export default function DashboardPage() {
       setCentre(""); setTestType("WEEKDAY"); setSwappedBefore(false); setOriginalCentre(""); setCurrentDate(""); setCurrentTime("");
       await loadData();
     } catch (err) {
-      if (err.status === 403) {
-        // Not yet registered — send to the £1 checkout.
-        handleStartRegistration();
-      } else {
-        setErrors(err.errors || ["Failed to create listing"]);
-      }
+      // No registration gate any more: creating a listing is free, so there is
+      // nothing to send them to checkout for.
+      setErrors(err.errors || ["Failed to create listing"]);
     } finally {
       setFormLoading(false);
     }
   };
 
-  // Registration gate: start the one-time £1 Stripe checkout.
-  var handleStartRegistration = async function() {
+  // Join the £1/week membership.
+  var handleJoin = async function() {
     setStartingCheckout(true);
     setErrors([]);
     try {
-      var r = await startRegistrationCheckout();
+      var r = await startSubscriptionCheckout();
       if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
-      if (r && (r.alreadyPaid || r.freeMode)) { await loadData(); setShowForm(true); }
+      if (r && r.alreadyActive) { await loadData(); }
     } catch (err) {
-      setErrors(err.errors || ["Could not start checkout. Please try again."]);
+      setErrors(err.errors || ["Could not open the membership page. Please try again."]);
     } finally {
       setStartingCheckout(false);
     }
   };
 
-  // "+ New listing" entry point — paid users see the form, unpaid go to checkout.
-  var startNewListing = function() {
-    if (user && !user.registrationPaidAt) { handleStartRegistration(); }
-    else { setShowForm(true); }
+  // Cancel, change card, see invoices — all on Stripe's own page.
+  var handleManageMembership = async function() {
+    setManagingBilling(true);
+    setErrors([]);
+    try {
+      var r = await openBillingPortal();
+      if (r && r.portalUrl) { window.location.href = r.portalUrl; return; }
+    } catch (err) {
+      setErrors(err.errors || ["Could not open the billing page. Please try again."]);
+    } finally {
+      setManagingBilling(false);
+    }
   };
+
+  // "+ New listing" — always straight to the form. Listing is free; the
+  // membership is charged when they ask somebody for a swap, not when they add
+  // their test to the pool.
+  var startNewListing = function() { setShowForm(true); };
 
   // After returning from the registration checkout, create the listing the user
   // entered during sign-up (stashed in sessionStorage), once the webhook has
@@ -284,16 +296,42 @@ export default function DashboardPage() {
                 className="px-4 py-2 rounded-lg border border-[var(--border)] bg-transparent text-[var(--muted)] hover:border-[var(--border-strong)] hover:text-[var(--fg-2)] text-sm transition disabled:opacity-50">
                 {refreshing ? "Checking..." : "Refresh matches"}
               </button>
-              <SecondaryButton onClick={startNewListing}>
-                {startingCheckout ? "…" : (paymentsEnabled() && user && !user.registrationPaidAt ? "List a test — £1" : "+ New listing")}
-              </SecondaryButton>
+              <SecondaryButton onClick={startNewListing}>+ New listing</SecondaryButton>
             </div>
           )}
         </div>
 
-        {paymentsEnabled() && user && !user.registrationPaidAt && (
-          <div className="mb-5 p-3 rounded-lg border border-[var(--border)] bg-[var(--bg-raised)] text-sm text-[var(--muted)]">
-            A one-time £1 registration fee is required to list a test and start finding swaps.
+        {/* Membership. Only ever shown once payments are on, and never to the
+            people who were grandfathered in while SwapTest was free. */}
+        {paymentsEnabled() && user && !user.lifetimeFreeAccess && (
+          <div className="mb-5 p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-raised)]">
+            {canRequestSwap(user) ? (
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <p className="text-sm text-[var(--muted)]">
+                  {user.subscriptionStatus === "CANCELLED"
+                    ? "Your membership is cancelled. You can still ask for swaps until it runs out."
+                    : user.subscriptionStatus === "PAST_DUE"
+                      ? "We could not take your last £1 payment. Please update your card so you do not lose access."
+                      : "Membership active — £1 a week."}
+                </p>
+                <button onClick={handleManageMembership} disabled={managingBilling}
+                  className="px-3 py-1.5 rounded-lg border border-[var(--border)] text-sm text-[var(--muted)] hover:text-[var(--fg-2)] transition disabled:opacity-50">
+                  {managingBilling ? "…" : "Manage membership"}
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <p className="text-sm text-[var(--muted)]">
+                  <strong className="text-[var(--fg-2)]">Listing is free, and so is accepting a swap somebody offers you.</strong>
+                  {" "}A £1 a week membership is needed only to ask somebody else for a swap.
+                  {!user.stripeSubscriptionId ? " Your first " + TRIAL_DAYS + " days are free." : ""}
+                </p>
+                <button onClick={handleJoin} disabled={startingCheckout}
+                  className="px-4 py-2 rounded-lg bg-[#1D9E75] hover:bg-[#1ab87f] text-white text-sm font-semibold transition disabled:opacity-50">
+                  {startingCheckout ? "…" : (user.stripeSubscriptionId ? "Rejoin — £1 a week" : "Start free trial")}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -435,7 +473,7 @@ export default function DashboardPage() {
           <h2 className="text-lg font-semibold text-[var(--fg)] mb-4">Your listings</h2>
           {listings.length === 0 && !showForm && (
             <EmptyState title="No listings yet" description="List your test to start finding swap matches."
-              action={<SecondaryButton onClick={startNewListing}>{user && !user.registrationPaidAt ? "List a test — £1" : "+ Create listing"}</SecondaryButton>} />
+              action={<SecondaryButton onClick={startNewListing}>+ Create listing</SecondaryButton>} />
           )}
           <div className="flex flex-col gap-3">
             {listings.map(function(listing) {

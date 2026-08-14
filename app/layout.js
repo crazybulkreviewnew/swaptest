@@ -4,9 +4,10 @@ import NativeProvider from "@/components/native-provider";
 import CookieConsent from "@/components/cookie-consent";
 import { paymentsEnabled } from "@/lib/payments";
 import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
+import { MEMBERSHIP_OFFER } from "@/lib/subscription";
 
 const pay = paymentsEnabled();
-const priceBlurb = pay ? "£1 to list your test, viewing matches is free, £8 only if you swap." : "Currently free to use.";
+const priceBlurb = pay ? "Free if you will take a later date. " + MEMBERSHIP_OFFER : "Currently free to use.";
 
 export const metadata = {
   metadataBase: new URL("https://www.swaptest.co.uk"),
@@ -128,7 +129,7 @@ const jsonLd = {
           acceptedAnswer: {
             "@type": "Answer",
             text: pay
-              ? "It costs £1 to register and list your test, and viewing your matches is free. If you decide to go ahead with a swap, only the person who wants an earlier date pays an £8 swap fee — the person moving to a later date pays nothing. There are no subscriptions and no hidden charges."
+              ? "It depends which way you are going. If you are happy to move to a later date, SwapTest is completely free: listing, matching and swapping all cost nothing. If you want an earlier date, a membership costs £1 a week, starts with a 7 day free trial, and can be cancelled any time from your dashboard."
               : "SwapTest is currently free to use — there is no charge to register, list your test, view matches, or complete a swap. We may introduce a small fee in the future to cover our infrastructure cost, but there are no hidden charges.",
           },
         },

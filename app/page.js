@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/navbar";
 import { paymentsEnabled } from "@/lib/payments";
 import { SWAP_WINDOW_LABEL, SWAP_WINDOW_ADJECTIVE } from "@/lib/swap-window";
+import { MEMBERSHIP_OFFER, MEMBERSHIP_OFFER_SHORT, TRIAL_DAYS } from "@/lib/subscription";
 
 export default function HomePage() {
   const [user, setUser] = useState(null);
@@ -38,7 +39,7 @@ export default function HomePage() {
                 className="inline-block px-4 py-1.5 rounded-full text-[13px] font-semibold text-[var(--brand-text)] mb-6 tracking-wide"
                 style={{ background: "rgba(29,158,117,0.12)", border: "1px solid rgba(29,158,117,0.25)" }}
               >
-                {pay ? "Free if you will take a later date · £1 a week if you want an earlier one" : "Currently free while we grow"}
+                {pay ? "Free if you will take a later date · " + MEMBERSHIP_OFFER_SHORT + " for an earlier one" : "Currently free while we grow"}
               </div>
 
               <h1 className="text-[clamp(36px,5vw,60px)] font-extrabold leading-[1.1] text-[var(--fg-strong)] tracking-tight mb-5">
@@ -70,13 +71,22 @@ export default function HomePage() {
                 </Link>
               </div>
 
+              {/* Said here, at the button, rather than three screens later at a
+                  paywall. Somebody who finds out the price only after typing
+                  their test details leaves, and rightly. */}
+              {pay && (
+                <p className="mt-4 text-[13px] text-[var(--muted-2)] leading-relaxed max-w-[520px] mx-auto lg:mx-0">
+                  Taking a later date is free, always. {MEMBERSHIP_OFFER}
+                </p>
+              )}
+
               {/* Stats row */}
               <div className="mt-10 flex flex-wrap gap-8 justify-center lg:justify-start">
                 {(pay
                   ? [
                       { value: "320+", label: "test centres" },
                       { value: "Free", label: "if you will go later" },
-                      { value: "£1", label: "a week for an earlier date" },
+                      { value: TRIAL_DAYS + " days", label: "free, then £1 a week" },
                     ]
                   : [
                       { value: "320+", label: "test centres" },
@@ -236,7 +246,7 @@ export default function HomePage() {
               {
                 title: pay ? "Simple, low fees" : "Free to use",
                 desc: pay
-                  ? "Free if you are happy to take a later date. £1 a week if you want an earlier one, starting with a 7 day free trial. Cancel any time."
+                  ? "Free if you are happy to take a later date. Chasing an earlier one? " + MEMBERSHIP_OFFER
                   : "SwapTest is currently free while we grow. No subscriptions and no hidden charges.",
                 color: "#1D9E75",
               },

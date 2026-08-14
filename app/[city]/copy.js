@@ -72,7 +72,7 @@ export const COPY = {
         // the terms, or the site contradicts itself.
         a: (paid) =>
           paid
-            ? "There is a one off £1 fee to list your test, and viewing your matches is free. If you go ahead with a swap, only the person who wants an earlier date pays an £8 fee. You only ever deal with DVSA directly for the change itself, and DVSA does not charge to move a test as long as you give the required notice."
+            ? "If you are happy to take a later date it is free, because you are the reason a swap is possible at all. If you want an earlier date it is £1 a week, with the first week free. You only ever deal with DVSA directly for the change itself, and DVSA does not charge to move a test as long as you give the required notice."
             : "No. Listing your test, viewing your matches and swapping are all free at the moment. You only ever deal with DVSA directly for the change itself, and DVSA does not charge to move a test as long as you give the required notice.",
       },
     ],

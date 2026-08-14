@@ -46,7 +46,8 @@ function MatchDetail() {
     return function() { clearInterval(iv); };
   }, [matchId, loadMatch]);
 
-  // Earlier-seeker: accept disclaimer + pay £8 → Stripe Checkout.
+  // Earlier-seeker: accept the disclaimer. Nothing is charged here — the
+  // membership covers it. The route is still called "pay" for older clients.
   var handlePay = async function() {
     setActionLoading(true);
     setErrors([]);
@@ -176,7 +177,7 @@ function MatchDetail() {
     var youDone = isEarlier ? match.earlierPaid : match.youConsented;
     var otherDoneLabel = isEarlier
       ? "Waiting for the other person to agree to the swap."
-      : (paymentsEnabled() ? "Waiting for the other person to pay the swap fee." : "Waiting for the other person to agree to the swap.");
+      : "Waiting for the other person to agree to the swap.";
 
     return (<>
       <h2 className="text-xl font-semibold text-[var(--fg)] mb-2">
@@ -185,8 +186,8 @@ function MatchDetail() {
       <p className="text-sm text-[var(--muted)] mb-2">
         {paymentsEnabled()
           ? (isEarlier
-              ? "To confirm this swap and unlock contact details, accept the disclaimer and pay the £8 swap fee. The other person pays nothing."
-              : "To confirm this swap and unlock contact details, accept the disclaimer below. It is free for you — the other person pays the swap fee.")
+              ? "To confirm this swap and unlock contact details, accept the disclaimer below. Your membership covers it, so there is nothing more to pay."
+              : "To confirm this swap and unlock contact details, accept the disclaimer below. There is nothing to pay.")
           : "To confirm this swap and unlock contact details, accept the disclaimer below."}
       </p>
       {deadlineIsReal && <Countdown deadline={match.payDeadline} onExpired={loadMatch} />}
@@ -199,7 +200,7 @@ function MatchDetail() {
           {disclaimerBox}
           <div className="flex gap-3">
             {isEarlier ? (
-              <PrimaryButton onClick={handlePay} loading={actionLoading} disabled={!agreed} className="flex-1">{paymentsEnabled() ? "Accept & pay £8 to swap" : "Agree to swap"}</PrimaryButton>
+              <PrimaryButton onClick={handlePay} loading={actionLoading} disabled={!agreed} className="flex-1">{"Agree to swap"}</PrimaryButton>
             ) : (
               <PrimaryButton onClick={handleConsent} loading={actionLoading} disabled={!agreed} className="flex-1">Agree to swap (free)</PrimaryButton>
             )}

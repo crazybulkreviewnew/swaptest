@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar";
 import { ErrorBox } from "@/components/ui";
 import { register, createListing, startSubscriptionCheckout } from "@/lib/api-client";
 import { paymentsEnabled } from "@/lib/payments";
+import { MEMBERSHIP_OFFER } from "@/lib/subscription";
 import { UK_CENTRES } from "@/lib/centres";
 
 function RegisterForm() {
@@ -297,7 +298,7 @@ function RegisterForm() {
               {isEarlier
                 ? "We'll match you with anyone at your centre (or a nearby one) who has an earlier slot and wants a later date."
                 : "We'll match you with anyone at your centre (or a nearby one) who has a later slot and wants an earlier date."}
-              {paymentsEnabled() ? " A one-time £1 registration fee lists your test." : ""}
+              {paymentsEnabled() && isEarlier ? " " + MEMBERSHIP_OFFER : ""}
             </div>
 
             <button onClick={handleCreateListing} disabled={loading} style={{

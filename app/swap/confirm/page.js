@@ -22,7 +22,7 @@ import { ErrorBox, PrimaryButton, SecondaryButton, Card, formatDate } from "@/co
 import { previewSwap, selectMatch, consentToMatch, paySwap, startSubscriptionCheckout } from "@/lib/api-client";
 import { DATA_SHARING_DISCLAIMER, DISCLAIMER_CHECKBOX_LABEL } from "@/lib/disclaimer";
 import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
-import { TRIAL_DAYS, canRequestSwap } from "@/lib/subscription";
+import { TRIAL_DAYS, canRequestSwap, MEMBERSHIP_OFFER } from "@/lib/subscription";
 
 function ConfirmSwap() {
   const router = useRouter();
@@ -199,11 +199,10 @@ function ConfirmSwap() {
       {needsMembership && (
         <div className="rounded-xl border border-[#F5C775] bg-[#FFF8E1] p-4">
           <p className="text-sm font-semibold text-[#8B6914] mb-1">
-            {trialAvailable ? "Your first " + TRIAL_DAYS + " days are free" : "Membership needed to ask"}
+            {trialAvailable ? "Your first " + TRIAL_DAYS + " days are free" : "Membership needed"}
           </p>
           <p className="text-xs text-[#8B6914] leading-relaxed">
-            Moving to an earlier date needs a SwapTest membership, £1 a week, cancel any time.
-            {trialAvailable ? " You will not be charged for " + TRIAL_DAYS + " days." : ""}
+            {trialAvailable ? MEMBERSHIP_OFFER + " " : "Moving to an earlier date needs a SwapTest membership, £1 a week, cancel any time. "}
             {" "}It is free for anyone happy to take a later date, because they are the reason a swap is possible at all.
           </p>
         </div>

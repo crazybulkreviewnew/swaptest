@@ -125,7 +125,10 @@ function ConfirmSwap() {
   // canRequestSwap already returns true when payments are off, so this is false
   // for everybody until the switch is flipped, and false forever for the users
   // who were grandfathered in.
-  const needsMembership = !canRequestSwap(user);
+  // Only the side chasing an earlier date pays. If this listing is the LATER
+  // one, they are the person taking a worse date to make the swap work, and
+  // nothing is charged.
+  const needsMembership = wantsEarlier && !canRequestSwap(user);
   // Somebody who has subscribed before does not get another free trial.
   const trialAvailable = needsMembership && !user?.stripeSubscriptionId;
 
@@ -199,9 +202,9 @@ function ConfirmSwap() {
             {trialAvailable ? "Your first " + TRIAL_DAYS + " days are free" : "Membership needed to ask"}
           </p>
           <p className="text-xs text-[#8B6914] leading-relaxed">
-            Asking somebody to swap needs a SwapTest membership, £1 a week, cancel any time.
+            Moving to an earlier date needs a SwapTest membership, £1 a week, cancel any time.
             {trialAvailable ? " You will not be charged for " + TRIAL_DAYS + " days." : ""}
-            {" "}Listing your test and accepting a request somebody sends you are always free.
+            {" "}It is free for anyone happy to take a later date, because they are the reason a swap is possible at all.
           </p>
         </div>
       )}

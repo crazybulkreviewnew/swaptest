@@ -118,8 +118,17 @@ export default function DashboardPage() {
       setCentre(""); setTestType("WEEKDAY"); setSwappedBefore(false); setOriginalCentre(""); setCurrentDate(""); setCurrentTime("");
       await loadData();
     } catch (err) {
-      // No registration gate any more: creating a listing is free, so there is
-      // nothing to send them to checkout for.
+      // Listing an EARLIER test needs a membership. Keep what they typed and
+      // send them to Stripe; this page finishes the job when they return.
+      if (err.error === "SUBSCRIPTION_REQUIRED" || err.status === 402) {
+        sessionStorage.setItem("swaptest_pending_listing", JSON.stringify({
+          type: formType, centre: centre, testType: testType,
+          originalCentre: swappedBefore ? (originalCentre || undefined) : undefined,
+          currentDate: currentDate, currentTime: currentTime,
+        }));
+        await handleJoin();
+        return;
+      }
       setErrors(err.errors || ["Failed to create listing"]);
     } finally {
       setFormLoading(false);
@@ -155,9 +164,10 @@ export default function DashboardPage() {
     }
   };
 
-  // "+ New listing" — always straight to the form. Listing is free; the
-  // membership is charged when they ask somebody for a swap, not when they add
-  // their test to the pool.
+  // "+ New listing" — always straight to the form. The paywall is applied on
+  // submit rather than here, because it depends on which way they are going:
+  // listing a test you want moved EARLIER needs a membership, listing one you
+  // are happy to move LATER does not, and that is not known until they choose.
   var startNewListing = function() { setShowForm(true); };
 
   // After returning from the registration checkout, create the listing the user
@@ -168,9 +178,13 @@ export default function DashboardPage() {
     if (!raw) { await loadData(); return; }
     var pending;
     try { pending = JSON.parse(raw); } catch (e) { sessionStorage.removeItem("swaptest_pending_listing"); return; }
+    // Wait for the Stripe webhook to land before retrying, otherwise the
+    // listing is rejected again by the same paywall they have just paid at.
+    // Polls membership rather than registrationPaidAt, which the retired
+    // registration fee used to set and which now never changes.
     for (var i = 0; i < 12; i++) {
       var me = await fetch("/api/auth/me").then(function(r) { return r.json(); }).catch(function() { return {}; });
-      if (me.user && me.user.registrationPaidAt) break;
+      if (me.user && canRequestSwap(me.user)) break;
       await new Promise(function(res) { setTimeout(res, 2000); });
     }
     try {
@@ -322,8 +336,8 @@ export default function DashboardPage() {
             ) : (
               <div className="flex items-center justify-between gap-3 flex-wrap">
                 <p className="text-sm text-[var(--muted)]">
-                  <strong className="text-[var(--fg-2)]">Listing is free, and so is accepting a swap somebody offers you.</strong>
-                  {" "}A £1 a week membership is needed only to ask somebody else for a swap.
+                  <strong className="text-[var(--fg-2)]">Everything is free if you are happy to take a later date.</strong>
+                  {" "}A £1 a week membership is needed only to list or ask for a move to an earlier date.
                   {!user.stripeSubscriptionId ? " Your first " + TRIAL_DAYS + " days are free." : ""}
                 </p>
                 <button onClick={handleJoin} disabled={startingCheckout}

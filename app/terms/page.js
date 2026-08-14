@@ -113,9 +113,11 @@ export default function TermsPage() {
           {pay ? (
             <>
               <p style={pStyle}>
-                Creating an account and listing a test are <strong style={strong}>free</strong>, as is accepting a swap
-                that another learner offers you. Asking another learner for a swap requires a
-                <strong style={strong}> SwapTest membership at £1 per week</strong>, which begins with a
+                What you pay depends on which direction you are swapping. If you are willing to move your test to a
+                <strong style={strong}> later date</strong>, SwapTest is <strong style={strong}>free</strong>: listing,
+                matching, asking and accepting all cost nothing. If you want to move your test to an
+                <strong style={strong}> earlier date</strong>, listing that test and asking another learner to swap
+                require a <strong style={strong}>SwapTest membership at £1 per week</strong>, which begins with a
                 <strong style={strong}> 7 day free trial</strong>. You will not be charged during the trial, and you can
                 cancel at any time from your dashboard. Any DVSA test fees are separate and payable directly to the DVSA.
               </p>

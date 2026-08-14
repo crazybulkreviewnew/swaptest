@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import { ErrorBox } from "@/components/ui";
-import { register, createListing } from "@/lib/api-client";
+import { register, createListing, startSubscriptionCheckout } from "@/lib/api-client";
 import { paymentsEnabled } from "@/lib/payments";
 import { UK_CENTRES } from "@/lib/centres";
 
@@ -58,22 +58,36 @@ function RegisterForm() {
 
   var handleCreateListing = async function() {
     setLoading(true); setErrors([]);
+    var listing = {
+      type: userType, centre: centre, testType: testType,
+      originalCentre: swappedBefore ? (originalCentre || undefined) : undefined,
+      currentDate: currentDate, currentTime: currentTime,
+    };
     try {
-      // Listing is free. This used to stash the listing in sessionStorage and
-      // divert through a £1 Stripe checkout, creating it afterwards. There is
-      // nothing to pay at this point any more, so it is created directly and
-      // sign-up no longer detours through a card form.
-      var data = await createListing({
-        type: userType, centre: centre, testType: testType,
-        originalCentre: swappedBefore ? (originalCentre || undefined) : undefined,
-        currentDate: currentDate, currentTime: currentTime,
-      });
+      var data = await createListing(listing);
       if (data.matches && data.matches.length > 0) {
         sessionStorage.setItem("swaptest_matches", JSON.stringify(data.matches));
         sessionStorage.setItem("swaptest_listing", JSON.stringify(data.listing));
       }
       router.push("/dashboard");
-    } catch (err) { setErrors(err.errors || ["Could not create your listing"]); }
+    } catch (err) {
+      // Looking for an earlier date and no membership yet. Keep what they typed
+      // so it is not lost on the trip to Stripe; the dashboard creates it when
+      // they come back. Somebody looking for a later date never reaches this.
+      if (err.error === "SUBSCRIPTION_REQUIRED" || err.status === 402) {
+        try {
+          sessionStorage.setItem("swaptest_pending_listing", JSON.stringify(listing));
+          var r = await startSubscriptionCheckout();
+          if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
+        } catch (subErr) {
+          sessionStorage.removeItem("swaptest_pending_listing");
+          setErrors(subErr.errors || ["Could not open the membership page."]);
+          setLoading(false);
+          return;
+        }
+      }
+      setErrors(err.errors || ["Could not create your listing"]);
+    }
     finally { setLoading(false); }
   };
 

@@ -3,18 +3,10 @@ import { db } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { validateListing } from "@/lib/validation";
 import { findMatches, findMatchesForLater } from "@/lib/matching";
+import { canRequestSwap, accessReason, listingRequiresMembership } from "@/lib/subscription";
 
 export async function POST(request) {
   var user = await requireAuth();
-
-  // Listing is free, deliberately. The one-time registration fee that used to
-  // gate this is gone, replaced by the £1/week membership, and that membership
-  // gates asking for a swap rather than listing.
-  //
-  // A pool with listings in it is the product. Charging at the point where
-  // somebody adds supply shrinks the thing everybody is here for, and it takes
-  // money before they have seen a single match. The charge sits at the point
-  // where they get something: asking a real person for a real date.
 
   var body = await request.json();
   var type = body.type;
@@ -27,6 +19,22 @@ export async function POST(request) {
   var validation = validateListing({ type: type, centre: centre, testType: testType, originalCentre: originalCentre, currentDate: currentDate, currentTime: currentTime });
   if (!validation.valid) {
     return NextResponse.json({ errors: validation.errors }, { status: 400 });
+  }
+
+  // Listing an EARLIER test needs a membership; listing a LATER one is free.
+  // Validation runs first so somebody with a typo in their date is told about
+  // the typo rather than being sent to a card form and finding out afterwards.
+  //
+  // Read fresh: the session token predates any subscription bought since.
+  if (listingRequiresMembership(type)) {
+    var current = await db.user.findUnique({ where: { id: user.id } });
+    if (!canRequestSwap(current)) {
+      return NextResponse.json({
+        error: "SUBSCRIPTION_REQUIRED",
+        reason: accessReason(current),
+        errors: ["You need a SwapTest membership to list a test when you are looking for an earlier date. Listing a test you are happy to move later is free."],
+      }, { status: 402 });
+    }
   }
 
   var existing = await db.listing.findFirst({

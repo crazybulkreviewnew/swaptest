@@ -8,6 +8,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { constructWebhookEvent, getSubscription } from "@/lib/stripe";
 import { completeSwapPayment } from "@/lib/matching";
+import { sendTrialEndingEmail } from "@/lib/email";
 import { mapStripeStatus } from "@/lib/subscription";
 
 function periodEnd(subscription) {
@@ -110,6 +111,34 @@ export async function POST(request) {
       case "customer.subscription.deleted":
         await applySubscription(event.data.object);
         break;
+
+      // Stripe fires this once, shortly before a trial converts to a paying
+      // subscription. We send our own notice rather than relying on a dashboard
+      // setting, because taking £1 from somebody who has forgotten they signed
+      // up costs far more than £1 in goodwill, and a setting nobody can see in
+      // the code is a setting that quietly gets turned off.
+      //
+      // Skipped for anyone already cancelling: they are not going to be
+      // charged, so warning them about a payment would be wrong and alarming.
+      case "customer.subscription.trial_will_end": {
+        const sub = event.data.object;
+        if (sub.cancel_at_period_end) break;
+
+        const custId = typeof sub.customer === "string" ? sub.customer : sub.customer?.id;
+        const user = await db.user.findFirst({
+          where: sub.metadata?.userId
+            ? { id: sub.metadata.userId }
+            : custId ? { stripeCustomerId: custId } : { id: "__none__" },
+          select: { name: true, email: true },
+        });
+        if (!user) {
+          console.error("trial_will_end matched no user:", sub.id);
+          break;
+        }
+        const endsAt = sub.trial_end ? new Date(sub.trial_end * 1000) : periodEnd(sub);
+        await sendTrialEndingEmail(user, endsAt);
+        break;
+      }
 
       // A renewal failed. Stripe also updates the subscription, but this
       // arrives first and access should reflect it immediately.

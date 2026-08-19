@@ -39,7 +39,7 @@ export default function HomePage() {
                 className="inline-block px-4 py-1.5 rounded-full text-[13px] font-semibold text-[var(--brand-text)] mb-6 tracking-wide"
                 style={{ background: "rgba(29,158,117,0.12)", border: "1px solid rgba(29,158,117,0.25)" }}
               >
-                {pay ? "Free if you will take a later date · " + MEMBERSHIP_OFFER_SHORT + " for an earlier one" : "Currently free while we grow"}
+                {pay ? MEMBERSHIP_OFFER_SHORT + " · Moving your test later is always free" : "Currently free while we grow"}
               </div>
 
               <h1 className="text-[clamp(36px,5vw,60px)] font-extrabold leading-[1.1] text-[var(--fg-strong)] tracking-tight mb-5">
@@ -73,11 +73,32 @@ export default function HomePage() {
 
               {/* Said here, at the button, rather than three screens later at a
                   paywall. Somebody who finds out the price only after typing
-                  their test details leaves, and rightly. */}
+                  their test details leaves, and rightly.
+
+                  The wording matters more than it looks. Written as "free one
+                  way, £1 the other" it reads like two prices for the same
+                  thing, and somebody wanting an earlier test could pick "later"
+                  to avoid paying. They would then be shown nothing but later
+                  tests, and their listing would sit in the pool advertising the
+                  opposite of what they want, which breaks matching for whoever
+                  they get paired with too. So the two buttons are framed as two
+                  different outcomes, and the consequence of picking the wrong
+                  one is stated plainly. */}
               {pay && (
-                <p className="mt-4 text-[13px] text-[var(--muted-2)] leading-relaxed max-w-[520px] mx-auto lg:mx-0">
-                  Taking a later date is free, always. {MEMBERSHIP_OFFER}
-                </p>
+                <div className="mt-4 text-[13px] text-[var(--muted-2)] leading-relaxed max-w-[540px] mx-auto lg:mx-0 flex flex-col gap-2">
+                  <p>
+                    <strong className="text-[var(--fg-2)]">Want your test sooner?</strong> That is the first button.
+                    Your first {TRIAL_DAYS} days are free, then it is £1 a week and you can cancel any time.
+                  </p>
+                  <p>
+                    <strong className="text-[var(--fg-2)]">Happy to move your test back?</strong> That is the second
+                    button, and it is free, always. You are the one making somebody else&apos;s swap possible.
+                  </p>
+                  <p>
+                    Pick the one you actually want rather than the cheaper one. If you choose the later option we will
+                    only ever offer you later dates, which is no help if what you needed was an earlier one.
+                  </p>
+                </div>
               )}
 
               {/* Stats row */}
@@ -244,9 +265,9 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                title: pay ? "Simple, low fees" : "Free to use",
+                title: pay ? "£1 a week, and only one way" : "Free to use",
                 desc: pay
-                  ? "Free if you are happy to take a later date. Chasing an earlier one? " + MEMBERSHIP_OFFER
+                  ? "Moving your test to a later date is free. Moving it to an earlier one is " + TRIAL_DAYS + " days free, then £1 a week, cancelled whenever you like."
                   : "SwapTest is currently free while we grow. No subscriptions and no hidden charges.",
                 color: "#1D9E75",
               },
@@ -403,6 +424,17 @@ export default function HomePage() {
                 booking you made yourself. When two of you agree to change places, you each ring DVSA and change
                 your own test, which is the process DVSA already offers for free.
               </p>
+              {pay && (
+                <p className="mb-3">
+                  <strong className="text-[var(--fg-2)]">So what is the £1 for?</strong> Running the site. The
+                  servers, the database, the domain and the emails that tell you a swap is waiting all cost money,
+                  and the £1 a week covers that. It is not payment for a test, none of it reaches the other
+                  learner, and it buys you nothing from DVSA that you could not do yourself for free. We have kept
+                  it at £1, with the first week free, because most people here are already paying for lessons and a
+                  test fee and this should be the smallest cost of getting on the road. If you are the one moving to
+                  a later date, you pay nothing at all.
+                </p>
+              )}
               <p className="mb-3">
                 This matters because learners have been badly stung. A practical test costs{" "}
                 <strong className="text-[var(--fg-2)]">£62</strong>, or £75 evenings, weekends and bank holidays.
@@ -412,8 +444,8 @@ export default function HomePage() {
                 changing places.
               </p>
               <p className="mb-0">
-                The only money you should ever pay for a practical test is the official DVSA fee. If a website asks
-                for more than that to secure you a test, you can{" "}
+                The only money you should ever pay <em>for the test itself</em> is the official DVSA fee. If a
+                website asks for more than that to secure you a test, or offers to sell you an appointment, you can{" "}
                 <a
                   href="https://www.gov.uk/guidance/report-driving-test-resellers-cancellation-finders-or-booking-services"
                   target="_blank"

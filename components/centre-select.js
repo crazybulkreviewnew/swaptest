@@ -126,7 +126,16 @@ export default function CentreSelect({
         style={style}
         onChange={(e) => { setQuery(e.target.value); setOpen(true); setActive(0); }}
         onFocus={() => { setOpen(true); setActive(0); }}
-        onBlur={() => { setTimeout(() => { if (boxRef.current && !boxRef.current.contains(document.activeElement)) close(); }, 120); }}
+        // relatedTarget is where focus is going, and it is known synchronously.
+        // This used to poll document.activeElement on a timeout, which never
+        // fired reliably: clicking away happened to work because the outside
+        // mousedown handler reset things first, but TABBING away left the typed
+        // text sitting in the box while a different centre stayed selected
+        // underneath. Keyboard users were the only ones who hit it.
+        //
+        // Picking an option does not blur at all, because the option's
+        // mousedown calls preventDefault and focus never leaves the input.
+        onBlur={(e) => { if (!boxRef.current || !boxRef.current.contains(e.relatedTarget)) close(); }}
         onKeyDown={onKeyDown}
       />
 

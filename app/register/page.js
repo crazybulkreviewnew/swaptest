@@ -9,6 +9,7 @@ import { register, createListing, startSubscriptionCheckout } from "@/lib/api-cl
 import { paymentsEnabled } from "@/lib/payments";
 import { MEMBERSHIP_OFFER } from "@/lib/subscription";
 import { UK_CENTRES } from "@/lib/centres";
+import CentreSelect from "@/components/centre-select";
 
 function RegisterForm() {
   var router = useRouter();
@@ -229,11 +230,9 @@ function RegisterForm() {
             {/* Centre */}
             <div>
               <label style={labelStyle}>Which test centre is your test booked at?</label>
-              <select value={centre} onChange={function(e) { setCentre(e.target.value); clearErrors(); }}
-                style={{ ...inputStyle, appearance: "auto", cursor: "pointer" }}>
-                <option value="">Choose your test centre...</option>
-                {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
-              </select>
+              <CentreSelect id="reg-centre" value={centre} style={inputStyle}
+                placeholder="Start typing, e.g. Manchester or Kings Heath"
+                onChange={function(v) { setCentre(v); clearErrors(); }} />
               <p style={{ fontSize: "12px", color: "var(--faint)", marginTop: "6px" }}>
                 We'll also include listings at the 3 nearby centres DVSA lets you move to.
               </p>
@@ -259,11 +258,12 @@ function RegisterForm() {
                 <span>I've swapped my test before (I can also move back to my original centre)</span>
               </label>
               {swappedBefore && (
-                <select value={originalCentre} onChange={function(e) { setOriginalCentre(e.target.value); clearErrors(); }}
-                  style={{ ...inputStyle, appearance: "auto", cursor: "pointer", marginTop: "10px" }}>
-                  <option value="">Choose your original test centre...</option>
-                  {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
-                </select>
+                <div style={{ marginTop: "10px" }}>
+                  <CentreSelect id="reg-original-centre" value={originalCentre} style={inputStyle}
+                    placeholder="Start typing your original test centre"
+                    exclude={centre}
+                    onChange={function(v) { setOriginalCentre(v); clearErrors(); }} />
+                </div>
               )}
             </div>
 

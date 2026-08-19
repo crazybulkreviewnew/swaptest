@@ -12,7 +12,7 @@ import { getListings, createListing, deleteListing, editListing, startSubscripti
 import { paymentsEnabled } from "@/lib/payments";
 import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
 import { canRequestSwap, TRIAL_DAYS } from "@/lib/subscription";
-import { UK_CENTRES } from "@/lib/centres";
+import CentreSelect from "@/components/centre-select";
 
 export default function DashboardPage() {
   var router = useRouter();
@@ -463,10 +463,9 @@ export default function DashboardPage() {
             <div className="flex flex-col gap-4">
               <div>
                 <label className="block text-xs text-[var(--muted)] mb-1">Test centre <span className="text-red-500">*</span></label>
-                <select value={centre} onChange={function(e) { setCentre(e.target.value); }}>
-                  <option value="">Select a centre...</option>
-                  {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
-                </select>
+                <CentreSelect id="new-centre" value={centre}
+                  placeholder="Start typing, e.g. Manchester or Kings Heath"
+                  onChange={function(v) { setCentre(v); }} />
               </div>
               <div>
                 <label className="block text-xs text-[var(--muted)] mb-1">Test type <span className="text-red-500">*</span></label>
@@ -481,10 +480,12 @@ export default function DashboardPage() {
                   <span>I've swapped before (I can also move back to my original centre)</span>
                 </label>
                 {swappedBefore && (
-                  <select className="mt-2" value={originalCentre} onChange={function(e) { setOriginalCentre(e.target.value); }}>
-                    <option value="">Original test centre...</option>
-                    {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
-                  </select>
+                  <div className="mt-2">
+                    <CentreSelect id="new-original-centre" value={originalCentre}
+                      placeholder="Start typing your original test centre"
+                      exclude={centre}
+                      onChange={function(v) { setOriginalCentre(v); }} />
+                  </div>
                 )}
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -532,9 +533,9 @@ export default function DashboardPage() {
                       <div className="flex flex-col gap-3">
                         <div>
                           <label className="block text-xs text-[var(--muted)] mb-1">Test centre</label>
-                          <select value={editForm.centre} onChange={function(e) { setEditForm(Object.assign({}, editForm, { centre: e.target.value })); }}>
-                            {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
-                          </select>
+                          <CentreSelect id="edit-centre" value={editForm.centre}
+                            placeholder="Start typing your test centre"
+                            onChange={function(v) { setEditForm(Object.assign({}, editForm, { centre: v })); }} />
                         </div>
                         <div>
                           <label className="block text-xs text-[var(--muted)] mb-1">Test type</label>
@@ -545,10 +546,10 @@ export default function DashboardPage() {
                         </div>
                         <div>
                           <label className="block text-xs text-[var(--muted)] mb-1">Original centre <span className="text-[var(--faint)]">(if you swapped before)</span></label>
-                          <select value={editForm.originalCentre || ""} onChange={function(e) { setEditForm(Object.assign({}, editForm, { originalCentre: e.target.value })); }}>
-                            <option value="">None</option>
-                            {UK_CENTRES.map(function(c) { return <option key={c} value={c}>{c}</option>; })}
-                          </select>
+                          <CentreSelect id="edit-original-centre" value={editForm.originalCentre || ""}
+                            placeholder="None — start typing if you swapped before"
+                            exclude={editForm.centre}
+                            onChange={function(v) { setEditForm(Object.assign({}, editForm, { originalCentre: v })); }} />
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                           <div>

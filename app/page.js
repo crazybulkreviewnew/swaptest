@@ -81,22 +81,19 @@ export default function HomePage() {
                   to avoid paying. They would then be shown nothing but later
                   tests, and their listing would sit in the pool advertising the
                   opposite of what they want, which breaks matching for whoever
-                  they get paired with too. So the two buttons are framed as two
-                  different outcomes, and the consequence of picking the wrong
-                  one is stated plainly. */}
+                  they get paired with too. So the direction is described as
+                  what it does rather than what it costs, and the consequence of
+                  picking the wrong one is stated plainly. */}
               {pay && (
                 <div className="mt-4 text-[13px] text-[var(--muted-2)] leading-relaxed max-w-[540px] mx-auto lg:mx-0 flex flex-col gap-2">
                   <p>
-                    <strong className="text-[var(--fg-2)]">Want your test sooner?</strong> That is the first button.
-                    Your first {TRIAL_DAYS} days are free, then it is £1 a week and you can cancel any time.
+                    Moving your test to an <strong className="text-[var(--fg-2)]">earlier</strong> date requires a
+                    membership: your first {TRIAL_DAYS} days are free, then £1 a week, cancel any time. Moving to a{" "}
+                    <strong className="text-[var(--fg-2)]">later</strong> date is free.
                   </p>
                   <p>
-                    <strong className="text-[var(--fg-2)]">Happy to move your test back?</strong> That is the second
-                    button, and it is free, always. You are the one making somebody else&apos;s swap possible.
-                  </p>
-                  <p>
-                    Pick the one you actually want rather than the cheaper one. If you choose the later option we will
-                    only ever offer you later dates, which is no help if what you needed was an earlier one.
+                    Your choice sets the direction we search in, so please select the one you need rather than the
+                    cheaper one. Choosing a later date means you will only be offered later tests.
                   </p>
                 </div>
               )}

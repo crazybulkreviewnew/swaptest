@@ -124,6 +124,13 @@ export async function POST(request) {
         const sub = event.data.object;
         if (sub.cancel_at_period_end) break;
 
+        // Stripe warns that this can fire immediately when a trial is cut
+        // short, including inside the same transaction that takes the payment.
+        // Telling somebody they will be charged in three days moments after
+        // charging them is worse than saying nothing, so send only while the
+        // subscription is genuinely still in its trial.
+        if (sub.status !== "trialing") break;
+
         const custId = typeof sub.customer === "string" ? sub.customer : sub.customer?.id;
         const user = await db.user.findFirst({
           where: sub.metadata?.userId

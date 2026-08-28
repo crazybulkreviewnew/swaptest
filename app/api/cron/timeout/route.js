@@ -19,7 +19,7 @@
 // ============================================================
 
 import { NextResponse } from "next/server";
-import { expireStaleMatches } from "@/lib/matching";
+import { expireStaleMatches, expireStaleListings } from "@/lib/matching";
 
 export async function GET(request) {
   // Verify the request is from Vercel Cron or has the correct secret.
@@ -34,9 +34,13 @@ export async function GET(request) {
 
   try {
     const result = await expireStaleMatches();
+    // Same job, different clock: matches die on their deadline, listings die
+    // when the test date they describe has been and gone.
+    const listings = await expireStaleListings();
     return NextResponse.json({
       success: true,
       expired: result.expired,
+      listingsExpired: listings.expired,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {

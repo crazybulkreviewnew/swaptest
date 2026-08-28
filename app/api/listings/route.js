@@ -37,8 +37,18 @@ export async function POST(request) {
     }
   }
 
+  // Only a listing for a test that has not happened yet should block a new one.
+  // Without the date check, somebody whose test date passed could never list
+  // their rebooked test at the same centre, and the error told them they had an
+  // active listing when what they actually had was a dead one.
+  var todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
   var existing = await db.listing.findFirst({
-    where: { userId: user.id, centre: centre, status: { in: ["AVAILABLE", "LOCKED"] } },
+    where: {
+      userId: user.id, centre: centre,
+      status: { in: ["AVAILABLE", "LOCKED"] },
+      currentDate: { gte: todayStart },
+    },
   });
   if (existing) {
     return NextResponse.json({ errors: ["You already have an active listing at this centre"] }, { status: 409 });

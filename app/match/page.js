@@ -175,26 +175,46 @@ function MatchDetail() {
 
     // PENDING
     var youDone = isEarlier ? match.earlierPaid : match.youConsented;
-    var otherDoneLabel = isEarlier
-      ? "Waiting for the other person to agree to the swap."
-      : "Waiting for the other person to agree to the swap.";
 
+    // Everything below is split on youDone. The instruction to accept the
+    // disclaimer used to sit above this split and render for everybody, so
+    // somebody who had already agreed was told to "accept the disclaimer below"
+    // and then shown a card saying they were all set, with no disclaimer
+    // anywhere. A user wrote in to say exactly that: "it says accept something
+    // to get the other persons details but is nothing to accept". He had done
+    // his part and had no way to tell whether the site was broken.
     return (<>
       <h2 className="text-xl font-semibold text-[var(--fg)] mb-2">
-        {isInitiator ? "Confirm your swap" : "Someone wants to swap with you!"}
+        {youDone
+          ? "Waiting on the other learner"
+          : (isInitiator ? "Confirm your swap" : "Someone wants to swap with you!")}
       </h2>
-      <p className="text-sm text-[var(--muted)] mb-2">
-        {paymentsEnabled()
-          ? (isEarlier
-              ? "To confirm this swap and unlock contact details, accept the disclaimer below. Your membership covers it, so there is nothing more to pay."
-              : "To confirm this swap and unlock contact details, accept the disclaimer below. There is nothing to pay.")
-          : "To confirm this swap and unlock contact details, accept the disclaimer below."}
-      </p>
+
+      {!youDone && (
+        <p className="text-sm text-[var(--muted)] mb-2">
+          {paymentsEnabled()
+            ? (isEarlier
+                ? "To confirm this swap and unlock contact details, accept the disclaimer below. Your membership covers it, so there is nothing more to pay."
+                : "To confirm this swap and unlock contact details, accept the disclaimer below. There is nothing to pay.")
+            : "To confirm this swap and unlock contact details, accept the disclaimer below."}
+        </p>
+      )}
+
       {deadlineIsReal && <Countdown deadline={match.payDeadline} onExpired={loadMatch} />}
       {swapDetails}
 
       {youDone ? (
-        <Card><div className="text-sm text-[var(--muted)]">{"You're all set. " + otherDoneLabel}</div></Card>
+        <Card>
+          <div className="text-sm text-[var(--muted)] leading-relaxed">
+            <strong className="text-[var(--fg)]">You have done your part.</strong>{" "}
+            There is nothing left for you to accept. We are waiting on the other learner, who has
+            until {match.payDeadline ? formatDate(match.payDeadline) : "the deadline above"} to answer.
+            <br /><br />
+            If they agree, you will both get each other&apos;s contact details straight away and can
+            arrange the change with DVSA. If they do not answer in time, your listing goes back into
+            the pool and your own test is unaffected either way.
+          </div>
+        </Card>
       ) : (
         <>
           {disclaimerBox}

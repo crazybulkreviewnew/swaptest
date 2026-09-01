@@ -1,9 +1,10 @@
 // GET /api/auth/me — returns current user or null
 
 import { NextResponse } from "next/server";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, publicUser } from "@/lib/auth";
 
 export async function GET() {
   const user = await getCurrentUser();
-  return NextResponse.json({ user });
+  // Shaped, not raw: see publicUser in lib/auth.
+  return NextResponse.json({ user: publicUser(user) });
 }

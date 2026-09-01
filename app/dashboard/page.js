@@ -363,11 +363,11 @@ export default function DashboardPage() {
                 <p className="text-sm text-[var(--muted)]">
                   <strong className="text-[var(--fg-2)]">Everything is free if you are happy to take a later date.</strong>
                   {" "}A £1 a week membership is needed only to list or ask for a move to an earlier date.
-                  {!user.stripeSubscriptionId ? " Your first " + TRIAL_DAYS + " days are free." : ""}
+                  {!user.hasSubscribedBefore ? " Your first " + TRIAL_DAYS + " days are free." : ""}
                 </p>
                 <button onClick={handleJoin} disabled={startingCheckout}
                   className="px-4 py-2 rounded-lg bg-[#1D9E75] hover:bg-[#1ab87f] text-white text-sm font-semibold transition disabled:opacity-50">
-                  {startingCheckout ? "…" : (user.stripeSubscriptionId ? "Rejoin — £1 a week" : "Start free trial")}
+                  {startingCheckout ? "…" : (user.hasSubscribedBefore ? "Rejoin — £1 a week" : "Start free trial")}
                 </button>
               </div>
             )}

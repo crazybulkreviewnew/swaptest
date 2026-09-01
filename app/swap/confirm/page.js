@@ -130,7 +130,7 @@ function ConfirmSwap() {
   // nothing is charged.
   const needsMembership = wantsEarlier && !canRequestSwap(user);
   // Somebody who has subscribed before does not get another free trial.
-  const trialAvailable = needsMembership && !user?.stripeSubscriptionId;
+  const trialAvailable = needsMembership && !user?.hasSubscribedBefore;
 
   return (
     <div className="flex flex-col gap-5">

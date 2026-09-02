@@ -28,6 +28,28 @@ const PROTECTED_ROUTES = ["/dashboard", "/match", "/swap"];
 // Routes that should redirect TO dashboard if already logged in
 const AUTH_ROUTES = ["/register", "/login"];
 
+// API paths that must stay reachable without a session cookie.
+//
+// Everything else under /api needs one, and gets a JSON 401 from here. That
+// exists because requireAuth throws a Response object, which is a Remix
+// pattern that Next's App Router does not catch, so an unauthenticated API
+// call surfaced as an empty 500. Answering here fixes every route at once
+// rather than wrapping fifteen handlers in try/catch.
+//
+// /api/auth/me is public on purpose: it answers {"user":null} when signed out
+// and the front end depends on that to decide whether to show a logged-in view.
+const PUBLIC_API = [
+  "/api/auth/login",
+  "/api/auth/register",
+  "/api/auth/logout",
+  "/api/auth/forgot-password",
+  "/api/auth/reset-password",
+  "/api/auth/me",
+  "/api/contact",
+  "/api/payments/webhook", // Stripe signs these; it has no cookie
+  "/api/cron/",            // guarded by CRON_SECRET instead
+];
+
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get(TOKEN_NAME)?.value;
@@ -57,6 +79,14 @@ export async function middleware(request) {
     }
   }
 
+  // API routes: answer with JSON rather than a redirect, and never send an
+  // HTML login page to something expecting JSON.
+  if (pathname.startsWith("/api/") && !PUBLIC_API.some((p) => pathname.startsWith(p))) {
+    if (!isAuthenticated) {
+      return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
+    }
+  }
+
   // Auth routes: redirect to dashboard if already logged in
   if (AUTH_ROUTES.some((route) => pathname.startsWith(route))) {
     if (isAuthenticated) {
@@ -68,5 +98,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/match/:path*", "/swap/:path*", "/register", "/login"],
+  matcher: ["/dashboard/:path*", "/match/:path*", "/swap/:path*", "/api/:path*", "/register", "/login"],
 };

@@ -91,13 +91,13 @@ function MatchDetail() {
   };
 
   if (!matchId) {
-    return (<div className="min-h-screen"><Navbar /><div className="max-w-lg mx-auto px-5 py-20 text-center text-[var(--muted-2)]">No match ID provided. <Link href="/dashboard" className="text-[#1D9E75] hover:underline">Go to dashboard</Link></div></div>);
+    return (<div className="min-h-screen"><Navbar /><div className="max-w-2xl mx-auto px-5 py-20 text-center text-[var(--muted-2)]">No match ID provided. <Link href="/dashboard" className="text-[#1D9E75] hover:underline">Go to dashboard</Link></div></div>);
   }
   if (loading) {
     return (<div className="min-h-screen"><Navbar user={user} onLogout={function() { router.push("/"); }} /><div className="flex items-center justify-center py-20"><div role="status" aria-label="Loading match" className="w-6 h-6 border-2 border-[#1D9E75]/30 border-t-[#1D9E75] rounded-full animate-spin" /></div></div>);
   }
   if (!match) {
-    return (<div className="min-h-screen"><Navbar user={user} onLogout={function() { router.push("/"); }} /><div className="max-w-lg mx-auto px-5 py-20 text-center"><ErrorBox errors={errors.length ? errors : ["Match not found"]} /><Link href="/dashboard" className="text-sm text-[#1D9E75] hover:underline">Back to dashboard</Link></div></div>);
+    return (<div className="min-h-screen"><Navbar user={user} onLogout={function() { router.push("/"); }} /><div className="max-w-2xl mx-auto px-5 py-20 text-center"><ErrorBox errors={errors.length ? errors : ["Match not found"]} /><Link href="/dashboard" className="text-sm text-[#1D9E75] hover:underline">Back to dashboard</Link></div></div>);
   }
 
   var role = match.role;
@@ -238,7 +238,7 @@ function MatchDetail() {
   return (
     <div className="min-h-screen">
       <Navbar user={user} onLogout={function() { router.push("/"); }} />
-      <div className="max-w-lg mx-auto px-5 py-8">
+      <div className="max-w-2xl mx-auto px-5 py-8">
         <Link href="/dashboard" className="text-sm text-[var(--muted-2)] hover:text-[var(--fg-2)] transition mb-5 block">← Dashboard</Link>
         <div className="flex items-center gap-2 mb-5">
           <Badge variant={isEarlier ? "earlier" : "later"}>{isEarlier ? "You want earlier" : "You want later"}</Badge>

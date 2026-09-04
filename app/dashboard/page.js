@@ -326,7 +326,9 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen">
       <Navbar user={user} onLogout={function() { router.push("/"); }} />
-      <div className="max-w-2xl mx-auto px-5 py-8">
+      {/* Widened from max-w-2xl. This page lists listings and match results,
+          so it earns the space; the forms elsewhere do not. */}
+      <div className="max-w-4xl mx-auto px-5 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-[var(--fg)]">Dashboard</h1>

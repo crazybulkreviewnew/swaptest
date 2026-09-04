@@ -21,7 +21,7 @@ export default function CookiesPage() {
     <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
       {/* Nav */}
       <nav style={{ borderBottom: "1px solid var(--border-faint)", padding: "16px 20px" }}>
-        <div style={{ maxWidth: "680px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ maxWidth: "1152px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Link href="/" style={{ fontSize: "18px", fontWeight: 700, color: "var(--fg)", textDecoration: "none" }}>
             Swap<span style={{ color: "#1D9E75" }}>Test</span>
           </Link>
@@ -32,7 +32,7 @@ export default function CookiesPage() {
         </div>
       </nav>
 
-      <main style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 20px 80px" }}>
+      <main style={{ maxWidth: "820px", margin: "0 auto", padding: "48px 20px 80px" }}>
         <h1 style={{ fontSize: "clamp(28px, 5vw, 36px)", fontWeight: 800, color: "var(--fg-strong)", marginBottom: "8px", letterSpacing: "-1px" }}>
           Cookie Policy &amp; Data Usage
         </h1>

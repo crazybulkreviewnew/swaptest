@@ -72,13 +72,16 @@ export default function CookieConsent() {
             </p>
           </div>
 
-          <div className="flex gap-3 mt-4 lg:mt-0 flex-shrink-0">
-            <button
-              onClick={() => record("essential")}
-              className="px-5 py-2.5 rounded-lg text-[13px] font-semibold text-[var(--fg)] bg-[var(--card)] border border-[var(--border-strong)] hover:border-[var(--border-strong)] transition-colors cursor-pointer [touch-action:manipulation]"
-            >
-              Essential only
-            </button>
+          {/* Accept sits first and carries the visual weight; declining is the
+              quieter secondary. That is normal and lawful. What is NOT lawful is
+              making the decline harder to use: under UK GDPR consent must be
+              freely given, and the ICO's position is that refusing must be as
+              easy as accepting. So both stay on the same row, one tap each, at a
+              readable size with a full touch target. Shrinking this below a
+              comfortable tap, hiding it behind a settings screen, or styling it
+              as body text is the pattern the ICO wrote to UK sites about, and it
+              is not worth the exposure for a service that takes card payments. */}
+          <div className="flex items-center gap-3 mt-4 lg:mt-0 flex-shrink-0">
             <button
               onClick={() => record("all")}
               className="px-5 py-2.5 rounded-lg text-[13px] font-bold text-white border-0 cursor-pointer transition-transform hover:scale-[1.02] active:scale-[0.98] [touch-action:manipulation]"
@@ -88,6 +91,12 @@ export default function CookieConsent() {
               }}
             >
               Accept all
+            </button>
+            <button
+              onClick={() => record("essential")}
+              className="px-3 py-2 rounded-lg text-[12px] font-medium text-[var(--muted)] bg-transparent border border-[var(--border)] hover:text-[var(--fg-2)] hover:border-[var(--border-strong)] transition-colors cursor-pointer [touch-action:manipulation] min-h-[38px]"
+            >
+              Essential only
             </button>
           </div>
         </div>

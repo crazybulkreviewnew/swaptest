@@ -122,6 +122,14 @@ export default function TermsPage() {
                 cancel at any time from your dashboard. Any DVSA test fees are separate and payable directly to the DVSA.
               </p>
               <p style={pStyle}>
+                The membership exists to cover what it costs to run SwapTest, not to profit from your test. Keeping a
+                pool of listings matched across 320 test centres, checking which centres DVSA will actually allow a
+                swap between, and sending the alerts that tell you a swap is waiting all cost money to run: servers,
+                the database, the domain and the email service. The fee is set to cover that and is kept deliberately
+                low, because most people here are already paying for lessons and a test fee and this should be the
+                smallest part of it. Nothing you pay goes to the other learner, and no test is ever bought or sold.
+              </p>
+              <p style={pStyle}>
                 Payment is collected securely through our payment provider, Stripe, and renews weekly until you cancel.
                 Cancelling stops future payments and your membership continues until the end of the week you have already
                 paid for. We do not refund part-weeks. Members who joined while SwapTest was free keep full access

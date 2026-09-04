@@ -3,6 +3,7 @@ import Script from "next/script";
 import NativeProvider from "@/components/native-provider";
 import CookieConsent from "@/components/cookie-consent";
 import Analytics from "@/components/analytics";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import { paymentsEnabled } from "@/lib/payments";
 import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
@@ -201,9 +202,17 @@ export default function RootLayout({ children }) {
       <body>
         <NativeProvider>{children}</NativeProvider>
         <CookieConsent />
-        {/* Renders nothing until consent is given. Suspense because it reads
-            search params, which Next requires to be inside a boundary. */}
+        {/* Google Analytics. Renders nothing until consent is given. Suspense
+            because it reads search params, which Next requires inside a boundary. */}
         <Suspense fallback={null}><Analytics /></Suspense>
+
+        {/* Vercel Analytics. Deliberately NOT behind the consent gate: it sets no
+            cookies, stores nothing on the device and uses no persistent
+            identifier, so under UK PECR it does not need consent. That is the
+            point of running it alongside GA — it counts every visitor, including
+            the ones who decline analytics cookies, so the totals stay honest
+            while GA supplies the funnel detail for those who opt in. */}
+        <VercelAnalytics />
         {/* Cloudflare Web Analytics — cookieless, privacy-friendly (visits + referrers) */}
         <Script
           defer

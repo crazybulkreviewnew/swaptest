@@ -8,6 +8,7 @@ import { ErrorBox, SuccessBanner, PrimaryButton, SecondaryButton, Badge, Card, C
 import { getMatch, paySwap, consentToMatch, declineMatch } from "@/lib/api-client";
 import { DATA_SHARING_DISCLAIMER, DISCLAIMER_CHECKBOX_LABEL } from "@/lib/disclaimer";
 import { paymentsEnabled } from "@/lib/payments";
+import { track, EVENTS } from "@/lib/track";
 
 function MatchDetail() {
   var router = useRouter();
@@ -68,6 +69,7 @@ function MatchDetail() {
     setErrors([]);
     try {
       await consentToMatch(matchId);
+      track(EVENTS.SWAP_AGREED, { side: "later" });
       await loadMatch();
     } catch (err) {
       setErrors(err.errors || ["Could not record your agreement"]);

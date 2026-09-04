@@ -8,6 +8,7 @@ import { ErrorBox } from "@/components/ui";
 import { register, createListing, startSubscriptionCheckout } from "@/lib/api-client";
 import { paymentsEnabled } from "@/lib/payments";
 import { MEMBERSHIP_OFFER } from "@/lib/subscription";
+import { track, EVENTS } from "@/lib/track";
 import { UK_CENTRES } from "@/lib/centres";
 import CentreSelect from "@/components/centre-select";
 
@@ -52,6 +53,7 @@ function RegisterForm() {
     setLoading(true); setErrors([]);
     try {
       var data = await register({ name: name, email: email, phone: phone, password: password });
+      track(EVENTS.SIGN_UP, { direction: userType.toLowerCase() });
       setUser(data.user);
       setStep(2);
     } catch (err) { setErrors(err.errors || ["Registration failed"]); }
@@ -67,6 +69,7 @@ function RegisterForm() {
     };
     try {
       var data = await createListing(listing);
+      track(EVENTS.LISTING_CREATED, { direction: userType.toLowerCase(), centre: centre });
       if (data.matches && data.matches.length > 0) {
         sessionStorage.setItem("swaptest_matches", JSON.stringify(data.matches));
         sessionStorage.setItem("swaptest_listing", JSON.stringify(data.listing));
@@ -78,8 +81,10 @@ function RegisterForm() {
       // they come back. Somebody looking for a later date never reaches this.
       if (err.error === "SUBSCRIPTION_REQUIRED" || err.status === 402) {
         try {
+          track(EVENTS.PAYWALL_HIT, { where: "register", direction: userType.toLowerCase() });
           sessionStorage.setItem("swaptest_pending_listing", JSON.stringify(listing));
           var r = await startSubscriptionCheckout();
+          if (r && r.checkoutUrl) track(EVENTS.CHECKOUT_STARTED, { where: "register" });
           if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
         } catch (subErr) {
           sessionStorage.removeItem("swaptest_pending_listing");

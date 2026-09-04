@@ -65,10 +65,11 @@ export default function PrivacyPage() {
             We collect your IP address for rate limiting purposes (to prevent abuse of the platform).
           </p>
           <p style={pStyle}>
-            We use Cloudflare Web Analytics to count visits and see which websites refer traffic to us.
-            It is privacy-friendly and cookieless: it does not set cookies, does not track you across other
-            websites, and does not collect data that personally identifies you. We do not use tracking cookies
-            or any third-party advertising trackers.
+            If you accept analytics on the cookie banner, we use Google Analytics to count visits, see which
+            websites refer traffic to us, and understand where people give up on the site. It sets cookies and
+            is provided by Google, which is why it is optional: it is not loaded at all unless you agree, and
+            choosing Essential only keeps it off permanently. We do not use advertising or retargeting
+            trackers, and we do not sell your data.
           </p>
         </div>
 
@@ -158,7 +159,7 @@ export default function PrivacyPage() {
             <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Neon</strong>: for database hosting (stores your account and listing data)</li>
             <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Vercel</strong>: for website hosting (processes your requests)</li>
             <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Upstash</strong>: for rate limiting (processes your IP address temporarily)</li>
-            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Cloudflare</strong>: for privacy-friendly, cookieless web analytics (counts visits and referrers; no cookies and no data that identifies you)</li>
+            <li style={liStyle}><strong style={{ color: "var(--fg-2)" }}>Google Analytics</strong>: to count visits and see which pages are used, but only if you accepted analytics cookies. Not loaded otherwise</li>
           </ul>
           <p style={pStyle}>Each of these services has their own privacy policy and processes data in accordance with GDPR requirements.</p>
         </div>

@@ -3,7 +3,7 @@ import ThemeToggle from "@/components/theme-toggle";
 
 export const metadata = {
   title: "Cookie Policy & Data Usage | SwapTest",
-  description: "How SwapTest uses cookies and processes your data. We use only essential cookies, with no advertising or tracking.",
+  description: "How SwapTest uses cookies. Essential cookies keep you signed in. Google Analytics is optional and loads only if you accept it.",
   alternates: { canonical: "https://www.swaptest.co.uk/cookies" },
 };
 
@@ -41,10 +41,19 @@ export default function CookiesPage() {
         <div style={sectionStyle}>
           <h2 style={h2Style}>The short version</h2>
           <p style={pStyle}>
-            SwapTest uses <strong style={strong}>only essential cookies</strong>, the small files needed to keep you
-            signed in and to keep the site secure. We do <strong style={strong}>not</strong> use advertising cookies,
-            tracking pixels, third-party analytics, or any technology that profiles you or follows you around
-            the web.
+            SwapTest uses <strong style={strong}>essential cookies</strong>, the small files needed to keep you
+            signed in and to keep the site secure. Those cannot be turned off, because the site cannot work
+            without them.
+          </p>
+          <p style={pStyle}>
+            We also use <strong style={strong}>Google Analytics</strong> to understand which pages people find
+            useful and where they give up. That is optional. Nothing analytics related is loaded and no Google
+            cookie is set unless you press <strong style={strong}>Accept all</strong> on the cookie banner. If
+            you choose Essential only, or ignore the banner, Google Analytics is never loaded at all.
+          </p>
+          <p style={pStyle}>
+            We do <strong style={strong}>not</strong> use advertising cookies, retargeting, or social media
+            tracking pixels, and we do not sell or share your data with advertisers.
           </p>
         </div>
 
@@ -96,20 +105,29 @@ export default function CookiesPage() {
         <div style={sectionStyle}>
           <h2 style={h2Style}>What we do NOT use</h2>
           <ul style={{ paddingLeft: "20px", marginBottom: "16px" }}>
-            <li style={liStyle}>No Google Analytics, advertising analytics, or any analytics that uses cookies</li>
             <li style={liStyle}>No advertising or retargeting cookies</li>
             <li style={liStyle}>No social media tracking pixels</li>
             <li style={liStyle}>No cross-site or behavioural profiling</li>
+            <li style={liStyle}>No analytics of any kind unless you have accepted it, and none at all if you have not</li>
           </ul>
         </div>
 
         <div style={sectionStyle}>
           <h2 style={h2Style}>Analytics</h2>
           <p style={pStyle}>
-            We use Cloudflare Web Analytics to understand how many people visit SwapTest and which websites refer
-            them to us. It is <strong style={strong}>cookieless</strong>: it sets no cookies, uses no local storage,
-            does not fingerprint your device, and does not track you across other websites. Because it collects no
-            information that identifies you, it does not require cookie consent under UK PECR.
+            We use <strong style={strong}>Google Analytics 4</strong> to understand how many people visit
+            SwapTest, which websites refer them to us, and which parts of the service people give up on. It helps
+            us see, for example, whether a page is confusing or a step is losing people.
+          </p>
+          <p style={pStyle}>
+            Google Analytics sets cookies, so under UK PECR it needs your consent. We treat that literally: the
+            Google script is not loaded, and no request is made to Google, until you press
+            <strong style={strong}> Accept all</strong> on the cookie banner. Choosing
+            <strong style={strong}> Essential only</strong>, or simply ignoring the banner, means it never loads.
+          </p>
+          <p style={pStyle}>
+            We do not send Google your name, email address, phone number or test details. To change your mind
+            later, clear this site&apos;s data in your browser and the banner will appear again.
           </p>
         </div>
 
@@ -127,7 +145,7 @@ export default function CookiesPage() {
           <p style={pStyle}>
             Your contact details are only shared with another user after you both agree to swap. We never sell
             your data. The full detail, including the third-party processors we rely on (Resend, Neon, Vercel,
-            Upstash, and Cloudflare) and your rights under UK GDPR, is set out in our{" "}
+            Upstash, Cloudflare, and Google Analytics if you accepted it) and your rights under UK GDPR, is set out in our{" "}
             <Link href="/privacy" style={{ color: "#1D9E75", textDecoration: "none" }}>Privacy Policy</Link>.
           </p>
         </div>

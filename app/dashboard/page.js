@@ -12,6 +12,7 @@ import { getListings, createListing, deleteListing, editListing, startSubscripti
 import { paymentsEnabled } from "@/lib/payments";
 import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
 import { canRequestSwap, TRIAL_DAYS } from "@/lib/subscription";
+import { track, EVENTS } from "@/lib/track";
 import CentreSelect from "@/components/centre-select";
 
 export default function DashboardPage() {
@@ -108,6 +109,7 @@ export default function DashboardPage() {
         originalCentre: swappedBefore ? (originalCentre || undefined) : undefined,
         currentDate: currentDate, currentTime: currentTime,
       });
+      track(EVENTS.LISTING_CREATED, { direction: formType.toLowerCase(), centre: centre });
       if (data.matches && data.matches.length > 0) {
         setMatchResults(data.matches);
         setMatchListing(data.listing);
@@ -121,6 +123,7 @@ export default function DashboardPage() {
       // Listing an EARLIER test needs a membership. Keep what they typed and
       // send them to Stripe; this page finishes the job when they return.
       if (err.error === "SUBSCRIPTION_REQUIRED" || err.status === 402) {
+        track(EVENTS.PAYWALL_HIT, { where: "dashboard", direction: formType.toLowerCase() });
         sessionStorage.setItem("swaptest_pending_listing", JSON.stringify({
           type: formType, centre: centre, testType: testType,
           originalCentre: swappedBefore ? (originalCentre || undefined) : undefined,
@@ -141,7 +144,7 @@ export default function DashboardPage() {
     setErrors([]);
     try {
       var r = await startSubscriptionCheckout();
-      if (r && r.checkoutUrl) { window.location.href = r.checkoutUrl; return; }
+      if (r && r.checkoutUrl) { track(EVENTS.CHECKOUT_STARTED, { where: "dashboard" }); window.location.href = r.checkoutUrl; return; }
       if (r && r.alreadyActive) { await loadData(); }
     } catch (err) {
       setErrors(err.errors || ["Could not open the membership page. Please try again."]);
@@ -214,6 +217,7 @@ export default function DashboardPage() {
     var sp = new URLSearchParams(window.location.search);
     var status = sp.get("status");
     if (status === "subscribed" || status === "registered") {
+      track(EVENTS.SUBSCRIPTION_ACTIVE);
       setSuccess("Membership active. Setting up your listing…");
       window.history.replaceState({}, "", "/dashboard");
       finalizePendingListing();

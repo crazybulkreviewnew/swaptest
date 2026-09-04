@@ -6,15 +6,16 @@
 // the user accept or reject non-essential cookies. The choice is stored in
 // localStorage ("swaptest-cookie-consent") so the banner only appears once.
 //
-// What it does NOT do: it does not set, load, or block any analytics/marketing
-// scripts — SwapTest currently uses ONLY essential cookies (auth session) which
-// are exempt from consent under UK PECR. This banner informs the user and
-// records their preference so it is ready if non-essential cookies are added later.
+// This is a real gate, not a notice. Google Analytics is not loaded, and no
+// Google cookie is set, until somebody presses "Accept all". "Essential only"
+// leaves analytics off entirely. Under UK PECR the session cookie is exempt
+// from consent; analytics is not, so it has to work this way round.
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { CONSENT_KEY, writeConsent } from "@/lib/consent";
 
-const STORAGE_KEY = "swaptest-cookie-consent";
+const STORAGE_KEY = CONSENT_KEY;
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
@@ -29,15 +30,10 @@ export default function CookieConsent() {
     }
   }, []);
 
+  // Goes through lib/consent so Google Analytics starts (or stays off) at once,
+  // without a page reload. "Essential only" leaves it off permanently.
   const record = (choice) => {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({ choice, ts: new Date().toISOString() })
-      );
-    } catch {
-      // ignore write failures — worst case the banner shows again next visit
-    }
+    writeConsent(choice);
     setVisible(false);
   };
 
@@ -60,10 +56,11 @@ export default function CookieConsent() {
               We value your privacy
             </h2>
             <p className="text-[13px] text-[var(--muted)] leading-relaxed m-0">
-              SwapTest uses only{" "}
+              SwapTest needs a few{" "}
               <strong className="text-[var(--fg-2)]">essential cookies</strong> to keep you
-              signed in and to keep the site secure. We do not use advertising or
-              tracking cookies. Read our{" "}
+              signed in. We would also like to use Google Analytics to see which pages
+              people find useful. That is optional, nothing analytics related loads unless
+              you accept, and we never use advertising cookies. Read our{" "}
               <Link href="/cookies" className="text-[#1D9E75] no-underline hover:underline">
                 Cookie Policy
               </Link>{" "}

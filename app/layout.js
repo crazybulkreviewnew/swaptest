@@ -2,6 +2,8 @@ import "./globals.css";
 import Script from "next/script";
 import NativeProvider from "@/components/native-provider";
 import CookieConsent from "@/components/cookie-consent";
+import Analytics from "@/components/analytics";
+import { Suspense } from "react";
 import { paymentsEnabled } from "@/lib/payments";
 import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
 import { MEMBERSHIP_OFFER } from "@/lib/subscription";
@@ -199,6 +201,9 @@ export default function RootLayout({ children }) {
       <body>
         <NativeProvider>{children}</NativeProvider>
         <CookieConsent />
+        {/* Renders nothing until consent is given. Suspense because it reads
+            search params, which Next requires to be inside a boundary. */}
+        <Suspense fallback={null}><Analytics /></Suspense>
         {/* Cloudflare Web Analytics — cookieless, privacy-friendly (visits + referrers) */}
         <Script
           defer

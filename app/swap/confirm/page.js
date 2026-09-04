@@ -23,6 +23,7 @@ import { previewSwap, selectMatch, consentToMatch, paySwap, startSubscriptionChe
 import { DATA_SHARING_DISCLAIMER, DISCLAIMER_CHECKBOX_LABEL } from "@/lib/disclaimer";
 import { SWAP_WINDOW_LABEL } from "@/lib/swap-window";
 import { TRIAL_DAYS, canRequestSwap, MEMBERSHIP_OFFER } from "@/lib/subscription";
+import { track, EVENTS } from "@/lib/track";
 
 function ConfirmSwap() {
   const router = useRouter();
@@ -70,10 +71,12 @@ function ConfirmSwap() {
     try {
       const created = await selectMatch({ myListingId: mineId, targetListingId: theirsId });
       matchId = created.match.id;
+      track(EVENTS.SWAP_REQUESTED, { direction: preview.mine.type.toLowerCase() });
     } catch (err) {
       // 402 from the paywall: send them to Stripe rather than showing an error
       // for something they can fix in one click.
       if (err.error === "SUBSCRIPTION_REQUIRED" || err.status === 402) {
+        track(EVENTS.PAYWALL_HIT, { where: "confirm" });
         try {
           const res = await startSubscriptionCheckout();
           if (res.checkoutUrl) { window.location.href = res.checkoutUrl; return; }
